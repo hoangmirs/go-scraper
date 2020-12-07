@@ -38,3 +38,5 @@
 # Beego files
 go-scraper
 lastupdate.tmp
+node_modules/
+static/dist/
