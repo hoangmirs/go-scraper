@@ -7,14 +7,14 @@ module.exports = merge(common, {
   mode: "production",
   devtool: false,
   output: {
-    path: path.resolve(__dirname, "../static/dist"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, "../static"),
+    filename: "js/[name].js",
   },
   plugins: [
     // Extracts CSS into separate files
     // Note: style-loader is for development, MiniCssExtractPlugin is for production
     new MiniCssExtractPlugin({
-      filename: "[name].css",
+      filename: "css/[name].css",
       chunkFilename: "[id].css",
     }),
   ],

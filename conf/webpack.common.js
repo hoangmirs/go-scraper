@@ -13,8 +13,8 @@ module.exports = {
     new CleanWebpackPlugin(),
   ],
   output: {
-    filename: "[name].js",
-    path: path.resolve(__dirname, "../static/dist"),
+    filename: "js/[name].js",
+    path: path.resolve(__dirname, "../static"),
   },
   module: {
     rules: [
