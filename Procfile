@@ -1,2 +1,2 @@
-web: bee rtun
+web: bee run
 webpack: npm run dev
