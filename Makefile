@@ -7,3 +7,6 @@ env-setup:
 dev:
 	make env-setup
 	forego start
+
+test:
+	go test -v -p 1 ./...
