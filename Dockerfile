@@ -10,7 +10,8 @@ RUN npm install && npm run build
 
 FROM golang:1.15-buster
 
-ENV GO111MOD=on
+ENV GO111MOD=on \
+    PORT=80
 
 RUN go get github.com/beego/beego && \
   go get github.com/beego/bee
@@ -27,6 +28,6 @@ RUN go mod download
 
 COPY --from=assets-builder /assets/static/. ./static/
 
-EXPOSE 8080
+EXPOSE $PORT
 
 ENTRYPOINT ["make", "production"]
