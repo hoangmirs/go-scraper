@@ -13,16 +13,18 @@ http {
     access_log /dev/stdout;
     error_log /dev/stdout;
 
-    location /(css|js|fonts|images)/ {
+    location / {
+      try_files $uri @backend;
+    }
+
+    location /(css|js|fonts|img)/ {
+      include /etc/nginx/mime.types;
+
       access_log off;
       expires 1d;
 
       root /app/static;
       try_files $uri @backend;
-    }
-
-    location / {
-      try_files /_not_exists_ @backend;
     }
 
     location @backend {
