@@ -1,16 +1,15 @@
 name: Deploy
 
 on:
-  push:
-  # workflow_run:
-  #   workflows:
-  #     - Test
-  #   branches:
-  #     - master
-  #     - development
-  #   types:
-  #     - completed
-  # workflow_dispatch:
+  workflow_run:
+    workflows:
+      - Test
+    branches:
+      - main
+      - development
+    types:
+      - completed
+  workflow_dispatch:
 
 env:
   DOCKER_IMAGE: ${{ github.repository }}
