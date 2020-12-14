@@ -17,4 +17,4 @@ test:
 	go test -v -p 1 ./...
 
 production:
-	APP_RUN_MODE=${APP_RUN_MODE} bee run
+	bin/start
