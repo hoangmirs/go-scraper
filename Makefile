@@ -1,7 +1,8 @@
-.PHONY: env-setup test
+.PHONY: env-setup dev test production
 
 install-dependencies:
 	go get github.com/beego/bee
+	go get github.com/ddollar/forego
 
 env-setup:
 	docker-compose -f docker-compose.dev.yml up -d
