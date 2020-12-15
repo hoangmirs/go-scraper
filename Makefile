@@ -3,6 +3,7 @@
 install-dependencies:
 	go get github.com/beego/bee
 	go get github.com/ddollar/forego
+	go mod tidy
 
 env-setup:
 	docker-compose -f docker-compose.dev.yml up -d
