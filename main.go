@@ -1,7 +1,7 @@
 package main
 
 import (
-	beego "github.com/astaxie/beego/server/web"
+	"github.com/astaxie/beego"
 	_ "github.com/hoangmirs/go-scraper/routers"
 )
 

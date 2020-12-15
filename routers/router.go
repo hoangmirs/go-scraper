@@ -1,7 +1,7 @@
 package routers
 
 import (
-	beego "github.com/astaxie/beego/server/web"
+	"github.com/astaxie/beego"
 	"github.com/hoangmirs/go-scraper/controllers"
 )
 
