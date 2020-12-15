@@ -8,26 +8,26 @@ COPY ./assets/. ./assets/
 
 RUN npm install && npm run build
 
-FROM golang:1.15-buster
 
-ENV GO111MOD=on \
-    PORT=80
+FROM golang:1.15-buster as go-builder
 
-RUN go get github.com/beego/beego && \
-  go get github.com/beego/bee
-
-RUN apt-get update && apt-get install -y --no-install-recommends nginx
+ENV GO111MOD=on
 
 WORKDIR /app
 
 COPY . .
 
-COPY conf/nginx/app.conf.template /etc/nginx/conf.d/default.conf
-
 RUN go mod download
 
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+
+
+FROM alpine
+
+COPY . .
 COPY --from=assets-builder /assets/static/. ./static/
+COPY --from=go-builder /app/go-scraper ./
 
-EXPOSE $PORT
+EXPOSE 8080
 
-ENTRYPOINT ["make", "production"]
+ENTRYPOINT ["./go-scraper"]
