@@ -15,5 +15,3 @@ services:
       - DB_HOST=database
       - DB_PORT=5432
       - DB_DATABASE
-    depends_on:
-      - database
