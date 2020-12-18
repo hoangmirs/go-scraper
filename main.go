@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
+	"github.com/beego/beego/v2/server/web"
 	_ "github.com/hoangmirs/go-scraper/routers"
 )
 
 func main() {
-	beego.Run()
+	web.Run()
 }
