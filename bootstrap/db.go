@@ -2,10 +2,10 @@ package bootstrap
 
 import (
 	"fmt"
-	"log"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/beego/beego/v2/client/orm"
+	"github.com/beego/beego/v2/core/logs"
+	"github.com/beego/beego/v2/server/web"
 
 	_ "github.com/lib/pq" // Postgres driver
 )
@@ -13,16 +13,16 @@ import (
 func SetUpDB() {
 	err := orm.RegisterDriver("postgres", orm.DRPostgres)
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Failed to register the driver %v", err))
+		logs.Critical(fmt.Sprintf("Failed to register the driver %v", err))
 	}
 
-	err = orm.RegisterDataBase("default", "postgres", beego.AppConfig.String("dbUrl"))
+	err = orm.RegisterDataBase("default", "postgres", web.AppConfig.DefaultString("dbUrl", ""))
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Failed to connect to the database %v", err))
+		logs.Critical(fmt.Sprintf("Failed to connect to the database %v", err))
 	}
 
 	err = orm.RunSyncdb("default", false, true)
 	if err != nil {
-		log.Fatal(fmt.Sprintf("Failed to sync the database %v", err))
+		logs.Critical(fmt.Sprintf("Failed to sync the database %v", err))
 	}
 }
