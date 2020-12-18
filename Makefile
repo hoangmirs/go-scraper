@@ -1,7 +1,7 @@
 .PHONY: env-setup dev test
 
 install-dependencies:
-	go get github.com/beego/bee
+	go get github.com/beego/bee/v2
 	go get github.com/ddollar/forego
 	go mod tidy
 
