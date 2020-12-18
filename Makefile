@@ -1,4 +1,4 @@
-.PHONY: env-setup dev test production
+.PHONY: env-setup dev test
 
 install-dependencies:
 	go get github.com/beego/bee
@@ -15,6 +15,3 @@ dev:
 
 test:
 	go test -v -p 1 ./...
-
-production:
-	APP_RUN_MODE=${APP_RUN_MODE} bee run

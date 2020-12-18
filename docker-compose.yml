@@ -2,9 +2,14 @@ version: "3.8"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      cache_from:
+        - ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BRANCH_TAG}
+    image: ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BRANCH_TAG}
+    container_name: go_scraper_web
     ports:
-      - 8080:8080
+      - "${PORT}:${PORT}"
     environment:
       - APP_NAME
       - APP_ADDR
@@ -15,3 +20,5 @@ services:
       - DB_HOST=database
       - DB_PORT=5432
       - DB_DATABASE
+    stdin_open: true
+    tty: true
