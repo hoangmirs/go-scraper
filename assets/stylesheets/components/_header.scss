@@ -1,3 +1,21 @@
 .header {
+  .navigation-pane {
+    @apply bg-gray-800;
 
+    &__main {
+      @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    &__mobile {
+      @apply hidden md:hidden;
+    }
+  }
+
+  .navigation-menu {
+    @apply flex items-center justify-between h-16;
+
+    &__main {
+      @apply flex items-center;
+    }
+  }
 }
