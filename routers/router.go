@@ -8,5 +8,5 @@ import (
 
 func init() {
 	web.Router("/", &controllers.MainController{})
-	web.Router("/register", &controllers.RegistrationController{})
+	web.Router("/register", &controllers.Registration{})
 }

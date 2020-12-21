@@ -1,0 +1,5 @@
+.form {
+  &__input {
+    @apply block border border-gray-300 w-full p-3 rounded mb-4;
+  }
+}
