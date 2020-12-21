@@ -1,3 +1,49 @@
-<h1 class="text-3xl font-bold leading-tight text-gray-900">
-  {{ .Title }}
-</h1>
+<div class="registration-wrapper">
+  <div class="registration-card">
+    <div class="registration-card__content">
+      <h1 class="registration-card__title">{{ .Title }}</h1>
+      <form class="registration-form form" action="/register" method="POST">
+        <input
+          type="text"
+          class="form__input"
+          name="fullname"
+          placeholder="Full Name"
+        />
+
+        <input
+          type="email"
+          class="form__input"
+          name="email"
+          placeholder="Email"
+        />
+
+        <input
+          type="password"
+          class="form__input"
+          name="password"
+          placeholder="Password"
+        />
+        <input
+          type="password"
+          class="form__input"
+          name="confirm_password"
+          placeholder="Confirm Password"
+        />
+
+        <button type="submit" class="btn btn--full">Create Account</button>
+
+        <div class="registration-form__terms-privacy">
+          By signing up, you agree to the
+          <a class="link link--secondary" href="#"> Terms of Service </a>
+          and
+          <a class="link link--secondary" href="#"> Privacy Policy </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="registration-card__footer">
+      Already have an account?
+      <a class="link" href="/login"> Log in </a>.
+    </div>
+  </div>
+</div>

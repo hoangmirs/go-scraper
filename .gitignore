@@ -3,3 +3,5 @@ go-scraper
 lastupdate.tmp
 node_modules/
 static/
+
+.DS_Store
