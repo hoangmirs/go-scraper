@@ -4,13 +4,6 @@
       <h1 class="registration-card__title">{{ .Title }}</h1>
       <form class="registration-form form" action="/register" method="POST">
         <input
-          type="text"
-          class="form__input"
-          name="fullname"
-          placeholder="Full Name"
-        />
-
-        <input
           type="email"
           class="form__input"
           name="email"
@@ -28,7 +21,7 @@
         <input
           type="password"
           class="form__input"
-          name="confirm_password"
+          name="password_confirmation"
           placeholder="Confirm Password"
           autocomplete="new-password"
         />

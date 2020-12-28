@@ -1,0 +1,13 @@
+{{ if .flash }}
+<div class="flash-message">
+  {{ if .flash.success }}
+  <p class="flash-message__alert flash-message__alert--success" role="alert">
+    {{ .flash.success }}
+  </p>
+  {{ end }} {{ if .flash.error }}
+  <p class="flash-message__alert flash-message__alert--error" role="alert">
+    {{ .flash.error }}
+  </p>
+  {{ end }}
+</div>
+{{ end }}

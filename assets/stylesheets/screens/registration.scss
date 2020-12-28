@@ -1,4 +1,5 @@
-.registration.get {
+.registration.get,
+.registration.post {
   .registration-wrapper {
     @apply flex flex-col;
   }
