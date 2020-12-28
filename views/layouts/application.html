@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 
 <html class="layout-default">
-<head>
-  <title>Go Scraper</title>
-  <meta charset='utf-8'>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <link rel="icon" type="image/svg+xml" href="/static/images/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  {{ assets_css "/static/css/application.css" }}
-</head>
+  <head>
+    <title>Go Scraper</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/static/images/favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    {{ assets_css "/static/css/application.css" }}
+  </head>
 
-<body>
-  <div class="container">
-    {{ .LayoutContent }}
-  </div>
+  <body>
+    <div class="container">{{ .FlashMessage }} {{ .LayoutContent }}</div>
 
-  {{ assets_js "/static/js/application.js" }}
-</body>
+    {{ assets_js "/static/js/application.js" }}
+  </body>
 </html>

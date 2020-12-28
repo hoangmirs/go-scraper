@@ -1,0 +1,16 @@
+.flash-message {
+  @apply mb-6;
+
+  &__alert {
+    @apply border p-4 rounded-md;
+
+    &--success {
+      @apply border-green-300 bg-green-100;
+    }
+
+    &--error {
+      @apply border-red-300 bg-red-100;
+    }
+
+  }
+}
