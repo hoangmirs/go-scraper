@@ -17,7 +17,10 @@ type RegistrationForm struct {
 func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 	if registrationForm.Password != registrationForm.PasswordConfirmation {
 		// Set error messages of Name by SetError and HasErrors will return true
-		v.SetError("Password", "Password confirmation does not match")
+		err := v.SetError("Password", "Password confirmation does not match")
+		if err != nil {
+			logs.Error("SetError error:", err)
+		}
 	}
 }
 
@@ -25,7 +28,6 @@ func (form RegistrationForm) CreateUser() error {
 	valid := validation.Validation{}
 
 	success, err := valid.Valid(&form)
-
 	if err != nil {
 		logs.Error("Validation error:", err)
 	}
@@ -38,12 +40,15 @@ func (form RegistrationForm) CreateUser() error {
 
 	user := models.User{}
 	user.Email = form.Email
+
 	hash, err := helpers.EncryptPassword([]byte(form.Password))
+	if err != nil {
+		logs.Error("Encryption error:", err)
+	}
 
 	user.EncryptedPassword = string(hash)
 
 	o := orm.NewOrm()
-
 	_, err = o.Insert(&user)
 
 	return err
