@@ -25,4 +25,8 @@ func SetUpDB() {
 	if err != nil {
 		logs.Critical(fmt.Sprintf("Failed to sync the database %v", err))
 	}
+
+	if web.AppConfig.DefaultString("runmode", "dev") == "dev" {
+		orm.Debug = true
+	}
 }
