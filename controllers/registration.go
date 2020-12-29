@@ -36,6 +36,8 @@ func (c *Registration) Post() {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
+		c.Data["Form"] = userForm
+
 		c.Layout = "layouts/authentication.html"
 		c.TplName = "registration/new.html"
 
