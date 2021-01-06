@@ -23,20 +23,20 @@ func (c *Registration) Get() {
 }
 
 func (c *Registration) Post() {
-	userForm := forms.RegistrationForm{}
+	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
-	err := c.ParseForm(&userForm)
+	err := c.ParseForm(&registrationForm)
 	if err != nil {
 		logs.Error("Can not parse the form", err)
 	}
 
-	err = userForm.CreateUser()
+	err = registrationForm.CreateUser()
 	if err != nil {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.Data["Form"] = userForm
+		c.Data["Form"] = registrationForm
 
 		c.Layout = "layouts/authentication.html"
 		c.TplName = "registration/new.html"
