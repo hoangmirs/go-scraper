@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  database:
+  database_test:
     image: postgres:12
     container_name: go_scraper_db_test
     environment:
