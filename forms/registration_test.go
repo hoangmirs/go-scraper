@@ -1,4 +1,4 @@
-package forms_test
+package forms
 
 import (
 	"testing"
@@ -6,7 +6,6 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/hoangmirs/go-scraper/bootstrap"
-	"github.com/hoangmirs/go-scraper/forms"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -14,6 +13,7 @@ import (
 
 func TestRegistrationForm(t *testing.T) {
 	bootstrap.SetUp()
+
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Registration Form Suite")
 }
@@ -35,7 +35,7 @@ var _ = Describe("RegistrationForm", func() {
 	Describe("CreateUser", func() {
 		Context("given valid attributes", func() {
 			It("returns nil", func() {
-				registrationForm := forms.RegistrationForm{
+				registrationForm := RegistrationForm{
 					Email:                "hoang@nimblehq.co",
 					Password:             "123456",
 					PasswordConfirmation: "123456",
@@ -48,7 +48,7 @@ var _ = Describe("RegistrationForm", func() {
 		Context("given invalid attributes", func() {
 			Context("given a blank email", func() {
 				It("returns the correct error message", func() {
-					registrationForm := forms.RegistrationForm{
+					registrationForm := RegistrationForm{
 						Email:                "",
 						Password:             "123456",
 						PasswordConfirmation: "123456",
@@ -60,7 +60,7 @@ var _ = Describe("RegistrationForm", func() {
 
 			Context("given an invalid email", func() {
 				It("returns the correct error message", func() {
-					registrationForm := forms.RegistrationForm{
+					registrationForm := RegistrationForm{
 						Email:                "hoang-nimblehq.co",
 						Password:             "123456",
 						PasswordConfirmation: "123456",
@@ -72,7 +72,7 @@ var _ = Describe("RegistrationForm", func() {
 
 			Context("given a blank password", func() {
 				It("returns the correct error message", func() {
-					registrationForm := forms.RegistrationForm{
+					registrationForm := RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "",
 						PasswordConfirmation: "",
@@ -84,7 +84,7 @@ var _ = Describe("RegistrationForm", func() {
 
 			Context("given an invalid password", func() {
 				It("returns the correct error message", func() {
-					registrationForm := forms.RegistrationForm{
+					registrationForm := RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123",
 						PasswordConfirmation: "123",
@@ -96,7 +96,7 @@ var _ = Describe("RegistrationForm", func() {
 
 			Context("given non-matched password and password confirmation", func() {
 				It("returns the correct error message", func() {
-					registrationForm := forms.RegistrationForm{
+					registrationForm := RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
 						PasswordConfirmation: "111111",
