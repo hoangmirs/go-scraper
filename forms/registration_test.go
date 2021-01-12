@@ -56,7 +56,7 @@ var _ = Describe("RegistrationForm", func() {
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
-					registrationForm1.CreateUser()
+					_ = registrationForm1.CreateUser()
 
 					registrationForm2 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",

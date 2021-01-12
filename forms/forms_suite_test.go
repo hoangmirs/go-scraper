@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/hoangmirs/go-scraper/bootstrap"
+
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
