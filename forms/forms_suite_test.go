@@ -9,11 +9,11 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = BeforeSuite(func() {
-	bootstrap.SetUp()
-})
-
 func TestForms(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Forms Suite")
 }
+
+var _ = BeforeSuite(func() {
+	bootstrap.SetUpDB()
+})
