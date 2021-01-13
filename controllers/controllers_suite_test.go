@@ -1,7 +1,6 @@
 package controllers_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/beego/beego/v2/server/web"
@@ -18,7 +17,6 @@ func TestControllers(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	appPath := fmt.Sprintf("%s", helpers.RootDir())
-	web.TestBeegoInit(appPath)
+	web.TestBeegoInit(helpers.RootDir())
 	bootstrap.SetUpDB()
 })
