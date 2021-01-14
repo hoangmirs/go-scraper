@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/hoangmirs/go-scraper/tests"
@@ -14,6 +15,19 @@ import (
 )
 
 var _ = Describe("RegistrationController", func() {
+	AfterEach(func() {
+		o := orm.NewOrm()
+		_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
+		if err != nil {
+			// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
+			// This is only for absolute startup
+			err := orm.RunSyncdb("default", true, true)
+			if err != nil {
+				logs.Error(err)
+			}
+		}
+	})
+
 	Describe("GET", func() {
 		It("returns status OK", func() {
 			request, _ := http.NewRequest("GET", "/register", nil)
