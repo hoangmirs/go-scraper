@@ -37,7 +37,7 @@ func (c *Registration) Post() {
 		flash.Success("Account created successfully")
 		flash.Store(&c.Controller)
 
-		c.Ctx.Redirect(http.StatusFound, "/register")
+		c.Ctx.Redirect(http.StatusFound, "/login")
 	}
 }
 

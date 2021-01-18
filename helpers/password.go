@@ -15,3 +15,12 @@ func HashPassword(password string) (string, error) {
 	hashedPassword, error := bcrypt.GenerateFromPassword(passwordByte, bcrypt.DefaultCost)
 	return string(hashedPassword), error
 }
+
+// ComparePassword compares the hashed password and the password
+func ComparePassword(hashedPassword []byte, password []byte) error {
+	defer clearMemory(hashedPassword)
+	defer clearMemory(password)
+
+	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
+	return err
+}
