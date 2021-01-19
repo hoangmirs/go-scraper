@@ -41,12 +41,12 @@ func (registrationForm *RegistrationForm) CreateUser() error {
 	user := models.User{}
 	user.Email = registrationForm.Email
 
-	hash, err := helpers.EncryptPassword([]byte(registrationForm.Password))
+	encryptedPassword, err := helpers.EncryptPassword(registrationForm.Password)
 	if err != nil {
 		logs.Error("Encryption error:", err)
 	}
 
-	user.EncryptedPassword = string(hash)
+	user.EncryptedPassword = string(encryptedPassword)
 
 	o := orm.NewOrm()
 	_, err = o.Insert(&user)
