@@ -16,6 +16,10 @@ type Registration struct {
 func (c *Registration) Get() {
 	web.ReadFromRequest(&c.Controller)
 
+	if c.CurrentUser != nil {
+		c.Ctx.Redirect(http.StatusFound, "/")
+	}
+
 	c.renderNewRegistrationView()
 }
 

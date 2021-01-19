@@ -13,8 +13,9 @@
     {{ assets_css "/static/css/application.css" }}
   </head>
 
-  <body>
-    <div class="container">{{ .FlashMessage }} {{ .LayoutContent }}</div>
+  <body class="{{.ControllerName}} {{.ActionName}}">
+    {{ .Header }}
+    <main class="app-main">{{ .FlashMessage }}{{ .LayoutContent }}</main>
 
     {{ assets_js "/static/js/application.js" }}
   </body>

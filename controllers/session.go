@@ -21,7 +21,7 @@ func (c *Session) Get() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 	}
 
-	c.renderCreateView()
+	c.renderNewSessionView()
 }
 
 func (c *Session) Post() {
@@ -39,7 +39,9 @@ func (c *Session) Post() {
 		flash.Error(fmt.Sprint(err))
 		flash.Store(&c.Controller)
 
-		c.renderCreateView()
+		c.Data["Form"] = sessionForm
+
+		c.renderNewSessionView()
 	} else {
 		flash.Success("Logging in successfully")
 		flash.Store(&c.Controller)
@@ -49,7 +51,7 @@ func (c *Session) Post() {
 	}
 }
 
-func (c *Session) renderCreateView() {
+func (c *Session) renderNewSessionView() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Layout = "layouts/authentication.html"
 	c.TplName = "session/new.html"

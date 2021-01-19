@@ -14,7 +14,7 @@
   </head>
 
   <body class="{{.ControllerName}} {{.ActionName}}">
-    {{ template "shared/header.html" }}
+    {{ .Header }}
     <main class="app-main">{{ .FlashMessage }}{{ .LayoutContent }}</main>
 
     {{ assets_js "/static/js/application.js" }}

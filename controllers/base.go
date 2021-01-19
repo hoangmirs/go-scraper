@@ -29,9 +29,10 @@ func (c *baseController) Prepare() {
 	// Setting properties
 	helpers.SetControllerAttributes(&c.Controller)
 
-	c.Data[currentUserSessionKey] = c.GetCurrentUser()
+	c.Data["CurrentUser"] = c.GetCurrentUser()
 
 	c.LayoutSections = make(map[string]string)
+	c.LayoutSections["Header"] = "shared/header.html"
 	c.LayoutSections["FlashMessage"] = "shared/flash_message.html"
 
 	app, ok := c.AppController.(NestPreparer)
