@@ -17,10 +17,7 @@ func HashPassword(password string) (string, error) {
 }
 
 // ComparePassword compares the hashed password and the password
-func ComparePassword(hashedPassword []byte, password []byte) error {
-	defer clearMemory(hashedPassword)
-	defer clearMemory(password)
-
-	err := bcrypt.CompareHashAndPassword(hashedPassword, password)
+func ComparePassword(hashedPassword string, password string) error {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 	return err
 }

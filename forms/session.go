@@ -39,7 +39,7 @@ func (form *SessionForm) Authenticate() (*models.User, error) {
 		return nil, err
 	}
 
-	err = helpers.ComparePassword([]byte(user.EncryptedPassword), []byte(form.Password))
+	err = helpers.ComparePassword(user.EncryptedPassword, form.Password)
 
 	return &user, err
 }
