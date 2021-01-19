@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"html/template"
 	"net/http"
 
 	"github.com/hoangmirs/go-scraper/forms"
@@ -17,10 +17,7 @@ type Registration struct {
 func (c *Registration) Get() {
 	web.ReadFromRequest(&c.Controller)
 
-	c.Layout = "layouts/authentication.html"
-	c.TplName = "registration/new.html"
-
-	c.Data["Title"] = "Create a new account"
+	c.renderNewRegistrationView()
 }
 
 func (c *Registration) Post() {
@@ -32,21 +29,26 @@ func (c *Registration) Post() {
 		logs.Error("Can not parse the form", err)
 	}
 
-	err = registrationForm.CreateUser()
-	if err != nil {
-		flash.Error(fmt.Sprint(err))
+	_, formError := registrationForm.CreateUser()
+	if formError != nil {
+		flash.Error(formError.Error())
 		flash.Store(&c.Controller)
 
 		c.Data["Form"] = registrationForm
 
-		c.Layout = "layouts/authentication.html"
-		c.TplName = "registration/new.html"
-
-		c.Data["Title"] = "Create a new account"
+		c.renderNewRegistrationView()
 	} else {
 		flash.Success("Account created successfully")
 		flash.Store(&c.Controller)
 
 		c.Ctx.Redirect(http.StatusFound, "/register")
 	}
+}
+
+func (c *Registration) renderNewRegistrationView() {
+	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
+	c.Layout = "layouts/authentication.html"
+	c.TplName = "registration/new.html"
+
+	c.Data["Title"] = "Create a new account"
 }
