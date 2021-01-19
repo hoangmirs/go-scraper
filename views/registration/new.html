@@ -3,6 +3,8 @@
     <div class="registration-card__content">
       <h1 class="registration-card__title">{{ .Title }}</h1>
       <form class="registration-form form" action="/register" method="POST">
+        {{ .xsrfdata }}
+
         <input
           type="email"
           class="form__input"
