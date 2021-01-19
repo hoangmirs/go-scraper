@@ -17,40 +17,49 @@ type RegistrationForm struct {
 
 func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 	if registrationForm.Password != registrationForm.PasswordConfirmation {
-		// Set error messages of Name by SetError and HasErrors will return true
-		err := v.SetError("Password", "Password confirmation does not match")
-		if err != nil {
-			logs.Error("SetError error:", err)
-		}
+		_ = v.SetError("Password", "Password confirmation does not match")
+	}
+
+	user := models.User{
+		Email: registrationForm.Email,
+	}
+
+	o := orm.NewOrm()
+	_ = o.Read(&user, "Email")
+
+	if user.Id != 0 {
+		_ = v.SetError("Email", "Email already exists")
 	}
 }
 
-func (registrationForm *RegistrationForm) CreateUser() error {
+func (registrationForm *RegistrationForm) CreateUser() (*models.User, error) {
 	valid := validation.Validation{}
 
 	success, err := valid.Valid(registrationForm)
 	if err != nil {
-		logs.Error("Validation error:", err)
+		logs.Error("Validate error:", err)
 	}
 
 	if !success {
 		for _, err := range valid.Errors {
-			return err
+			return nil, err
 		}
 	}
 
-	user := models.User{}
-	user.Email = registrationForm.Email
+	user := &models.User{
+		Email: registrationForm.Email,
+	}
 
 	encryptedPassword, err := helpers.EncryptPassword(registrationForm.Password)
 	if err != nil {
 		logs.Error("Encryption error:", err)
+		return nil, err
 	}
 
 	user.EncryptedPassword = string(encryptedPassword)
 
 	o := orm.NewOrm()
-	_, err = o.Insert(&user)
+	_, err = o.Insert(user)
 
-	return err
+	return user, err
 }

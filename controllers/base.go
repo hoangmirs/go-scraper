@@ -6,6 +6,8 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
+// NestPreparer : check the below docs
+// https://beego.me/docs/mvc/controller/controller.md#custom-logic
 type NestPreparer interface {
 	NestPrepare()
 }
@@ -23,7 +25,8 @@ func (c *baseController) Prepare() {
 	c.LayoutSections = make(map[string]string)
 	c.LayoutSections["FlashMessage"] = "shared/flash_message.html"
 
-	if app, ok := c.AppController.(NestPreparer); ok {
+	app, ok := c.AppController.(NestPreparer)
+	if ok {
 		app.NestPrepare()
 	}
 }
