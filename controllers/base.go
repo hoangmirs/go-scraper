@@ -1,8 +1,9 @@
 package controllers
 
 import (
-	"github.com/beego/beego/v2/server/web"
 	"github.com/hoangmirs/go-scraper/helpers"
+
+	"github.com/beego/beego/v2/server/web"
 )
 
 type NestPreparer interface {

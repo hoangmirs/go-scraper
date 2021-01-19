@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/hoangmirs/go-scraper/forms"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/hoangmirs/go-scraper/forms"
 )
 
 type Registration struct {
