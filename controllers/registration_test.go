@@ -6,26 +6,17 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/beego/beego/v2/client/orm"
+	"github.com/hoangmirs/go-scraper/tests"
+
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
-	"github.com/hoangmirs/go-scraper/tests"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("RegistrationController", func() {
 	AfterEach(func() {
-		o := orm.NewOrm()
-		_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
-		if err != nil {
-			// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-			// This is only for absolute startup
-			err := orm.RunSyncdb("default", true, true)
-			if err != nil {
-				logs.Error(err)
-			}
-		}
+		tests.ClearUserTable()
 	})
 
 	Describe("GET", func() {
@@ -96,7 +87,7 @@ var _ = Describe("RegistrationController", func() {
 				web.BeeApp.Handlers.ServeHTTP(response, request)
 				flashMessage := tests.GetFlash(response.Result().Cookies())
 
-				Expect(flashMessage.Data["error"]).To(Equal("Email Can not be empty"))
+				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
 			})
 		})
 	})

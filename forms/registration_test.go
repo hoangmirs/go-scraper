@@ -1,9 +1,8 @@
 package forms_test
 
 import (
-	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/hoangmirs/go-scraper/forms"
+	"github.com/hoangmirs/go-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,16 +10,7 @@ import (
 
 var _ = Describe("RegistrationForm", func() {
 	AfterEach(func() {
-		o := orm.NewOrm()
-		_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
-		if err != nil {
-			// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-			// This is only for absolute startup
-			err := orm.RunSyncdb("default", true, true)
-			if err != nil {
-				logs.Error(err)
-			}
-		}
+		tests.ClearUserTable()
 	})
 
 	Describe("CreateUser", func() {
@@ -31,7 +21,7 @@ var _ = Describe("RegistrationForm", func() {
 					Password:             "123456",
 					PasswordConfirmation: "123456",
 				}
-				err := registrationForm.CreateUser()
+				_, err := registrationForm.CreateUser()
 				Expect(err).To(BeNil())
 			})
 		})
@@ -44,19 +34,19 @@ var _ = Describe("RegistrationForm", func() {
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
-					err := registrationForm.CreateUser()
-					Expect(err.Error()).To(Equal("Email Can not be empty"))
+					_, err := registrationForm.CreateUser()
+					Expect(err.Error()).To(Equal("Email can not be empty"))
 				})
 			})
 
 			Context("given an existing email", func() {
-				It("returns nil", func() {
+				It("returns nil error", func() {
 					registrationForm1 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
-					_ = registrationForm1.CreateUser()
+					_, _ = registrationForm1.CreateUser()
 
 					registrationForm2 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
@@ -64,8 +54,8 @@ var _ = Describe("RegistrationForm", func() {
 						PasswordConfirmation: "123456",
 					}
 
-					err := registrationForm2.CreateUser()
-					Expect(err.Error()).To(Equal("pq: duplicate key value violates unique constraint \"user_email_key\""))
+					_, err := registrationForm2.CreateUser()
+					Expect(err.Error()).To(Equal("Email already exists"))
 				})
 			})
 
@@ -76,8 +66,8 @@ var _ = Describe("RegistrationForm", func() {
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
-					err := registrationForm.CreateUser()
-					Expect(err.Error()).To(Equal("Email Must be a valid email address"))
+					_, err := registrationForm.CreateUser()
+					Expect(err.Error()).To(Equal("Email must be a valid email address"))
 				})
 			})
 
@@ -88,20 +78,20 @@ var _ = Describe("RegistrationForm", func() {
 						Password:             "",
 						PasswordConfirmation: "",
 					}
-					err := registrationForm.CreateUser()
-					Expect(err.Error()).To(Equal("Password Can not be empty"))
+					_, err := registrationForm.CreateUser()
+					Expect(err.Error()).To(Equal("Password can not be empty"))
 				})
 			})
 
-			Context("given an invalid password", func() {
+			Context("given a short password", func() {
 				It("returns the correct error message", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123",
 						PasswordConfirmation: "123",
 					}
-					err := registrationForm.CreateUser()
-					Expect(err.Error()).To(Equal("Password Minimum size is 6"))
+					_, err := registrationForm.CreateUser()
+					Expect(err.Error()).To(Equal("Password minimum size is 6"))
 				})
 			})
 
@@ -112,7 +102,7 @@ var _ = Describe("RegistrationForm", func() {
 						Password:             "123456",
 						PasswordConfirmation: "111111",
 					}
-					err := registrationForm.CreateUser()
+					_, err := registrationForm.CreateUser()
 					Expect(err.Error()).To(Equal("Password confirmation does not match"))
 				})
 			})
