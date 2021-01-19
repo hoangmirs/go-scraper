@@ -10,7 +10,7 @@ var _ = Describe("Password", func() {
 	Describe("EncryptPassword", func() {
 		Context("given a string", func() {
 			It("returns the encrypted string", func() {
-				Expect(helpers.EncryptPassword([]byte("hello password"))).To(ContainSubstring("$"))
+				Expect(helpers.EncryptPassword("hello password")).To(ContainSubstring("$"))
 			})
 		})
 	})
