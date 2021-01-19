@@ -24,10 +24,10 @@ func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 	}
 }
 
-func (form RegistrationForm) CreateUser() error {
+func (registrationForm *RegistrationForm) CreateUser() error {
 	valid := validation.Validation{}
 
-	success, err := valid.Valid(&form)
+	success, err := valid.Valid(registrationForm)
 	if err != nil {
 		logs.Error("Validation error:", err)
 	}
@@ -39,9 +39,9 @@ func (form RegistrationForm) CreateUser() error {
 	}
 
 	user := models.User{}
-	user.Email = form.Email
+	user.Email = registrationForm.Email
 
-	hash, err := helpers.EncryptPassword([]byte(form.Password))
+	hash, err := helpers.EncryptPassword([]byte(registrationForm.Password))
 	if err != nil {
 		logs.Error("Encryption error:", err)
 	}
