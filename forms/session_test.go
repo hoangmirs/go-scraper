@@ -32,7 +32,7 @@ var _ = Describe("SessionForm", func() {
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
-					_ = registrationForm.CreateUser()
+					_, _ = registrationForm.CreateUser()
 
 					sessionForm := forms.SessionForm{
 						Email:    "hoang@nimblehq.co",
@@ -69,7 +69,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email Can not be empty"))
+					Expect(err.Error()).To(Equal("Email can not be empty"))
 				})
 
 				It("returns the error", func() {
@@ -80,7 +80,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email Must be a valid email address"))
+					Expect(err.Error()).To(Equal("Email must be a valid email address"))
 				})
 			})
 
@@ -93,7 +93,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password Can not be empty"))
+					Expect(err.Error()).To(Equal("Password can not be empty"))
 				})
 
 				It("returns the error", func() {
@@ -104,7 +104,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password Minimum size is 6"))
+					Expect(err.Error()).To(Equal("Password minimum size is 6"))
 				})
 			})
 		})
