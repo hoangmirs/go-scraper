@@ -64,7 +64,7 @@
       @apply max-w-xs bg-gray-800 rounded-full flex items-center text-sm;
 
       &:focus {
-        @apply outline-none ring-2 ring-offset-2 ring-offset-gray-800 ring-white;
+        @apply outline-none;
       }
 
       img {
@@ -76,6 +76,10 @@
   .profile-menu {
     @apply hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5;
 
+    &--show {
+      @apply block;
+    }
+
     &__item {
       @apply block px-4 py-2 text-sm text-gray-700;
 
@@ -83,9 +87,5 @@
         @apply bg-gray-100;
       }
     }
-  }
-
-  .profile-email {
-    @apply text-white;
   }
 }
