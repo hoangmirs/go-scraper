@@ -15,13 +15,14 @@ var _ = Describe("RegistrationForm", func() {
 
 	Describe("CreateUser", func() {
 		Context("given valid attributes", func() {
-			It("returns nil", func() {
+			It("returns a user and nil error", func() {
 				registrationForm := forms.RegistrationForm{
 					Email:                "hoang@nimblehq.co",
 					Password:             "123456",
 					PasswordConfirmation: "123456",
 				}
-				_, err := registrationForm.CreateUser()
+				user, err := registrationForm.CreateUser()
+				Expect(user.Id).NotTo(BeNil())
 				Expect(err).To(BeNil())
 			})
 		})
@@ -40,7 +41,7 @@ var _ = Describe("RegistrationForm", func() {
 			})
 
 			Context("given an existing email", func() {
-				It("returns nil error", func() {
+				It("returns error", func() {
 					registrationForm1 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
