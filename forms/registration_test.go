@@ -95,7 +95,7 @@ var _ = Describe("RegistrationForm", func() {
 				})
 			})
 
-			Context("given non-matched password and password confirmation", func() {
+			Context("given password and password confirmation do not match", func() {
 				It("returns the correct error message", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
@@ -103,7 +103,7 @@ var _ = Describe("RegistrationForm", func() {
 						PasswordConfirmation: "111111",
 					}
 					_, err := registrationForm.CreateUser()
-					Expect(err.Error()).To(Equal("Password confirmation does not match"))
+					Expect(err.Error()).To(Equal("Password does not match password confirmation"))
 				})
 			})
 		})
