@@ -1,9 +1,8 @@
 package forms_test
 
 import (
-	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/hoangmirs/go-scraper/forms"
+	"github.com/hoangmirs/go-scraper/tests"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,16 +10,7 @@ import (
 
 var _ = Describe("SessionForm", func() {
 	AfterEach(func() {
-		o := orm.NewOrm()
-		_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
-		if err != nil {
-			// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-			// This is only for absolute startup
-			err := orm.RunSyncdb("default", true, true)
-			if err != nil {
-				logs.Error(err)
-			}
-		}
+		tests.ClearUserTable()
 	})
 
 	Describe("Authenticate", func() {

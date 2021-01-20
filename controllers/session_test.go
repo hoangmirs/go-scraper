@@ -9,8 +9,6 @@ import (
 	"github.com/hoangmirs/go-scraper/forms"
 	"github.com/hoangmirs/go-scraper/tests"
 
-	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -18,16 +16,7 @@ import (
 
 var _ = Describe("SessionController", func() {
 	AfterEach(func() {
-		o := orm.NewOrm()
-		_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
-		if err != nil {
-			// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-			// This is only for absolute startup
-			err := orm.RunSyncdb("default", true, true)
-			if err != nil {
-				logs.Error(err)
-			}
-		}
+		tests.ClearUserTable()
 	})
 
 	Describe("GET", func() {
@@ -91,8 +80,8 @@ var _ = Describe("SessionController", func() {
 
 			It("returns error flash message", func() {
 				form := url.Values{
-					"email":                 {""},
-					"password":              {""},
+					"email":    {""},
+					"password": {""},
 				}
 				body := strings.NewReader(form.Encode())
 				request, _ := http.NewRequest("POST", "/login", body)
