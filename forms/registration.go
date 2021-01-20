@@ -17,7 +17,7 @@ type RegistrationForm struct {
 
 func (registrationForm *RegistrationForm) Valid(v *validation.Validation) {
 	if registrationForm.Password != registrationForm.PasswordConfirmation {
-		_ = v.SetError("Password", "Password confirmation does not match")
+		_ = v.SetError("Password", "Password does not match password confirmation")
 	}
 
 	user := models.User{
