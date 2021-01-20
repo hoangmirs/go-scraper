@@ -51,6 +51,16 @@ func (c *Session) Post() {
 	}
 }
 
+func (c *Session) Delete() {
+	c.SetCurrentUser(nil)
+
+	flash := web.NewFlash()
+	flash.Success("Logging out successfully")
+	flash.Store(&c.Controller)
+
+	c.Ctx.Redirect(http.StatusFound, "/")
+}
+
 func (c *Session) renderNewSessionView() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Layout = "layouts/authentication.html"
