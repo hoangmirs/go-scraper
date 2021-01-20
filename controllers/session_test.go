@@ -56,7 +56,7 @@ var _ = Describe("SessionController", func() {
 					Password:             "123456",
 					PasswordConfirmation: "123456",
 				}
-				_ = registrationForm.CreateUser()
+				_, _ = registrationForm.CreateUser()
 
 				form := url.Values{
 					"email":    {"hoang@nimblehq.co"},
@@ -101,7 +101,7 @@ var _ = Describe("SessionController", func() {
 				web.BeeApp.Handlers.ServeHTTP(response, request)
 				flashMessage := tests.GetFlash(response.Result().Cookies())
 
-				Expect(flashMessage.Data["error"]).To(Equal("Email Can not be empty"))
+				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
 			})
 		})
 	})
