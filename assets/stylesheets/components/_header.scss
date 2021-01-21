@@ -3,11 +3,15 @@
     @apply bg-gray-800;
 
     &__main {
-      @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-    }
+      @apply max-w-7xl mx-auto px-4;
 
-    &__mobile {
-      @apply hidden md:hidden;
+      @screen sm {
+        @apply px-6;
+      }
+
+      @screen lg {
+        @apply px-8;
+      }
     }
   }
 
@@ -29,7 +33,11 @@
     }
 
     &__right {
-      @apply ml-4 flex items-center md:ml-6;
+      @apply ml-4 flex items-center;
+
+      @screen md {
+        @apply ml-6;
+      }
     }
   }
 
@@ -37,7 +45,11 @@
     @apply ml-10 flex items-baseline space-x-4;
 
     &__item {
-      @apply text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium;
+      @apply text-gray-300 px-3 py-2 rounded-md text-sm font-medium;
+
+      &:hover {
+        @apply bg-gray-700 text-white;
+      }
 
       &--active {
         @apply bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium;
@@ -49,7 +61,11 @@
     @apply ml-3 relative;
 
     &__button {
-      @apply max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+      @apply max-w-xs bg-gray-800 rounded-full flex items-center text-sm;
+
+      &:focus {
+        @apply outline-none ring-2 ring-offset-2 ring-offset-gray-800 ring-white;
+      }
 
       img {
         @apply h-8 w-8 rounded-full;
@@ -61,7 +77,11 @@
     @apply hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5;
 
     &__item {
-      @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100;
+      @apply block px-4 py-2 text-sm text-gray-700;
+
+      &:hover {
+        @apply bg-gray-100;
+      }
     }
   }
 }
