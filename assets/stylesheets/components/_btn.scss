@@ -1,5 +1,13 @@
 .btn {
-  @apply text-center py-3 rounded bg-green-500 text-white hover:bg-green-700 focus:outline-none my-1;
+  @apply text-center py-3 rounded bg-green-500 text-white my-1;
+
+  &:hover {
+    @apply bg-green-700;
+  }
+
+  &:focus {
+    @apply outline-none;
+  }
 
   &--full {
     @apply w-full;
