@@ -1,6 +1,5 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -12,14 +11,6 @@ module.exports = {
   plugins: [
     // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
     new CleanWebpackPlugin(),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, "../assets/images"),
-          to: path.resolve(__dirname, "../static/images"),
-        },
-      ],
-    }),
   ],
   output: {
     filename: "js/[name].js",
