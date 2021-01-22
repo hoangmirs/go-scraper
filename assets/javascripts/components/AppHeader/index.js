@@ -1,4 +1,4 @@
-export const DEFAULT_SELECTOR = "header.header";
+export const DEFAULT_SELECTOR = "header.app-header";
 const SELECTORS = {
   profileMenu: ".profile-menu",
   profileMenuButton: ".profile-icon__button",
@@ -8,7 +8,7 @@ const CLASSES = {
   profileMenuShow: "profile-menu--show",
 };
 
-class Header {
+class AppHeader {
   constructor(elementRef) {
     this.elementRef = elementRef;
     this.profileMenu = this.elementRef.querySelector(SELECTORS.profileMenu);
@@ -41,4 +41,4 @@ class Header {
   }
 }
 
-export default Header;
+export default AppHeader;
