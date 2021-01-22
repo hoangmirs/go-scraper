@@ -20,12 +20,17 @@
         <div class="navigation-menu__right">
           <!-- Profile dropdown -->
           {{ if .CurrentUser }}
-          <div class="profile-icon">
+          <div
+            class="profile-icon"
+            data-controller="header"
+            data-header-profile-menu-show-class="profile-menu--show"
+          >
             <div>
               <button
                 class="profile-icon__button"
                 id="user-menu"
                 aria-haspopup="true"
+                data-action="header#toggleProfileMenu"
               >
                 <span class="sr-only">Open profile menu</span>
                 <img
@@ -39,6 +44,7 @@
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="user-menu"
+              data-header-target="profileMenu"
             >
               <a href="/#" class="profile-menu__item" role="menuitem"
                 >{{ .CurrentUser.Email }}</a
