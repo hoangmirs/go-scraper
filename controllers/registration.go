@@ -24,10 +24,7 @@ func (c *Registration) Post() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
-	err := c.ParseForm(&registrationForm)
-	if err != nil {
-		logs.Error("Can not parse the form", err)
-	}
+	_ = c.ParseForm(&registrationForm)
 
 	_, formError := registrationForm.CreateUser()
 	if formError != nil {
