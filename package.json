@@ -32,6 +32,8 @@
     "postcss-loader": "4.1.0",
     "postcss-preset-env": "6.7.0",
     "sass-loader": "10.1.0",
+    "stimulus": "2.0.0",
+    "stimulus-use": "0.22.1",
     "style-loader": "2.0.0",
     "tailwindcss": "2.0.2",
     "webpack": "5.10.0",
