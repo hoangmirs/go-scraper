@@ -5,7 +5,6 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/hoangmirs/go-scraper/forms"
 )
@@ -28,11 +27,7 @@ func (c *Session) Post() {
 	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 
-	err := c.ParseForm(&sessionForm)
-
-	if err != nil {
-		logs.Error("Can not parse the form", err)
-	}
+	_ = c.ParseForm(&sessionForm)
 
 	user, err := sessionForm.Authenticate()
 	if err != nil {
