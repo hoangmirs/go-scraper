@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strings"
 
+	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
 	"github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -20,20 +21,12 @@ var _ = Describe("RegistrationController", func() {
 	})
 
 	Describe("GET", func() {
-		It("returns status OK", func() {
+		It("renders registration#get template", func() {
 			request, _ := http.NewRequest("GET", "/register", nil)
 			response := httptest.NewRecorder()
 			web.BeeApp.Handlers.ServeHTTP(response, request)
 
-			Expect(response.Code).To(Equal(http.StatusOK))
-		})
-
-		It("has body data", func() {
-			request, _ := http.NewRequest("GET", "/register", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
-
-			Expect(response.Body.Len()).To(BeNumerically(">", 0))
+			Expect(response).To(RenderTemplate("registration#get"))
 		})
 	})
 
