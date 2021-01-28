@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html class="layout-default">
+<html class="layout-authentication">
   <head>
     <title>Go Scraper</title>
     <meta charset="utf-8" />
@@ -13,8 +13,9 @@
     {{ assets_css "/static/css/application.css" }}
   </head>
 
-  <body>
-    <div class="container">{{ .FlashMessage }} {{ .LayoutContent }}</div>
+  <body class="{{.ControllerName}} {{.ActionName}}">
+    {{ template "shared/header.html" }}
+    <main class="app-main">{{ .FlashMessage }}{{ .LayoutContent }}</main>
 
     {{ assets_js "/static/js/application.js" }}
   </body>

@@ -3,6 +3,7 @@
 ## Prerequisite
 
 - [Go - 1.15](https://golang.org/doc/go1.15)
+- [Node - 14.15.4](https://nodejs.org/en/)
 - Docker: check for the [installation guide](https://www.docker.com/products/docker-desktop) for your platform
 
 ## Usage
@@ -35,7 +36,6 @@ The application will be run on http://localhost:8080
 #### Run tests
 
 ```sh
-  make env-setup
   make test
 ```
 
