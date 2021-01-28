@@ -3,8 +3,6 @@ package bootstrap
 import (
 	"fmt"
 
-	_ "github.com/hoangmirs/go-scraper/models" // Models
-
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"

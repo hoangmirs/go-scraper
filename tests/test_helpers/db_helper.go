@@ -1,23 +1,33 @@
 package test_helpers
 
 import (
+	"fmt"
+
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func ClearUserTable() {
+func TruncateTables(tables ...string) {
 	o := orm.NewOrm()
-	_, err := o.Raw("TRUNCATE TABLE \"user\"").Exec()
+	rawSQL := ""
+
+	for _, table := range tables {
+		rawSQL += fmt.Sprintf("TRUNCATE TABLE \"%s\";", table)
+	}
+
+	if rawSQL == "" {
+		resetDB()
+		return
+	}
+
+	_, err := o.Raw(rawSQL).Exec()
 	if err != nil {
-		// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-		// This is only for absolute startup
-		ResetDB()
+		// If tables can't be truncated, rebuild all tables
+		resetDB()
 	}
 }
 
-func ResetDB() {
-	// If table can't be truncated, rebuild all tables (CAUTION: Star and Message db are lost!)
-	// This is only for absolute startup
+func resetDB() {
 	err := orm.RunSyncdb("default", true, true)
 	if err != nil {
 		logs.Error(err)
