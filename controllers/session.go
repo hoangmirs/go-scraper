@@ -5,8 +5,9 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/beego/beego/v2/server/web"
 	"github.com/hoangmirs/go-scraper/forms"
+
+	"github.com/beego/beego/v2/server/web"
 )
 
 type Session struct {

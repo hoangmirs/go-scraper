@@ -3,7 +3,8 @@
   .session-wrapper {
     @apply flex flex-col;
   }
-  .session-card {
+
+  .card-session {
     @apply max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2;
 
     &__title {
@@ -19,7 +20,7 @@
     }
   }
 
-  .session-form {
+  .form-session {
     &__terms-privacy {
       @apply text-center text-sm text-gray-700 mt-4;
     }
