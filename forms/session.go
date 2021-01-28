@@ -1,11 +1,12 @@
 package forms
 
 import (
+	"github.com/hoangmirs/go-scraper/helpers"
+	"github.com/hoangmirs/go-scraper/models"
+
 	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
-	"github.com/hoangmirs/go-scraper/helpers"
-	"github.com/hoangmirs/go-scraper/models"
 )
 
 type SessionForm struct {

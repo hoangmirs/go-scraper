@@ -1,8 +1,8 @@
 <div class="session-wrapper">
-  <div class="session-card">
-    <div class="session-card__content">
-      <h1 class="session-card__title">{{ .Title }}</h1>
-      <form class="session-form form" action="/login" method="POST">
+  <div class="card-session">
+    <div class="card-session__content">
+      <h1 class="card-session__title">{{ .Title }}</h1>
+      <form class="form-session form" action="/login" method="POST">
         {{ .xsrfdata }}
 
         <input
@@ -26,7 +26,7 @@
       </form>
     </div>
 
-    <div class="session-card__footer">
+    <div class="card-session__footer">
       Don’t have an account?
       <a class="custom-link" href="/register">Create a new account</a>.
     </div>
