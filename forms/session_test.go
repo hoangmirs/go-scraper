@@ -2,7 +2,7 @@ package forms_test
 
 import (
 	"github.com/hoangmirs/go-scraper/forms"
-	"github.com/hoangmirs/go-scraper/tests"
+	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -10,7 +10,7 @@ import (
 
 var _ = Describe("SessionForm", func() {
 	AfterEach(func() {
-		tests.ClearUserTable()
+		TruncateTables("user")
 	})
 
 	Describe("Authenticate", func() {

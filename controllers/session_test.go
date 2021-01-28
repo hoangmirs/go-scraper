@@ -2,38 +2,33 @@ package controllers_test
 
 import (
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"strings"
 
 	"github.com/hoangmirs/go-scraper/forms"
-	"github.com/hoangmirs/go-scraper/tests"
+	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
+	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
-	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("SessionController", func() {
 	AfterEach(func() {
-		tests.ClearUserTable()
+		TruncateTables("user")
 	})
 
 	Describe("GET", func() {
 		It("returns status OK", func() {
-			request, _ := http.NewRequest("GET", "/login", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
+			response := MakeRequest("GET", "/login", nil)
 
 			Expect(response.Code).To(Equal(http.StatusOK))
 		})
 
 		It("has body data", func() {
-			request, _ := http.NewRequest("GET", "/login", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
+			response := MakeRequest("GET", "/login", nil)
 
-			Expect(response.Body.Len()).To(BeNumerically(">", 0))
+			Expect(response).To(RenderTemplate("session#get"))
 		})
 	})
 
@@ -52,12 +47,7 @@ var _ = Describe("SessionController", func() {
 					"password": {"123456"},
 				}
 				body := strings.NewReader(form.Encode())
-
-				request, _ := http.NewRequest("POST", "/login", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
+				response := MakeRequest("POST", "/login", body)
 
 				Expect(response.Code).To(Equal(http.StatusFound))
 			})
@@ -70,10 +60,7 @@ var _ = Describe("SessionController", func() {
 					"password": {""},
 				}
 				body := strings.NewReader(form.Encode())
-				request, _ := http.NewRequest("POST", "/login", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
+				response := MakeRequest("POST", "/login", body)
 
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
@@ -84,11 +71,9 @@ var _ = Describe("SessionController", func() {
 					"password": {""},
 				}
 				body := strings.NewReader(form.Encode())
-				request, _ := http.NewRequest("POST", "/login", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
-				flashMessage := tests.GetFlash(response.Result().Cookies())
+				response := MakeRequest("POST", "/login", body)
+
+				flashMessage := GetFlash(response.Result().Cookies())
 
 				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
 			})
