@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hoangmirs/go-scraper/tests"
+	"github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -16,7 +16,7 @@ import (
 
 var _ = Describe("RegistrationController", func() {
 	AfterEach(func() {
-		tests.ClearUserTable()
+		test_helpers.ClearUserTable()
 	})
 
 	Describe("GET", func() {
@@ -85,7 +85,7 @@ var _ = Describe("RegistrationController", func() {
 				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 				response := httptest.NewRecorder()
 				web.BeeApp.Handlers.ServeHTTP(response, request)
-				flashMessage := tests.GetFlash(response.Result().Cookies())
+				flashMessage := test_helpers.GetFlash(response.Result().Cookies())
 
 				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
 			})

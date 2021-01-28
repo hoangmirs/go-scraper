@@ -1,4 +1,4 @@
-package tests
+package test_helpers
 
 import (
 	"github.com/beego/beego/v2/client/orm"
