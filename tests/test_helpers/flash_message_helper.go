@@ -11,14 +11,14 @@ import (
 func GetFlash(cookies []*http.Cookie) *web.FlashData {
 	for _, cookie := range cookies {
 		if cookie.Name == "BEEGO_FLASH" {
-			return DecodeFlash(cookie)
+			return decodeFlash(cookie)
 		}
 	}
 
 	return nil
 }
 
-func DecodeFlash(cookie *http.Cookie) *web.FlashData {
+func decodeFlash(cookie *http.Cookie) *web.FlashData {
 	flash := web.NewFlash()
 	if cookie != nil {
 		v, _ := url.QueryUnescape(cookie.Value)
