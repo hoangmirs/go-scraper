@@ -2,29 +2,24 @@ package controllers_test
 
 import (
 	"net/http"
-	"net/http/httptest"
 	"net/url"
 	"strings"
 
 	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
-	"github.com/hoangmirs/go-scraper/tests/test_helpers"
+	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
-	"github.com/beego/beego/v2/core/logs"
-	"github.com/beego/beego/v2/server/web"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("RegistrationController", func() {
 	AfterEach(func() {
-		test_helpers.ClearUserTable()
+		TruncateTables("user")
 	})
 
 	Describe("GET", func() {
 		It("renders registration#get template", func() {
-			request, _ := http.NewRequest("GET", "/register", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
+			response := MakeRequest("GET", "/register", nil)
 
 			Expect(response).To(RenderTemplate("registration#get"))
 		})
@@ -39,14 +34,8 @@ var _ = Describe("RegistrationController", func() {
 					"password_confirmation": {"123456"},
 				}
 				body := strings.NewReader(form.Encode())
+				response := MakeRequest("POST", "/register", body)
 
-				request, _ := http.NewRequest("POST", "/register", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
-
-				logs.Trace("Code[%d]\n%s", response.Code, response.Body.String())
 				Expect(response.Code).To(Equal(http.StatusFound))
 			})
 		})
@@ -59,10 +48,7 @@ var _ = Describe("RegistrationController", func() {
 					"password_confirmation": {""},
 				}
 				body := strings.NewReader(form.Encode())
-				request, _ := http.NewRequest("POST", "/register", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
+				response := MakeRequest("POST", "/register", body)
 
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
@@ -74,11 +60,9 @@ var _ = Describe("RegistrationController", func() {
 					"password_confirmation": {""},
 				}
 				body := strings.NewReader(form.Encode())
-				request, _ := http.NewRequest("POST", "/register", body)
-				request.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-				response := httptest.NewRecorder()
-				web.BeeApp.Handlers.ServeHTTP(response, request)
-				flashMessage := test_helpers.GetFlash(response.Result().Cookies())
+				response := MakeRequest("POST", "/register", body)
+
+				flashMessage := GetFlash(response.Result().Cookies())
 
 				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
 			})
