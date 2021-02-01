@@ -17,6 +17,11 @@ type Session struct {
 
 func (c *Session) NestPrepare() {
 	c.requireGuestUser = true
+
+	// For logging out only
+	if c.Ctx.Input.GetData("ActionName") == "delete" {
+		c.requireGuestUser = false
+	}
 }
 
 func (c *Session) Get() {

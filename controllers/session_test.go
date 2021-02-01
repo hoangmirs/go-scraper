@@ -83,18 +83,14 @@ var _ = Describe("SessionController", func() {
 
 	Describe("DELETE", func() {
 		It("returns status Found", func() {
-			request, _ := http.NewRequest("GET", "/logout", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
+			response := MakeRequest("GET", "/logout", nil)
 
 			Expect(response.Code).To(Equal(http.StatusFound))
 		})
 
 		It("returns error flash message", func() {
-			request, _ := http.NewRequest("GET", "/logout", nil)
-			response := httptest.NewRecorder()
-			web.BeeApp.Handlers.ServeHTTP(response, request)
-			flashMessage := tests.GetFlash(response.Result().Cookies())
+			response := MakeRequest("GET", "/logout", nil)
+			flashMessage := GetFlash(response.Result().Cookies())
 
 			Expect(flashMessage.Data["success"]).To(Equal("Logging out successfully"))
 		})
