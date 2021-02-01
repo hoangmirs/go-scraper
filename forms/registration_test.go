@@ -45,6 +45,7 @@ var _ = Describe("RegistrationForm", func() {
 
 			Context("given an existing email", func() {
 				It("returns the correct error message and does NOT create new user", func() {
+					// TODO : Using fabricator
 					registrationForm1 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
