@@ -7,10 +7,7 @@ type MainController struct {
 }
 
 func (c *MainController) NestPrepare() {
-	if c.CurrentUser == nil {
-		c.Ctx.Redirect(302, "/login")
-		return
-	}
+	c.requireAuthenticatedUser = true
 }
 
 func (c *MainController) Get() {
