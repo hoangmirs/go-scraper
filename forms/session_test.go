@@ -17,6 +17,7 @@ var _ = Describe("SessionForm", func() {
 		Context("given valid attributes", func() {
 			Context("given an existing user", func() {
 				It("returns the user without error", func() {
+					// TODO : Using fabricator
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
@@ -44,7 +45,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err).NotTo(BeNil())
+					Expect(err.Error()).To(Equal("Incorrect username or password"))
 				})
 			})
 		})
@@ -95,6 +96,27 @@ var _ = Describe("SessionForm", func() {
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
 					Expect(err.Error()).To(Equal("Password minimum size is 6"))
+				})
+			})
+
+			Context("given wrong password", func() {
+				It("returns the error", func() {
+					// TODO : Using fabricator
+					registrationForm := forms.RegistrationForm{
+						Email:                "hoang@nimblehq.co",
+						Password:             "123456",
+						PasswordConfirmation: "123456",
+					}
+					_, _ = registrationForm.CreateUser()
+
+					sessionForm := forms.SessionForm{
+						Email:    "hoang@nimblehq.co",
+						Password: "wrongpass",
+					}
+
+					user, err := sessionForm.Authenticate()
+					Expect(user).To(BeNil())
+					Expect(err.Error()).To(Equal("Incorrect username or password"))
 				})
 			})
 		})

@@ -1,6 +1,8 @@
 package forms
 
 import (
+	"errors"
+
 	"github.com/hoangmirs/go-scraper/helpers"
 	"github.com/hoangmirs/go-scraper/models"
 
@@ -36,11 +38,16 @@ func (form *SessionForm) Authenticate() (*models.User, error) {
 	o := orm.NewOrm()
 	err = o.Read(&user, "Email")
 
-	if err != nil {
+	if err == orm.ErrNoRows {
+		return nil, errors.New("Incorrect username or password")
+	} else if err != nil {
 		return nil, err
 	}
 
 	err = helpers.ComparePassword(user.EncryptedPassword, form.Password)
+	if err != nil {
+		return nil, errors.New("Incorrect username or password")
+	}
 
-	return &user, err
+	return &user, nil
 }

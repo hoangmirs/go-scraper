@@ -7,6 +7,7 @@ import (
 	"github.com/hoangmirs/go-scraper/helpers"
 	"github.com/hoangmirs/go-scraper/models"
 
+	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
@@ -54,9 +55,7 @@ func (c *baseController) Prepare() {
 }
 
 func (c *baseController) SetCurrentUser(user *models.User) {
-	basicUserInfo := &models.User{Base: models.Base{Id: user.Id}, Email: user.Email}
-
-	err := c.SetSession(currentUserSessionKey, basicUserInfo)
+	err := c.SetSession(currentUserSessionKey, user.Id)
 	if err != nil {
 		logs.Error("Cannot set session:", err)
 	}
@@ -69,6 +68,19 @@ func (c *baseController) GetCurrentUser() *models.User {
 		return nil
 	}
 
-	c.CurrentUser = c.GetSession(currentUserSessionKey).(*models.User)
+	userID := c.GetSession(currentUserSessionKey).(uint)
+
+	user := &models.User{
+		Base: models.Base{Id: userID},
+	}
+
+	o := orm.NewOrm()
+	err := o.Read(user)
+	if err == orm.ErrNoRows {
+		return nil
+	}
+
+	c.SetCurrentUser(user)
+
 	return c.CurrentUser
 }
