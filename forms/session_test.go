@@ -30,7 +30,7 @@ var _ = Describe("SessionForm", func() {
 					}
 
 					user, err := sessionForm.Authenticate()
-					Expect(user).NotTo(BeNil())
+					Expect(user.Id).To(BeNumerically(">", 0))
 					Expect(err).To(BeNil())
 				})
 			})
