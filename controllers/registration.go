@@ -13,12 +13,12 @@ type Registration struct {
 	baseController
 }
 
+func (c *Registration) NestPrepare() {
+	c.requireGuestUser = true
+}
+
 func (c *Registration) Get() {
 	web.ReadFromRequest(&c.Controller)
-
-	if c.CurrentUser != nil {
-		c.Ctx.Redirect(http.StatusFound, "/")
-	}
 
 	c.renderNewRegistrationView()
 }

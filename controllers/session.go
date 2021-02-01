@@ -14,12 +14,12 @@ type Session struct {
 	baseController
 }
 
+func (c *Session) NestPrepare() {
+	c.requireGuestUser = true
+}
+
 func (c *Session) Get() {
 	web.ReadFromRequest(&c.Controller)
-
-	if c.CurrentUser != nil {
-		c.Ctx.Redirect(http.StatusFound, "/")
-	}
 
 	c.renderNewSessionView()
 }

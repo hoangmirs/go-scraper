@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"net/http"
+	"reflect"
+
 	"github.com/hoangmirs/go-scraper/helpers"
 	"github.com/hoangmirs/go-scraper/models"
 
-	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
@@ -13,7 +15,9 @@ import (
 type baseController struct {
 	web.Controller
 
-	CurrentUser *models.User
+	CurrentUser              *models.User
+	requireAuthenticatedUser bool
+	requireGuestUser         bool
 }
 
 // NestPreparer : check the below docs
@@ -39,10 +43,20 @@ func (c *baseController) Prepare() {
 	if ok {
 		app.NestPrepare()
 	}
+
+	if c.requireGuestUser && !reflect.ValueOf(c.Data["CurrentUser"]).IsZero() {
+		c.Ctx.Redirect(http.StatusFound, "/")
+	}
+
+	if c.requireAuthenticatedUser && reflect.ValueOf(c.Data["CurrentUser"]).IsZero() {
+		c.Ctx.Redirect(http.StatusFound, "/login")
+	}
 }
 
 func (c *baseController) SetCurrentUser(user *models.User) {
-	err := c.SetSession(currentUserSessionKey, user.Id)
+	basicUserInfo := &models.User{Base: models.Base{Id: user.Id}, Email: user.Email}
+
+	err := c.SetSession(currentUserSessionKey, basicUserInfo)
 	if err != nil {
 		logs.Error("Cannot set session:", err)
 	}
@@ -55,15 +69,6 @@ func (c *baseController) GetCurrentUser() *models.User {
 		return nil
 	}
 
-	userID := c.GetSession(currentUserSessionKey).(uint)
-	user := &models.User{Base: models.Base{Id: userID}}
-	o := orm.NewOrm()
-	err := o.Read(user)
-
-	if err != nil {
-		return nil
-	}
-
-	c.CurrentUser = user
+	c.CurrentUser = c.GetSession(currentUserSessionKey).(*models.User)
 	return c.CurrentUser
 }
