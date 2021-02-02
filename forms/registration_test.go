@@ -30,7 +30,7 @@ var _ = Describe("RegistrationForm", func() {
 
 		Context("given invalid attributes", func() {
 			Context("given a blank email", func() {
-				It("returns the correct error message and does not create new user", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "",
 						Password:             "123456",
@@ -44,7 +44,7 @@ var _ = Describe("RegistrationForm", func() {
 			})
 
 			Context("given an existing email", func() {
-				It("returns the correct error message and does not create new user", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm1 := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
@@ -66,7 +66,7 @@ var _ = Describe("RegistrationForm", func() {
 			})
 
 			Context("given an invalid email", func() {
-				It("returns the correct error message and does not create new user", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang-nimblehq.co",
 						Password:             "123456",
@@ -80,7 +80,7 @@ var _ = Describe("RegistrationForm", func() {
 			})
 
 			Context("given a blank password", func() {
-				It("returns the correct error message and does not create new user", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "",
@@ -94,7 +94,7 @@ var _ = Describe("RegistrationForm", func() {
 			})
 
 			Context("given a short password", func() {
-				It("returns the correct error message and does not create new user", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123",
@@ -107,8 +107,8 @@ var _ = Describe("RegistrationForm", func() {
 				})
 			})
 
-			Context("given password and password confirmation do not match", func() {
-				It("returns the correct error message and does not create new user", func() {
+			Context("given password and password confirmation do NOT match", func() {
+				It("returns the correct error message and does NOT create new user", func() {
 					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
