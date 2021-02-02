@@ -8,10 +8,10 @@ import (
 )
 
 var _ = Describe("Password", func() {
-	Describe("EncryptPassword", func() {
+	Describe("HashPassword", func() {
 		Context("given a string", func() {
-			It("returns the encrypted string", func() {
-				Expect(helpers.EncryptPassword("hello password")).To(ContainSubstring("$"))
+			It("returns the hashed string", func() {
+				Expect(helpers.HashPassword("hello password")).To(ContainSubstring("$"))
 			})
 		})
 	})
