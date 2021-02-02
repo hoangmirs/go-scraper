@@ -35,5 +35,5 @@ func (matcher *RenderTemplateMatcher) FailureMessage(actual interface{}) string 
 }
 
 func (matcher *RenderTemplateMatcher) NegatedFailureMessage(actual interface{}) string {
-	return fmt.Sprintf("Expected response not to render `%s` template", matcher.templateString)
+	return fmt.Sprintf("Expected response NOT to render `%s` template", matcher.templateString)
 }
