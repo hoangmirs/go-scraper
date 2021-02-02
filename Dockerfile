@@ -2,9 +2,7 @@ FROM  node:14.15-alpine as assets-builder
 
 WORKDIR /assets
 
-COPY ./package.json ./package-lock.json ./
-COPY ./conf/webpack.*js ./conf/
-COPY ./assets/. ./assets/
+COPY . .
 
 RUN npm install && npm run build
 
@@ -28,7 +26,7 @@ RUN go build
 FROM alpine
 
 COPY . .
-COPY --from=assets-builder /assets/static/. ./static/
+COPY --from=assets-builder /assets/static ./static
 COPY --from=go-builder /app/go-scraper ./
 
 EXPOSE 8080
