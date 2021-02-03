@@ -6,6 +6,7 @@ import (
 
 	"github.com/hoangmirs/go-scraper/forms"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
 
@@ -27,7 +28,10 @@ func (c *Registration) Post() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
-	_ = c.ParseForm(&registrationForm)
+	err := c.ParseForm(&registrationForm)
+	if err != nil {
+		logs.Error("Error when parsing data: %v", err)
+	}
 
 	_, formError := registrationForm.CreateUser()
 	if formError != nil {

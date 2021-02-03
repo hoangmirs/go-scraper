@@ -7,6 +7,7 @@ import (
 
 	"github.com/hoangmirs/go-scraper/forms"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
 
@@ -28,7 +29,10 @@ func (c *Session) Post() {
 	sessionForm := forms.SessionForm{}
 	flash := web.NewFlash()
 
-	_ = c.ParseForm(&sessionForm)
+	err := c.ParseForm(&sessionForm)
+	if err != nil {
+		logs.Error("Error when parsing data: %v", err)
+	}
 
 	user, err := sessionForm.Authenticate()
 	if err != nil {
