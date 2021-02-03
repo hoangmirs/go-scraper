@@ -8,8 +8,8 @@ func clearMemory(b []byte) {
 	}
 }
 
-// EncryptPassword generates a hashed password from given input
-func EncryptPassword(password string) (string, error) {
+// HashPassword generates a hashed password from given input
+func HashPassword(password string) (string, error) {
 	passwordByte := []byte(password)
 	defer clearMemory(passwordByte)
 	hashedPassword, error := bcrypt.GenerateFromPassword(passwordByte, bcrypt.DefaultCost)
