@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"reflect"
 
 	"github.com/hoangmirs/go-scraper/helpers"
 	"github.com/hoangmirs/go-scraper/models"
@@ -34,8 +33,6 @@ func (c *baseController) Prepare() {
 	// Setting properties
 	helpers.SetControllerAttributes(&c.Controller)
 
-	c.Data["CurrentUser"] = c.GetCurrentUser()
-
 	c.LayoutSections = make(map[string]string)
 	c.LayoutSections["Header"] = "shared/header.html"
 	c.LayoutSections["FlashMessage"] = "shared/flash_message.html"
@@ -45,11 +42,11 @@ func (c *baseController) Prepare() {
 		app.NestPrepare()
 	}
 
-	if c.requireGuestUser && !reflect.ValueOf(c.Data["CurrentUser"]).IsZero() {
+	if c.requireGuestUser && !c.ensureGuestUser() {
 		c.Ctx.Redirect(http.StatusFound, "/")
 	}
 
-	if c.requireAuthenticatedUser && reflect.ValueOf(c.Data["CurrentUser"]).IsZero() {
+	if c.requireAuthenticatedUser && !c.ensureAuthenticatedUser() {
 		c.Ctx.Redirect(http.StatusFound, "/login")
 	}
 }
@@ -60,12 +57,13 @@ func (c *baseController) SetCurrentUser(user *models.User) {
 		logs.Error("Cannot set session:", err)
 	}
 
+	c.Data["CurrentUser"] = user
 	c.CurrentUser = user
 }
 
-func (c *baseController) GetCurrentUser() *models.User {
+func (c *baseController) ensureAuthenticatedUser() bool {
 	if c.GetSession(currentUserSessionKey) == nil {
-		return nil
+		return false
 	}
 
 	userID := c.GetSession(currentUserSessionKey).(uint)
@@ -77,12 +75,16 @@ func (c *baseController) GetCurrentUser() *models.User {
 	// Check if user exists in DB
 	o := orm.NewOrm()
 	err := o.Read(user)
-	if err == orm.ErrNoRows {
-		return nil
+	if err != nil {
+		return false
 	}
 
 	// Re-set current user with latest changes
 	c.SetCurrentUser(user)
 
-	return c.CurrentUser
+	return true
+}
+
+func (c *baseController) ensureGuestUser() bool {
+	return c.GetSession(currentUserSessionKey) == nil
 }
