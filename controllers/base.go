@@ -74,12 +74,14 @@ func (c *baseController) GetCurrentUser() *models.User {
 		Base: models.Base{Id: userID},
 	}
 
+	// Check if user exists in DB
 	o := orm.NewOrm()
 	err := o.Read(user)
 	if err == orm.ErrNoRows {
 		return nil
 	}
 
+	// Re-set current user with latest changes
 	c.SetCurrentUser(user)
 
 	return c.CurrentUser
