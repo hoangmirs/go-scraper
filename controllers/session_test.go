@@ -35,6 +35,7 @@ var _ = Describe("SessionController", func() {
 	Describe("POST", func() {
 		Context("given valid params", func() {
 			It("returns status FOUND", func() {
+				// TODO : Using fabricator
 				registrationForm := forms.RegistrationForm{
 					Email:                "hoang@nimblehq.co",
 					Password:             "123456",
