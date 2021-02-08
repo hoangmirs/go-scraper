@@ -17,6 +17,11 @@ type Session struct {
 
 func (c *Session) NestPrepare() {
 	c.requireGuestUser = true
+
+	// For logging out only
+	if c.Ctx.Input.GetData("ActionName") == "delete" {
+		c.requireGuestUser = false
+	}
 }
 
 func (c *Session) Get() {
@@ -49,6 +54,16 @@ func (c *Session) Post() {
 
 		c.Ctx.Redirect(http.StatusFound, "/")
 	}
+}
+
+func (c *Session) Delete() {
+	c.SetCurrentUser(nil)
+
+	flash := web.NewFlash()
+	flash.Success("Logging out successfully")
+	flash.Store(&c.Controller)
+
+	c.Ctx.Redirect(http.StatusFound, "/")
 }
 
 func (c *Session) renderNewSessionView() {

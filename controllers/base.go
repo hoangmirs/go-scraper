@@ -52,9 +52,16 @@ func (c *baseController) Prepare() {
 }
 
 func (c *baseController) SetCurrentUser(user *models.User) {
-	err := c.SetSession(currentUserSessionKey, user.Id)
-	if err != nil {
-		logs.Error("Cannot set session:", err)
+	if user != nil {
+		err := c.SetSession(currentUserSessionKey, user.Id)
+		if err != nil {
+			logs.Error("Cannot set session:", err)
+		}
+	} else {
+		err := c.DelSession(currentUserSessionKey)
+		if err != nil {
+			logs.Error("Cannot delete session:", err)
+		}
 	}
 
 	c.Data["CurrentUser"] = user

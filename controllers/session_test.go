@@ -80,4 +80,19 @@ var _ = Describe("SessionController", func() {
 			})
 		})
 	})
+
+	Describe("DELETE", func() {
+		It("returns status Found", func() {
+			response := MakeRequest("GET", "/logout", nil)
+
+			Expect(response.Code).To(Equal(http.StatusFound))
+		})
+
+		It("returns error flash message", func() {
+			response := MakeRequest("GET", "/logout", nil)
+			flashMessage := GetFlash(response.Result().Cookies())
+
+			Expect(flashMessage.Data["success"]).To(Equal("Logging out successfully"))
+		})
+	})
 })
