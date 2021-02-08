@@ -1,0 +1,15 @@
+.layout-default {
+  @apply bg-gray-100;
+
+  .app-main {
+    @apply max-w-7xl mx-auto py-6;
+
+    @screen sm {
+      @apply px-6;
+    }
+
+    @screen lg {
+      @apply px-8;
+    }
+  }
+}

@@ -19,6 +19,9 @@
         </div>
         <div class="navigation-menu__right">
           <!-- Profile dropdown -->
+          {{ if .CurrentUser }}
+          <div class="profile-email">{{ .CurrentUser.Email }}</div>
+          {{ end }}
           <div class="profile-icon">
             <div>
               <button

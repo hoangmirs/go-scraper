@@ -6,11 +6,16 @@ import (
 
 	"github.com/hoangmirs/go-scraper/forms"
 
+	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 )
 
 type Registration struct {
 	baseController
+}
+
+func (c *Registration) NestPrepare() {
+	c.requireGuestUser = true
 }
 
 func (c *Registration) Get() {
@@ -23,7 +28,10 @@ func (c *Registration) Post() {
 	registrationForm := forms.RegistrationForm{}
 	flash := web.NewFlash()
 
-	_ = c.ParseForm(&registrationForm)
+	err := c.ParseForm(&registrationForm)
+	if err != nil {
+		logs.Error("Error when parsing data: %v", err)
+	}
 
 	_, formError := registrationForm.CreateUser()
 	if formError != nil {
@@ -37,7 +45,7 @@ func (c *Registration) Post() {
 		flash.Success("Account created successfully")
 		flash.Store(&c.Controller)
 
-		c.Ctx.Redirect(http.StatusFound, "/register")
+		c.Ctx.Redirect(http.StatusFound, "/login")
 	}
 }
 
