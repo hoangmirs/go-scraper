@@ -22,12 +22,12 @@ type ParsingResult struct {
 	User            *models.User
 }
 
-var selectors = map[string]string{
-	"nonAds":      "#search .yuRUbf > a",
-	"ads":         "#tads .d5oMvf > a",
-	"shopAds":     ".mnr-c.pla-unit .pla-unit-title a.pla-unit-title-link",
-	"mobileLinks": ".ezO2md a.fuLhoc.ZWRArf",
-	"mobileAds":   "span.dloBPe",
+var selectors = map[string][]string{
+	"nonAds":      {"#search .yuRUbf > a", ".ZINbbc.xpd .kCrYT > a"},
+	"ads":         {"#tads .d5oMvf > a", ".uEierd .ZINbbc a.C8nzq.BmP5tf"},
+	"shopAds":     {".mnr-c.pla-unit .pla-unit-title a.pla-unit-title-link", ".qvfQJe .M09uTc.VoEfsd a"},
+	"mobileLinks": {".ezO2md a.fuLhoc.ZWRArf"},
+	"mobileAds":   {"span.dloBPe"},
 }
 
 const urlPattern = "https://www.google.com/search?q=%s"
@@ -51,43 +51,31 @@ func Search(keyword string, user *models.User) error {
 		_ = ioutil.WriteFile("file.html", r.Body, 0644)
 	})
 
-	//a
+	for _, pattern := range selectors["nonAds"] {
+		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+			link := checkLink(e.Attr("href"))
+			parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
+		})
+	}
 
-	collector.OnHTML(".ZINbbc.xpd .kCrYT > a", func(e *colly.HTMLElement) {
+	for _, pattern := range selectors["ads"] {
+		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+			link := checkLink(e.Attr("href"))
+			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
+		})
+	}
+
+	for _, pattern := range selectors["shopAds"] {
+		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+			link := checkLink(e.Attr("href"))
+			parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
+		})
+	}
+
+	// Need to check child nodes to detect ads links
+	collector.OnHTML(selectors["mobileLinks"][0], func(e *colly.HTMLElement) {
 		link := checkLink(e.Attr("href"))
-		parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
-	})
-
-	collector.OnHTML(".uEierd .ZINbbc a.C8nzq.BmP5tf", func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
-	})
-
-	collector.OnHTML(".qvfQJe .M09uTc.VoEfsd a", func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
-	})
-
-	//a
-
-	collector.OnHTML(selectors["nonAds"], func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
-	})
-
-	collector.OnHTML(selectors["ads"], func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
-	})
-
-	collector.OnHTML(selectors["shopAds"], func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
-	})
-
-	collector.OnHTML(selectors["mobileLinks"], func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
-		if len(e.DOM.Find(selectors["mobileAds"]).Nodes) > 0 {
+		if len(e.DOM.Find(selectors["mobileAds"][0]).Nodes) > 0 {
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		} else {
 			parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
@@ -109,6 +97,6 @@ func checkLink(link string) string {
 	if strings.HasPrefix(link, "http") {
 		return link
 	} else {
-		return "https://google.com" + link
+		return "https://www.google.com" + link
 	}
 }
