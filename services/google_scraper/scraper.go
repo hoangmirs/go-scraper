@@ -1,9 +1,10 @@
 package google_scraper
 
 import (
-	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/url"
+	"strings"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocolly/colly/v2"
@@ -31,7 +32,7 @@ var selectors = map[string]string{
 
 const urlPattern = "https://www.google.com/search?q=%s"
 
-func Search(keyword string, user *models.User) {
+func Search(keyword string, user *models.User) error {
 	parsingResult := ParsingResult{
 		Keyword: keyword,
 		User:    user,
@@ -46,28 +47,46 @@ func Search(keyword string, user *models.User) {
 	})
 
 	collector.OnResponse(func(r *colly.Response) {
-		logs.Info("HTML: %v", r.StatusCode)
-		// parsingResult.HTMLCode = string(r.Body[:])
-		// _ = ioutil.WriteFile("file.html", r.Body, 0644)
+		parsingResult.HTMLCode = string(r.Body[:])
+		_ = ioutil.WriteFile("file.html", r.Body, 0644)
 	})
 
+	//a
+
+	collector.OnHTML(".ZINbbc.xpd .kCrYT > a", func(e *colly.HTMLElement) {
+		link := checkLink(e.Attr("href"))
+		parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
+	})
+
+	collector.OnHTML(".uEierd .ZINbbc a.C8nzq.BmP5tf", func(e *colly.HTMLElement) {
+		link := checkLink(e.Attr("href"))
+		parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
+	})
+
+	collector.OnHTML(".qvfQJe .M09uTc.VoEfsd a", func(e *colly.HTMLElement) {
+		link := checkLink(e.Attr("href"))
+		parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
+	})
+
+	//a
+
 	collector.OnHTML(selectors["nonAds"], func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+		link := checkLink(e.Attr("href"))
 		parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
 	})
 
 	collector.OnHTML(selectors["ads"], func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+		link := checkLink(e.Attr("href"))
 		parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 	})
 
 	collector.OnHTML(selectors["shopAds"], func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+		link := checkLink(e.Attr("href"))
 		parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
 	})
 
 	collector.OnHTML(selectors["mobileLinks"], func(e *colly.HTMLElement) {
-		link := e.Attr("href")
+		link := checkLink(e.Attr("href"))
 		if len(e.DOM.Find(selectors["mobileAds"]).Nodes) > 0 {
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		} else {
@@ -76,52 +95,20 @@ func Search(keyword string, user *models.User) {
 	})
 
 	collector.OnScraped(func(r *colly.Response) {
-		err := saveToDB(parsingResult)
-		logs.Error("Error when saving to DB:", err)
+		err := SaveToDB(parsingResult)
+		if err != nil {
+			logs.Error("Error when saving to DB:", err)
+		}
 	})
 
 	url := fmt.Sprintf(urlPattern, url.QueryEscape(keyword))
-	_ = collector.Visit(url)
+	return collector.Visit(url)
 }
 
-func saveToDB(parsingResult ParsingResult) error {
-	nonAdwordLinks, err := json.Marshal(parsingResult.NonAdwordLinks)
-	if err != nil {
-		return err
+func checkLink(link string) string {
+	if strings.HasPrefix(link, "http") {
+		return link
+	} else {
+		return "https://google.com" + link
 	}
-
-	adwordLinks, err := json.Marshal(parsingResult.AdwordLinks)
-	if err != nil {
-		return err
-	}
-
-	shopAdwordLinks, err := json.Marshal(parsingResult.ShopAdwordLinks)
-	if err != nil {
-		return err
-	}
-
-	nonAdwordLinksCount := len(parsingResult.NonAdwordLinks)
-	adwordLinksCount := len(parsingResult.AdwordLinks)
-	shopAdwordLinksCount := len(parsingResult.ShopAdwordLinks)
-	totalCount := nonAdwordLinksCount + adwordLinksCount + shopAdwordLinksCount
-
-	keywordResult := &models.KeywordResult{
-		KeyWord:              parsingResult.Keyword,
-		NonAdwordLinksCount:  nonAdwordLinksCount,
-		NonAdwordLinks:       string(nonAdwordLinks),
-		AdwordLinksCount:     adwordLinksCount,
-		AdwordLinks:          string(adwordLinks),
-		ShopAdwordLinksCount: shopAdwordLinksCount,
-		ShopAdwordLinks:      string(shopAdwordLinks),
-		LinksCount:           totalCount,
-		HtmlCode:             parsingResult.HTMLCode,
-		User:                 parsingResult.User,
-	}
-
-	_, err = models.CreateKeywordResult(keywordResult)
-	if err != nil {
-		return err
-	}
-
-	return err
 }
