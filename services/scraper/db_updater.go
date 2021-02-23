@@ -1,4 +1,4 @@
-package google_scraper
+package scraper
 
 import (
 	"encoding/json"
