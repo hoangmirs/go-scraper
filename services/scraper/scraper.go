@@ -1,15 +1,15 @@
-package google_scraper
+package scraper
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/url"
 	"strings"
+
+	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocolly/colly/v2"
 	"github.com/gocolly/colly/v2/extensions"
-	"github.com/hoangmirs/go-scraper/models"
 )
 
 type ParsingResult struct {
@@ -48,7 +48,6 @@ func Search(keyword string, user *models.User) error {
 
 	collector.OnResponse(func(r *colly.Response) {
 		parsingResult.HTMLCode = string(r.Body[:])
-		_ = ioutil.WriteFile("file.html", r.Body, 0644)
 	})
 
 	for _, pattern := range selectors["nonAds"] {
