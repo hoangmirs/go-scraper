@@ -12,14 +12,19 @@ import (
 	"github.com/gocolly/colly/v2/extensions"
 )
 
+type ScraperService struct {
+	Keyword string
+	User    *models.User
+
+	parsingResult *ParsingResult
+}
+
 type ParsingResult struct {
-	Keyword         string
 	HTMLCode        string
 	LinksCount      int
 	NonAdwordLinks  []string
 	AdwordLinks     []string
 	ShopAdwordLinks []string
-	User            *models.User
 }
 
 var selectors = map[string][]string{
@@ -32,11 +37,8 @@ var selectors = map[string][]string{
 
 const urlPattern = "https://www.google.com/search?q=%s"
 
-func Search(keyword string, user *models.User) error {
-	parsingResult := ParsingResult{
-		Keyword: keyword,
-		User:    user,
-	}
+func (service *ScraperService) Run() error {
+	parsingResult := ParsingResult{}
 
 	collector := colly.NewCollector()
 
@@ -82,13 +84,14 @@ func Search(keyword string, user *models.User) error {
 	})
 
 	collector.OnScraped(func(r *colly.Response) {
-		err := SaveToDB(parsingResult)
+		service.parsingResult = &parsingResult
+		err := service.SaveToDB()
 		if err != nil {
 			logs.Error("Error when saving to DB:", err)
 		}
 	})
 
-	url := fmt.Sprintf(urlPattern, url.QueryEscape(keyword))
+	url := fmt.Sprintf(urlPattern, url.QueryEscape(service.Keyword))
 	return collector.Visit(url)
 }
 

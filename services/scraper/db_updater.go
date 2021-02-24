@@ -6,29 +6,29 @@ import (
 	"github.com/hoangmirs/go-scraper/models"
 )
 
-func SaveToDB(parsingResult ParsingResult) error {
-	nonAdwordLinks, err := json.Marshal(parsingResult.NonAdwordLinks)
+func (service *ScraperService) SaveToDB() error {
+	nonAdwordLinks, err := json.Marshal(service.parsingResult.NonAdwordLinks)
 	if err != nil {
 		return err
 	}
 
-	adwordLinks, err := json.Marshal(parsingResult.AdwordLinks)
+	adwordLinks, err := json.Marshal(service.parsingResult.AdwordLinks)
 	if err != nil {
 		return err
 	}
 
-	shopAdwordLinks, err := json.Marshal(parsingResult.ShopAdwordLinks)
+	shopAdwordLinks, err := json.Marshal(service.parsingResult.ShopAdwordLinks)
 	if err != nil {
 		return err
 	}
 
-	nonAdwordLinksCount := len(parsingResult.NonAdwordLinks)
-	adwordLinksCount := len(parsingResult.AdwordLinks)
-	shopAdwordLinksCount := len(parsingResult.ShopAdwordLinks)
+	nonAdwordLinksCount := len(service.parsingResult.NonAdwordLinks)
+	adwordLinksCount := len(service.parsingResult.AdwordLinks)
+	shopAdwordLinksCount := len(service.parsingResult.ShopAdwordLinks)
 	totalCount := nonAdwordLinksCount + adwordLinksCount + shopAdwordLinksCount
 
 	keywordResult := &models.KeywordResult{
-		KeyWord:              parsingResult.Keyword,
+		KeyWord:              service.Keyword,
 		NonAdwordLinksCount:  nonAdwordLinksCount,
 		NonAdwordLinks:       string(nonAdwordLinks),
 		AdwordLinksCount:     adwordLinksCount,
@@ -36,8 +36,8 @@ func SaveToDB(parsingResult ParsingResult) error {
 		ShopAdwordLinksCount: shopAdwordLinksCount,
 		ShopAdwordLinks:      string(shopAdwordLinks),
 		LinksCount:           totalCount,
-		HtmlCode:             parsingResult.HTMLCode,
-		User:                 parsingResult.User,
+		HtmlCode:             service.parsingResult.HTMLCode,
+		User:                 service.User,
 	}
 
 	_, err = models.CreateKeywordResult(keywordResult)
