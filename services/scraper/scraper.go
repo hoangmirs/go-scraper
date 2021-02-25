@@ -15,13 +15,13 @@ import (
 type ScraperService struct {
 	Keyword string
 	User    *models.User
+	Collector     *colly.Collector
 
 	parsingResult *ParsingResult
 }
 
 type ParsingResult struct {
 	HTMLCode        string
-	LinksCount      int
 	NonAdwordLinks  []string
 	AdwordLinks     []string
 	ShopAdwordLinks []string
@@ -39,42 +39,43 @@ const urlPattern = "https://www.google.com/search?q=%s"
 
 func (service *ScraperService) Run() error {
 	parsingResult := ParsingResult{}
+	if service.Collector == nil {
+		service.Collector = colly.NewCollector()
+	}
 
-	collector := colly.NewCollector()
+	extensions.RandomUserAgent(service.Collector)
 
-	extensions.RandomUserAgent(collector)
-
-	collector.OnRequest(func(r *colly.Request) {
+	service.Collector.OnRequest(func(r *colly.Request) {
 		logs.Info("Visiting: %s user-agent: %v", r.URL, r.Headers.Get("User-Agent"))
 	})
 
-	collector.OnResponse(func(r *colly.Response) {
+	service.Collector.OnResponse(func(r *colly.Response) {
 		parsingResult.HTMLCode = string(r.Body[:])
 	})
 
 	for _, pattern := range selectors["nonAds"] {
-		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
 			link := checkLink(e.Attr("href"))
 			parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
 		})
 	}
 
 	for _, pattern := range selectors["ads"] {
-		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
 			link := checkLink(e.Attr("href"))
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		})
 	}
 
 	for _, pattern := range selectors["shopAds"] {
-		collector.OnHTML(pattern, func(e *colly.HTMLElement) {
+		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
 			link := checkLink(e.Attr("href"))
 			parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
 		})
 	}
 
 	// Need to check child nodes to detect ads links
-	collector.OnHTML(selectors["mobileLinks"][0], func(e *colly.HTMLElement) {
+	service.Collector.OnHTML(selectors["mobileLinks"][0], func(e *colly.HTMLElement) {
 		link := checkLink(e.Attr("href"))
 		if len(e.DOM.Find(selectors["mobileAds"][0]).Nodes) > 0 {
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
@@ -83,7 +84,7 @@ func (service *ScraperService) Run() error {
 		}
 	})
 
-	collector.OnScraped(func(r *colly.Response) {
+	service.Collector.OnScraped(func(r *colly.Response) {
 		service.parsingResult = &parsingResult
 		err := service.SaveToDB()
 		if err != nil {
@@ -92,7 +93,7 @@ func (service *ScraperService) Run() error {
 	})
 
 	url := fmt.Sprintf(urlPattern, url.QueryEscape(service.Keyword))
-	return collector.Visit(url)
+	return service.Collector.Visit(url)
 }
 
 func checkLink(link string) string {
@@ -101,4 +102,8 @@ func checkLink(link string) string {
 	} else {
 		return "https://www.google.com" + link
 	}
+}
+
+func (service *ScraperService) GetParsingResult() ParsingResult {
+	return *service.parsingResult
 }
