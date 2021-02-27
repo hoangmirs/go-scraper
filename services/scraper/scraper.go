@@ -1,6 +1,7 @@
 package scraper
 
 import (
+	"errors"
 	"fmt"
 	"net/url"
 	"strings"
@@ -13,9 +14,9 @@ import (
 )
 
 type ScraperService struct {
-	Keyword string
-	User    *models.User
-	Collector     *colly.Collector
+	Keyword   string
+	User      *models.User
+	Collector *colly.Collector // is used for testing
 
 	parsingResult *ParsingResult
 }
@@ -38,6 +39,11 @@ var selectors = map[string][]string{
 const urlPattern = "https://www.google.com/search?q=%s"
 
 func (service *ScraperService) Run() error {
+	err := service.validateAttributes()
+	if err != nil {
+		return err
+	}
+
 	parsingResult := ParsingResult{}
 	if service.Collector == nil {
 		service.Collector = colly.NewCollector()
@@ -86,7 +92,7 @@ func (service *ScraperService) Run() error {
 
 	service.Collector.OnScraped(func(r *colly.Response) {
 		service.parsingResult = &parsingResult
-		err := service.SaveToDB()
+		err := service.saveToDB()
 		if err != nil {
 			logs.Error("Error when saving to DB:", err)
 		}
@@ -96,14 +102,27 @@ func (service *ScraperService) Run() error {
 	return service.Collector.Visit(url)
 }
 
+func (service *ScraperService) GetParsingResult() ParsingResult {
+	return *service.parsingResult
+}
+
+// Private
+func (service *ScraperService) validateAttributes() error {
+	if len(service.Keyword) == 0 {
+		return errors.New("Keyword required")
+	}
+
+	if service.User == nil {
+		return errors.New("User required")
+	}
+
+	return nil
+}
+
 func checkLink(link string) string {
 	if strings.HasPrefix(link, "http") {
 		return link
 	} else {
 		return "https://www.google.com" + link
 	}
-}
-
-func (service *ScraperService) GetParsingResult() ParsingResult {
-	return *service.parsingResult
 }
