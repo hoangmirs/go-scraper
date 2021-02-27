@@ -6,7 +6,7 @@ import (
 	"github.com/hoangmirs/go-scraper/models"
 )
 
-func (service *ScraperService) SaveToDB() error {
+func (service *ScraperService) saveToDB() error {
 	nonAdwordLinks, err := json.Marshal(service.parsingResult.NonAdwordLinks)
 	if err != nil {
 		return err
@@ -29,6 +29,7 @@ func (service *ScraperService) SaveToDB() error {
 
 	keywordResult := &models.KeywordResult{
 		KeyWord:              service.Keyword,
+		User:                 service.User,
 		NonAdwordLinksCount:  nonAdwordLinksCount,
 		NonAdwordLinks:       string(nonAdwordLinks),
 		AdwordLinksCount:     adwordLinksCount,
@@ -37,7 +38,6 @@ func (service *ScraperService) SaveToDB() error {
 		ShopAdwordLinks:      string(shopAdwordLinks),
 		LinksCount:           totalCount,
 		HtmlCode:             service.parsingResult.HTMLCode,
-		User:                 service.User,
 	}
 
 	_, err = models.CreateKeywordResult(keywordResult)
