@@ -1,0 +1,16 @@
+<div class="card-keyword">
+  <div class="card-keyword__content">
+    <h1 class="card-keyword__title">{{ .Title }}</h1>
+    <form
+      class="form-keyword form"
+      action="/keyword"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {{ .xsrfdata }}
+      <input type="file" class="form__input" name="file" accept="text/csv" />
+
+      <button type="submit" class="btn btn--full">Upload</button>
+    </form>
+  </div>
+</div>
