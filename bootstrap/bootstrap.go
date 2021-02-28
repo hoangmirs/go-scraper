@@ -20,4 +20,5 @@ func init() {
 
 func SetUp() {
 	SetUpDB()
+	SetupRedisPool()
 }
