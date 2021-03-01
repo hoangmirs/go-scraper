@@ -8,7 +8,7 @@ type User struct {
 	Email             string `orm:"unique"`
 	EncryptedPassword string
 
-	Keywords []*KeywordResult `orm:"reverse(many)"`
+	Keywords []*Keyword `orm:"reverse(many)"`
 }
 
 func init() {

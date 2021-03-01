@@ -27,9 +27,9 @@ func (service *ScraperService) saveToDB() error {
 	shopAdwordLinksCount := len(service.parsingResult.ShopAdwordLinks)
 	totalCount := nonAdwordLinksCount + adwordLinksCount + shopAdwordLinksCount
 
-	keywordResult := &models.KeywordResult{
-		KeyWord:              service.Keyword,
-		User:                 service.User,
+	keyword := &models.Keyword{
+		Keyword:              service.Keyword.Keyword,
+		User:                 service.Keyword.User,
 		NonAdwordLinksCount:  nonAdwordLinksCount,
 		NonAdwordLinks:       string(nonAdwordLinks),
 		AdwordLinksCount:     adwordLinksCount,
@@ -40,7 +40,7 @@ func (service *ScraperService) saveToDB() error {
 		HtmlCode:             service.parsingResult.HTMLCode,
 	}
 
-	_, err = models.CreateKeywordResult(keywordResult)
+	_, err = models.CreateKeyword(keyword)
 	if err != nil {
 		return err
 	}

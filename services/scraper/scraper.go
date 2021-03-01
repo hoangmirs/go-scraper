@@ -14,8 +14,7 @@ import (
 )
 
 type ScraperService struct {
-	Keyword   string
-	User      *models.User
+	Keyword   *models.Keyword
 	Collector *colly.Collector // is used for testing
 
 	parsingResult *ParsingResult
@@ -98,7 +97,7 @@ func (service *ScraperService) Run() error {
 		}
 	})
 
-	url := fmt.Sprintf(urlPattern, url.QueryEscape(service.Keyword))
+	url := fmt.Sprintf(urlPattern, url.QueryEscape(service.Keyword.Keyword))
 	return service.Collector.Visit(url)
 }
 
@@ -108,11 +107,11 @@ func (service *ScraperService) GetParsingResult() ParsingResult {
 
 // Private
 func (service *ScraperService) validateAttributes() error {
-	if len(service.Keyword) == 0 {
+	if len(service.Keyword.Keyword) == 0 {
 		return errors.New("Keyword required")
 	}
 
-	if service.User == nil {
+	if service.Keyword.User == nil {
 		return errors.New("User required")
 	}
 
