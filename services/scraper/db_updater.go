@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 
 	"github.com/hoangmirs/go-scraper/models"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 func (service *ScraperService) saveToDB() error {
@@ -27,23 +29,29 @@ func (service *ScraperService) saveToDB() error {
 	shopAdwordLinksCount := len(service.parsingResult.ShopAdwordLinks)
 	totalCount := nonAdwordLinksCount + adwordLinksCount + shopAdwordLinksCount
 
-	keyword := &models.Keyword{
-		Keyword:              service.Keyword.Keyword,
-		User:                 service.Keyword.User,
-		NonAdwordLinksCount:  nonAdwordLinksCount,
-		NonAdwordLinks:       string(nonAdwordLinks),
-		AdwordLinksCount:     adwordLinksCount,
-		AdwordLinks:          string(adwordLinks),
-		ShopAdwordLinksCount: shopAdwordLinksCount,
-		ShopAdwordLinks:      string(shopAdwordLinks),
-		LinksCount:           totalCount,
-		HtmlCode:             service.parsingResult.HTMLCode,
-	}
+	keyword := service.Keyword
+	keyword.NonAdwordLinksCount = nonAdwordLinksCount
+	keyword.NonAdwordLinks = string(nonAdwordLinks)
+	keyword.AdwordLinksCount = adwordLinksCount
+	keyword.AdwordLinks = string(adwordLinks)
+	keyword.ShopAdwordLinksCount = shopAdwordLinksCount
+	keyword.ShopAdwordLinks = string(shopAdwordLinks)
+	keyword.LinksCount = totalCount
+	keyword.HtmlCode = service.parsingResult.HTMLCode
 
-	_, err = models.CreateKeyword(keyword)
+	keyword.Status = models.Processed
+	err = models.UpdateKeyword(keyword)
 	if err != nil {
 		return err
 	}
 
 	return err
+}
+
+func (service *ScraperService) updateKeywordStatus(status models.KeywordStatus) {
+	service.Keyword.Status = status
+	err := models.UpdateKeyword(service.Keyword)
+	if err != nil {
+		logs.Error("Failed to update status: %v", err)
+	}
 }

@@ -40,6 +40,14 @@ const urlPattern = "https://www.google.com/search?q=%s"
 func (service *ScraperService) Run() error {
 	err := service.validateAttributes()
 	if err != nil {
+		service.updateKeywordStatus(models.Failed)
+		return err
+	}
+
+	service.Keyword.Status = models.Processing
+	err = models.UpdateKeyword(service.Keyword)
+	if err != nil {
+		service.updateKeywordStatus(models.Failed)
 		return err
 	}
 
@@ -93,6 +101,7 @@ func (service *ScraperService) Run() error {
 		service.parsingResult = &parsingResult
 		err := service.saveToDB()
 		if err != nil {
+			service.updateKeywordStatus(models.Failed)
 			logs.Error("Error when saving to DB:", err)
 		}
 	})
@@ -105,7 +114,6 @@ func (service *ScraperService) GetParsingResult() ParsingResult {
 	return *service.parsingResult
 }
 
-// Private
 func (service *ScraperService) validateAttributes() error {
 	if len(service.Keyword.Keyword) == 0 {
 		return errors.New("Keyword required")
