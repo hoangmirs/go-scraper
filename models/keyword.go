@@ -33,11 +33,11 @@ type Keyword struct {
 	Status  KeywordStatus `orm:"type(KeywordStatus);default(pending)"`
 
 	LinksCount           int
-	NonAdwordLinks       string `orm:"type(json)"`
+	NonAdwordLinks       string `orm:"type(json);null"`
 	NonAdwordLinksCount  int
-	AdwordLinks          string `orm:"type(json)"`
+	AdwordLinks          string `orm:"type(json);null"`
 	AdwordLinksCount     int
-	ShopAdwordLinks      string `orm:"type(json)"`
+	ShopAdwordLinks      string `orm:"type(json);null"`
 	ShopAdwordLinksCount int
 	HtmlCode             string
 
