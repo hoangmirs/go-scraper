@@ -35,11 +35,14 @@ var _ = Describe("ScraperService", func() {
 					}
 				}()
 
-				keyword := "iphone 12"
 				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := &models.Keyword{
+					Keyword: "iphone 12",
+					User:    user,
+				}
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)
-				service := scraper.ScraperService{Keyword: keyword, User: user, Collector: collector}
+				service := scraper.ScraperService{Keyword: keyword, Collector: collector}
 				err = service.Run()
 				if err != nil {
 					Fail(err.Error())
@@ -65,26 +68,30 @@ var _ = Describe("ScraperService", func() {
 					}
 				}()
 
-				keyword := "iphone 12"
+				searchKeyword := "iphone 12"
 				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := &models.Keyword{
+					Keyword: searchKeyword,
+					User:    user,
+				}
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)
-				service := scraper.ScraperService{Keyword: keyword, User: user, Collector: collector}
+				service := scraper.ScraperService{Keyword: keyword, Collector: collector}
 				err = service.Run()
 				if err != nil {
 					Fail(err.Error())
 				}
 
-				keywordResult := models.KeywordResult{}
+				savedKeyword := models.Keyword{}
 
 				o := orm.NewOrm()
-				err = o.QueryTable("keyword_result").Filter("keyword", keyword).One(&keywordResult)
+				err = o.QueryTable("keyword").Filter("keyword", searchKeyword).One(&savedKeyword)
 				if err != nil {
 					Fail(err.Error())
 				}
 
-				Expect(keywordResult.Id).To(BeNumerically(">", 0))
-				Expect(keywordResult.KeyWord).To(Equal(keyword))
+				Expect(savedKeyword.Id).To(BeNumerically(">", 0))
+				Expect(savedKeyword.Keyword).To(Equal(searchKeyword))
 			})
 		})
 	})
@@ -92,9 +99,12 @@ var _ = Describe("ScraperService", func() {
 	Context("given invalid attributes", func() {
 		Context("given a blank keyword", func() {
 			It("returns an error", func() {
-				keyword := ""
 				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				service := scraper.ScraperService{Keyword: keyword, User: user}
+				keyword := &models.Keyword{
+					Keyword: "",
+					User:    user,
+				}
+				service := scraper.ScraperService{Keyword: keyword}
 				err := service.Run()
 
 				Expect(err.Error()).To(Equal("Keyword required"))
@@ -103,8 +113,10 @@ var _ = Describe("ScraperService", func() {
 
 		Context("given NO user object", func() {
 			It("returns an error", func() {
-				keyword := "iphone 12"
-				service := scraper.ScraperService{Keyword: keyword, User: nil}
+				keyword := &models.Keyword{
+					Keyword: "iphone 12",
+				}
+				service := scraper.ScraperService{Keyword: keyword}
 				err := service.Run()
 
 				Expect(err.Error()).To(Equal("User required"))
