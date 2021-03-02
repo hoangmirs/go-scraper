@@ -16,12 +16,13 @@ import (
 
 var _ = Describe("ScraperService", func() {
 	AfterEach(func() {
-		TruncateTables("keyword_result")
+		TruncateTables("user", "keyword")
 	})
 
 	Describe("#Run", func() {
 		Context("given valid attributes", func() {
-			It("gets the result", func() {
+			It("returns the parsing result", func() {
+				// TODO : Refactor VCR recorder and put it into test helper
 				cassetteName := "scraper/success_valid_attributes"
 				rec, err := recorder.New(CassettePath(cassetteName))
 				if err != nil {
@@ -35,11 +36,16 @@ var _ = Describe("ScraperService", func() {
 					}
 				}()
 
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				keyword := &models.Keyword{
-					Keyword: "iphone 12",
-					User:    user,
+				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
+				if err != nil {
+					Fail(err.Error())
 				}
+
+				keyword, err := fabricators.FabricateKeyword("iphone 12", user)
+				if err != nil {
+					Fail(err.Error())
+				}
+
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)
 				service := scraper.ScraperService{Keyword: keyword, Collector: collector}
@@ -54,7 +60,8 @@ var _ = Describe("ScraperService", func() {
 				Expect(service.GetParsingResult().HTMLCode).NotTo(BeNil())
 			})
 
-			It("save the result to DB", func() {
+			It("saves the result to DB", func() {
+				// TODO : Refactor VCR recorder and put it into test helper
 				cassetteName := "scraper/success_valid_attributes"
 				rec, err := recorder.New(CassettePath(cassetteName))
 				if err != nil {
@@ -69,11 +76,16 @@ var _ = Describe("ScraperService", func() {
 				}()
 
 				searchKeyword := "iphone 12"
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				keyword := &models.Keyword{
-					Keyword: searchKeyword,
-					User:    user,
+				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
+				if err != nil {
+					Fail(err.Error())
 				}
+
+				keyword, err := fabricators.FabricateKeyword("iphone 12", user)
+				if err != nil {
+					Fail(err.Error())
+				}
+
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)
 				service := scraper.ScraperService{Keyword: keyword, Collector: collector}
@@ -91,35 +103,20 @@ var _ = Describe("ScraperService", func() {
 				}
 
 				Expect(savedKeyword.Id).To(BeNumerically(">", 0))
-				Expect(savedKeyword.Keyword).To(Equal(searchKeyword))
+				Expect(savedKeyword.Status).To(Equal(models.Processed))
+				Expect(len(savedKeyword.HtmlCode)).To(BeNumerically(">", 0))
+				Expect(savedKeyword.LinksCount).To(BeNumerically(">", 0))
 			})
 		})
 	})
 
 	Context("given invalid attributes", func() {
-		Context("given a blank keyword", func() {
+		Context("given no keyword object", func() {
 			It("returns an error", func() {
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				keyword := &models.Keyword{
-					Keyword: "",
-					User:    user,
-				}
-				service := scraper.ScraperService{Keyword: keyword}
+				service := scraper.ScraperService{Keyword: nil}
 				err := service.Run()
 
-				Expect(err.Error()).To(Equal("Keyword required"))
-			})
-		})
-
-		Context("given NO user object", func() {
-			It("returns an error", func() {
-				keyword := &models.Keyword{
-					Keyword: "iphone 12",
-				}
-				service := scraper.ScraperService{Keyword: keyword}
-				err := service.Run()
-
-				Expect(err.Error()).To(Equal("User required"))
+				Expect(err.Error()).To(Equal("Keyword object required"))
 			})
 		})
 	})
