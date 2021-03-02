@@ -8,12 +8,13 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 )
 
-func FabricateUser(email string, password string) *models.User {
+func FabricateUser(email string, password string) (*models.User, error) {
 	o := orm.NewOrm()
 
 	hashedPassword, err := helpers.HashPassword(password)
 	if err != nil {
 		logs.Error("Hashing password error:", err)
+		return nil, err
 	}
 	user := &models.User{Email: email}
 	user.EncryptedPassword = hashedPassword
@@ -21,7 +22,8 @@ func FabricateUser(email string, password string) *models.User {
 	_, err = o.Insert(user)
 	if err != nil {
 		logs.Error("Creating user error: ", err)
+		return nil, err
 	}
 
-	return user
+	return user, nil
 }

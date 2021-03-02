@@ -7,6 +7,7 @@ import (
 	"github.com/beego/beego/v2/client/orm"
 )
 
+// KeywordStatus is an implementation of a string for the SQL type
 type KeywordStatus string
 
 const (
@@ -18,6 +19,8 @@ const (
 	InvalidKeywordStatusErr = "invalid keyword status"
 )
 
+// Value implements the driver.Valuer interface,
+// and turns the KeywordStatus into a string for SQL storage
 func (k KeywordStatus) Value() (driver.Value, error) {
 	switch k {
 	case Pending, Processing, Processed, Failed:
@@ -48,15 +51,23 @@ func init() {
 	orm.RegisterModel(new(Keyword))
 }
 
-// CreateKeyword insert a new Keyword into database and returns last inserted Id on success.
+// CreateKeyword inserts a new Keyword into database and returns last inserted Id on success.
 func CreateKeyword(keyword *Keyword) (int64, error) {
+	if len(keyword.Keyword) == 0 {
+		return 0, errors.New("Keyword required")
+	}
+
+	if keyword.User == nil {
+		return 0, errors.New("User required")
+	}
+
 	o := orm.NewOrm()
 	keyword.Status = Pending
 
 	return o.Insert(keyword)
 }
 
-// UpdateKeyword update a Keyword and returns the error if any
+// UpdateKeyword updates a Keyword and returns the error if any
 func UpdateKeyword(keyword *Keyword) error {
 	o := orm.NewOrm()
 

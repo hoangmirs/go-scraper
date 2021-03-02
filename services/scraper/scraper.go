@@ -10,7 +10,7 @@ import (
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocolly/colly/v2"
-	"github.com/gocolly/colly/v2/extensions"
+	collyExtensions "github.com/gocolly/colly/v2/extensions"
 )
 
 type ScraperService struct {
@@ -38,14 +38,12 @@ var selectors = map[string][]string{
 const urlPattern = "https://www.google.com/search?q=%s"
 
 func (service *ScraperService) Run() error {
-	err := service.validateAttributes()
-	if err != nil {
-		service.updateKeywordStatus(models.Failed)
-		return err
+	if service.Keyword == nil {
+		return errors.New("Keyword object required")
 	}
 
 	service.Keyword.Status = models.Processing
-	err = models.UpdateKeyword(service.Keyword)
+	err := models.UpdateKeyword(service.Keyword)
 	if err != nil {
 		service.updateKeywordStatus(models.Failed)
 		return err
@@ -56,7 +54,7 @@ func (service *ScraperService) Run() error {
 		service.Collector = colly.NewCollector()
 	}
 
-	extensions.RandomUserAgent(service.Collector)
+	collyExtensions.RandomUserAgent(service.Collector)
 
 	service.Collector.OnRequest(func(r *colly.Request) {
 		logs.Info("Visiting: %s user-agent: %v", r.URL, r.Headers.Get("User-Agent"))
@@ -66,30 +64,35 @@ func (service *ScraperService) Run() error {
 		parsingResult.HTMLCode = string(r.Body[:])
 	})
 
+	service.Collector.OnError(func(r *colly.Response, err error) {
+		logs.Error("Request URL: %v failed with error: %v", r.Request.URL, err)
+		service.updateKeywordStatus(models.Failed)
+	})
+
 	for _, pattern := range selectors["nonAds"] {
 		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
-			link := checkLink(e.Attr("href"))
+			link := formatLink(e.Attr("href"))
 			parsingResult.NonAdwordLinks = append(parsingResult.NonAdwordLinks, link)
 		})
 	}
 
 	for _, pattern := range selectors["ads"] {
 		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
-			link := checkLink(e.Attr("href"))
+			link := formatLink(e.Attr("href"))
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		})
 	}
 
 	for _, pattern := range selectors["shopAds"] {
 		service.Collector.OnHTML(pattern, func(e *colly.HTMLElement) {
-			link := checkLink(e.Attr("href"))
+			link := formatLink(e.Attr("href"))
 			parsingResult.ShopAdwordLinks = append(parsingResult.ShopAdwordLinks, link)
 		})
 	}
 
 	// Need to check child nodes to detect ads links
 	service.Collector.OnHTML(selectors["mobileLinks"][0], func(e *colly.HTMLElement) {
-		link := checkLink(e.Attr("href"))
+		link := formatLink(e.Attr("href"))
 		if len(e.DOM.Find(selectors["mobileAds"][0]).Nodes) > 0 {
 			parsingResult.AdwordLinks = append(parsingResult.AdwordLinks, link)
 		} else {
@@ -114,19 +117,7 @@ func (service *ScraperService) GetParsingResult() ParsingResult {
 	return *service.parsingResult
 }
 
-func (service *ScraperService) validateAttributes() error {
-	if len(service.Keyword.Keyword) == 0 {
-		return errors.New("Keyword required")
-	}
-
-	if service.Keyword.User == nil {
-		return errors.New("User required")
-	}
-
-	return nil
-}
-
-func checkLink(link string) string {
+func formatLink(link string) string {
 	if strings.HasPrefix(link, "http") {
 		return link
 	} else {
