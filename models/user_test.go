@@ -19,8 +19,8 @@ var _ = Describe("User", func() {
 		Context("given valid attributes", func() {
 			It("returns the user ID", func() {
 				user := models.User{
-					Email:             "dev@nimblehq.co",
-					EncryptedPassword: "hashedPassword",
+					Email:             faker.Email(),
+					EncryptedPassword: faker.Password(),
 				}
 
 				userID, err := models.CreateUser(&user)
@@ -33,8 +33,8 @@ var _ = Describe("User", func() {
 
 			It("does NOT return error", func() {
 				user := models.User{
-					Email:             "dev@nimblehq.co",
-					EncryptedPassword: "hashedPassword",
+					Email:             faker.Email(),
+					EncryptedPassword: faker.Password(),
 				}
 				_, err := models.CreateUser(&user)
 
@@ -45,14 +45,15 @@ var _ = Describe("User", func() {
 		Context("given invalid attributes", func() {
 			Context("given email that already exist in database", func() {
 				It("returns an error", func() {
-					_, err := fabricators.FabricateUser("dev@nimblehq.co", faker.Password())
+					email := faker.Email()
+					_, err := fabricators.FabricateUser(email, faker.Password())
 					if err != nil {
 						Fail("Failed to fabricate user: " + err.Error())
 					}
 
 					user := models.User{
-						Email:             "dev@nimblehq.co",
-						EncryptedPassword: "password",
+						Email:             email,
+						EncryptedPassword: faker.Password(),
 					}
 					userID, err := models.CreateUser(&user)
 
