@@ -3,7 +3,7 @@ package controllers_test
 import (
 	"testing"
 
-	"github.com/hoangmirs/go-scraper/bootstrap"
+	"github.com/hoangmirs/go-scraper/db"
 	"github.com/hoangmirs/go-scraper/helpers"
 	_ "github.com/hoangmirs/go-scraper/routers"
 
@@ -19,5 +19,5 @@ func TestControllers(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	web.TestBeegoInit(helpers.RootDir())
-	bootstrap.SetUpDB()
+	db.SetUpDB()
 })

@@ -1,4 +1,4 @@
-package bootstrap
+package db
 
 import (
 	"fmt"

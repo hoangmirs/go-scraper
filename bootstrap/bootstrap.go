@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"fmt"
 
+	"github.com/hoangmirs/go-scraper/db"
 	"github.com/hoangmirs/go-scraper/helpers"
 	_ "github.com/hoangmirs/go-scraper/routers" // Routers
 
@@ -19,6 +20,6 @@ func init() {
 }
 
 func SetUp() {
-	SetUpDB()
-	SetupRedisPool()
+	db.SetUpDB()
+	db.SetupRedisPool()
 }

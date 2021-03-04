@@ -15,5 +15,5 @@ func TestScraper(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	bootstrap.SetUpDB()
+	bootstrap.SetUp()
 })

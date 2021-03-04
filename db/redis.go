@@ -1,4 +1,4 @@
-package bootstrap
+package db
 
 import (
 	"github.com/beego/beego/v2/server/web"
