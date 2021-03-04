@@ -13,7 +13,7 @@ type Context struct{}
 const MaxFails = 3
 
 func (c *Context) ScraperLog(job *work.Job, next work.NextMiddlewareFunc) error {
-	logs.Info("Starting %v job for keywordID: %v", job.Name, job.ArgString("keywordID"))
+	logs.Info("Starting %v job for keywordID: %v", job.Name, job.ArgInt64("keywordID"))
 
 	return next()
 }
