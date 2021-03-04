@@ -1,20 +1,38 @@
 package forms
 
 import (
+	"encoding/csv"
+	"errors"
+	"io"
 	"mime/multipart"
+
+	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
 )
 
 type KeywordForm struct {
-	File       multipart.File
-	FileHeader *multipart.FileHeader
+	File       multipart.File        `valid:"Required"`
+	FileHeader *multipart.FileHeader `valid:"Required"`
+	Keywords   []string
+	User       *models.User `valid:"Required"`
 }
 
 func (keywordForm *KeywordForm) Valid(v *validation.Validation) {
-	if keywordForm.FileHeader.Header.Get("Content-Type") != "text/csv" {
-		_ = v.SetError("File", "File type is not supported")
+	err := keywordForm.validateCSVFileType()
+	if err != nil {
+		_ = v.SetError("File", err.Error())
+	}
+
+	err = keywordForm.readCSVFile()
+	if err != nil {
+		_ = v.SetError("File", err.Error())
+	}
+
+	err = keywordForm.validateCSVLength()
+	if err != nil {
+		_ = v.SetError("File", err.Error())
 	}
 }
 
@@ -30,6 +48,38 @@ func (keywordForm *KeywordForm) Save() error {
 		for _, err := range valid.Errors {
 			return err
 		}
+	}
+
+	return nil
+}
+
+func (keywordForm *KeywordForm) readCSVFile() error {
+	reader := csv.NewReader(keywordForm.File)
+	for {
+		row, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			return errors.New("File cannot be opened")
+		}
+		keywordForm.Keywords = append(keywordForm.Keywords, row[0])
+	}
+
+	return nil
+}
+
+func (keywordForm *KeywordForm) validateCSVLength() error {
+	keywordLength := len(keywordForm.Keywords)
+	if keywordLength <= 0 || keywordLength > 1000 {
+		return errors.New("CSV file only accepts from 1 to 1000 keywords")
+	}
+
+	return nil
+}
+
+func (keywordForm *KeywordForm) validateCSVFileType() error {
+	if keywordForm.FileHeader.Header.Get("Content-Type") != "text/csv" {
+		return errors.New("File type is not supported")
 	}
 
 	return nil

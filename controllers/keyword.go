@@ -36,6 +36,7 @@ func (c *Keyword) Post() {
 	keywordForm := forms.KeywordForm{
 		File:       file,
 		FileHeader: fileHeader,
+		User:       c.CurrentUser,
 	}
 
 	err = keywordForm.Save()
