@@ -13,11 +13,15 @@ func SetupRedisPool() {
 		MaxIdle:   5,
 		Wait:      true,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", web.AppConfig.DefaultString("redisUrl", ""))
+			return GetRedisConnection()
 		},
 	}
 
 	RedisPool = pool
+}
+
+func GetRedisConnection() (redis.Conn, error) {
+	return redis.Dial("tcp", web.AppConfig.DefaultString("redisUrl", ""))
 }
 
 func GetRedisPool() *redis.Pool {

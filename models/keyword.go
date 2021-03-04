@@ -74,3 +74,13 @@ func UpdateKeyword(keyword *Keyword) error {
 	_, err := o.Update(keyword)
 	return err
 }
+
+// GetKeywordByID returns the Keyword by passing keywordID
+func GetKeywordByID(keywordID int64) (*Keyword, error) {
+	keyword := &Keyword{Base: Base{Id: uint(keywordID)}}
+
+	o := orm.NewOrm()
+	err := o.Read(keyword)
+
+	return keyword, err
+}

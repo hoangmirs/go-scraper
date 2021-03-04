@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/hoangmirs/go-scraper/models"
-	"github.com/hoangmirs/go-scraper/services/scraper"
 
 	"github.com/beego/beego/v2/core/logs"
 )
@@ -50,13 +49,7 @@ func (service *KeywordService) saveAndEnqueue() error {
 			logs.Error("Error when creating keyword: %v", err.Error())
 		}
 
-		scraperService := scraper.ScraperService{
-			Keyword: &keyword,
-		}
-		err = scraperService.Run()
-		if err != nil {
-			logs.Error("Error when scraping keyword: %v", err.Error())
-		}
+		EnqueueKeyword(keyword)
 	}
 
 	return nil
