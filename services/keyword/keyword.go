@@ -47,9 +47,14 @@ func (service *KeywordService) saveAndEnqueue() error {
 
 		if err != nil {
 			logs.Error("Error when creating keyword: %v", err.Error())
+			return err
 		}
 
-		EnqueueKeyword(keyword)
+		err = EnqueueKeyword(keyword)
+		if err != nil {
+			logs.Error("Error when enqueuing keyword: %v", err.Error())
+			return err
+		}
 	}
 
 	return nil
