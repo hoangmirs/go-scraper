@@ -7,6 +7,7 @@ import (
 	"mime/multipart"
 
 	"github.com/hoangmirs/go-scraper/models"
+	keywordservice "github.com/hoangmirs/go-scraper/services/keyword"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -48,6 +49,15 @@ func (keywordForm *KeywordForm) Save() error {
 		for _, err := range valid.Errors {
 			return err
 		}
+	}
+
+	keywordService := keywordservice.KeywordService{
+		Keywords: keywordForm.Keywords,
+		User:     keywordForm.User,
+	}
+	err = keywordService.Run()
+	if err != nil {
+		logs.Error("Run error:", err)
 	}
 
 	return nil

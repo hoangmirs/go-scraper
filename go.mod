@@ -6,7 +6,6 @@ require (
 	github.com/beego/beego/v2 v2.0.1
 	github.com/bxcodec/faker/v3 v3.6.0
 	github.com/dnaeon/go-vcr v1.1.0
-	github.com/gin-gonic/gin v1.6.3
 	github.com/gocolly/colly/v2 v2.1.0
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/lib/pq v1.9.0
