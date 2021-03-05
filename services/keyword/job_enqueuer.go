@@ -1,6 +1,7 @@
 package keyword
 
 import (
+	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/db"
 	"github.com/hoangmirs/go-scraper/models"
 
@@ -10,9 +11,9 @@ import (
 
 var enqueuer *work.Enqueuer
 
-func EnqueueKeyword(keyword models.Keyword) error {
+func enqueueKeyword(keyword models.Keyword) error {
 	setUpEnqueuer()
-	job, err := enqueuer.Enqueue("scrape", work.Q{"keywordID": keyword.Id})
+	job, err := enqueuer.Enqueue(conf.GetString("scraperJobName"), work.Q{"keywordID": keyword.Id})
 
 	if err != nil {
 		return err
