@@ -26,6 +26,6 @@ func enqueueKeyword(keyword models.Keyword) error {
 
 func setUpEnqueuer() {
 	if enqueuer == nil {
-		enqueuer = work.NewEnqueuer("go-scraper", db.GetRedisPool())
+		enqueuer = work.NewEnqueuer(conf.GetString("workerNamespace"), db.GetRedisPool())
 	}
 }
