@@ -18,9 +18,7 @@ var redisPool = &redis.Pool{
 	MaxActive: 5,
 	MaxIdle:   5,
 	Wait:      true,
-	Dial: func() (redis.Conn, error) {
-		return db.GetRedisConnection()
-	},
+	Dial:      db.GetRedisConnection,
 }
 
 func init() {
