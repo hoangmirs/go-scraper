@@ -12,9 +12,7 @@ func SetupRedisPool() {
 		MaxActive: 5,
 		MaxIdle:   5,
 		Wait:      true,
-		Dial: func() (redis.Conn, error) {
-			return GetRedisConnection()
-		},
+		Dial: GetRedisConnection,
 	}
 
 	RedisPool = pool
