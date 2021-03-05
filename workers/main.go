@@ -6,6 +6,7 @@ import (
 	"syscall"
 
 	"github.com/hoangmirs/go-scraper/bootstrap"
+	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/db"
 	"github.com/hoangmirs/go-scraper/workers/jobs"
 
@@ -26,11 +27,11 @@ func init() {
 }
 
 func main() {
-	pool := work.NewWorkerPool(jobs.Context{}, 5, "go-scraper", redisPool)
+	pool := work.NewWorkerPool(jobs.Context{}, 5, conf.GetString("workerNamespace"), redisPool)
 
 	pool.Middleware((*jobs.Context).ScraperLog)
 
-	pool.JobWithOptions("scrape", work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformScrape)
+	pool.JobWithOptions(conf.GetString("scraperJobName"), work.JobOptions{MaxFails: jobs.MaxFails}, (*jobs.Context).PerformScrape)
 
 	pool.Start()
 
