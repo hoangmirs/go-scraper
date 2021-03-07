@@ -3,7 +3,6 @@ package custom_matchers
 import (
 	"fmt"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocraft/work"
 	"github.com/onsi/gomega/types"
 )
@@ -30,7 +29,6 @@ func (matcher *EnqueueJobMatcher) Match(actual interface{}) (bool, error) {
 	}
 
 	for _, queue := range queues {
-		logs.Info("Hoang: %v:%v", queue.JobName, queue.Count)
 		if queue.JobName == matcher.jobName {
 			return queue.Count == matcher.count, nil
 		}
