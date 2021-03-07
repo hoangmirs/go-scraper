@@ -14,13 +14,19 @@ import (
 )
 
 type KeywordForm struct {
-	File       multipart.File        `valid:"Required"`
-	FileHeader *multipart.FileHeader `valid:"Required"`
-	Keywords   []string
+	File       multipart.File
+	FileHeader *multipart.FileHeader
 	User       *models.User `valid:"Required"`
+
+	Keywords []string
 }
 
 func (keywordForm *KeywordForm) Valid(v *validation.Validation) {
+	if keywordForm.File == nil {
+		_ = v.SetError("File", "File can not be empty")
+		return
+	}
+
 	err := keywordForm.validateCSVFileType()
 	if err != nil {
 		_ = v.SetError("File", err.Error())
@@ -39,10 +45,12 @@ func (keywordForm *KeywordForm) Valid(v *validation.Validation) {
 
 func (keywordForm *KeywordForm) Save() error {
 	valid := validation.Validation{}
+	logs.Info("hehe: %v", keywordForm)
 
 	success, err := valid.Valid(keywordForm)
 	if err != nil {
 		logs.Error("Validation error:", err)
+		return err
 	}
 
 	if !success {
@@ -55,6 +63,7 @@ func (keywordForm *KeywordForm) Save() error {
 		Keywords: keywordForm.Keywords,
 		User:     keywordForm.User,
 	}
+
 	err = keywordService.Run()
 	if err != nil {
 		logs.Error("Run error:", err)
