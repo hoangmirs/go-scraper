@@ -1,11 +1,11 @@
 package test_helpers
 
 import (
-	"github.com/gocraft/work"
 	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/db"
 
 	"github.com/beego/beego/v2/core/logs"
+	"github.com/gocraft/work"
 )
 
 func GetWorkerClient() *work.Client {

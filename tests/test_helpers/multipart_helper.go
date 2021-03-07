@@ -10,8 +10,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/beego/beego/v2/core/logs"
 	"github.com/hoangmirs/go-scraper/helpers"
+
+	"github.com/beego/beego/v2/core/logs"
 )
 
 func GetMultipartAttributesFromFile(filePath string, contentType string) (multipart.File, *multipart.FileHeader, error) {
