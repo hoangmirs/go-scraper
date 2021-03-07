@@ -18,7 +18,7 @@ var _ = Describe("KeywordForm", func() {
 	Describe("Save", func() {
 		Context("given valid attributes", func() {
 			It("does NOT return error", func() {
-				file, fileHeader, err := GetMultipartInfoFromFile("tests/fixtures/files/valid.csv", "text/csv")
+				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/valid.csv", "text/csv")
 				if err != nil {
 					Fail(err.Error())
 				}
@@ -63,7 +63,7 @@ var _ = Describe("KeywordForm", func() {
 
 		Context("given invalid file type", func() {
 			It("returns error", func() {
-				file, fileHeader, err := GetMultipartInfoFromFile("tests/fixtures/files/text.txt", "text/plain")
+				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/text.txt", "text/plain")
 				if err != nil {
 					Fail(err.Error())
 				}
@@ -87,7 +87,7 @@ var _ = Describe("KeywordForm", func() {
 
 		Context("given invalid keyword length", func() {
 			It("returns error", func() {
-				file, fileHeader, err := GetMultipartInfoFromFile("tests/fixtures/files/invalid.csv", "text/csv")
+				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/invalid.csv", "text/csv")
 				if err != nil {
 					Fail(err.Error())
 				}
@@ -111,7 +111,7 @@ var _ = Describe("KeywordForm", func() {
 
 		Context("given NO user object", func() {
 			It("returns error", func() {
-				file, fileHeader, err := GetMultipartInfoFromFile("tests/fixtures/files/valid.csv", "text/csv")
+				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/valid.csv", "text/csv")
 				if err != nil {
 					Fail(err.Error())
 				}

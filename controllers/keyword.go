@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -41,7 +40,7 @@ func (c *Keyword) Post() {
 
 	err = keywordForm.Save()
 	if err != nil {
-		flash.Error(fmt.Sprint(err))
+		flash.Error(err.Error())
 		flash.Store(&c.Controller)
 
 		c.Data["Form"] = keywordForm
