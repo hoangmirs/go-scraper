@@ -45,7 +45,6 @@ func (keywordForm *KeywordForm) Valid(v *validation.Validation) {
 
 func (keywordForm *KeywordForm) Save() error {
 	valid := validation.Validation{}
-	logs.Info("hehe: %v", keywordForm)
 
 	success, err := valid.Valid(keywordForm)
 	if err != nil {
