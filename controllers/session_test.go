@@ -76,7 +76,7 @@ var _ = Describe("SessionController", func() {
 
 				flashMessage := GetFlash(response.Result().Cookies())
 
-				Expect(flashMessage.Data["error"]).To(Equal("Email can not be empty"))
+				Expect(flashMessage.Data["error"]).To(Equal("Email cannot be empty"))
 			})
 		})
 	})
