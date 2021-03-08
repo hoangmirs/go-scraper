@@ -18,10 +18,7 @@ var _ = Describe("User", func() {
 	Describe("#CreateKeyword", func() {
 		Context("given valid attributes", func() {
 			It("returns the keyword ID", func() {
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keyword := models.Keyword{
 					Keyword:              "keyword",
@@ -45,10 +42,7 @@ var _ = Describe("User", func() {
 			})
 
 			It("does NOT return error", func() {
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keyword := models.Keyword{
 					Keyword:              "keyword",
@@ -63,7 +57,7 @@ var _ = Describe("User", func() {
 					User:                 user,
 				}
 
-				_, err = models.CreateKeyword(&keyword)
+				_, err := models.CreateKeyword(&keyword)
 				if err != nil {
 					Fail("Failed to create keyword: " + err.Error())
 				}
@@ -75,10 +69,7 @@ var _ = Describe("User", func() {
 		Context("given invalid attributes", func() {
 			Context("given NO keyword attribute", func() {
 				It("returns an error", func() {
-					user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-					if err != nil {
-						Fail("Failed to fabricate user: " + err.Error())
-					}
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 					keyword := models.Keyword{
 						LinksCount:           4,
@@ -92,7 +83,7 @@ var _ = Describe("User", func() {
 						User:                 user,
 					}
 
-					_, err = models.CreateKeyword(&keyword)
+					_, err := models.CreateKeyword(&keyword)
 
 					Expect(err.Error()).To(Equal("Keyword required"))
 				})
