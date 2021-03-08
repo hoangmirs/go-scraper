@@ -1,0 +1,36 @@
+.keyword.get,
+.keyword.post {
+  .keyword-main {
+    @apply flex-1 flex flex-col items-center justify-center;
+
+    &__title {
+      @apply mb-8 text-3xl text-center;
+    }
+
+    &__content {
+      @apply px-6 py-8 rounded bg-white text-black w-full shadow-md;
+    }
+
+    &__footer {
+      @apply text-gray-700 mt-6;
+    }
+  }
+
+  .keyword-upload-form {
+    &__title {
+      @apply text-lg font-semibold;
+    }
+
+    &__content {
+      @apply w-full flex flex-row mt-4;
+    }
+
+    &__file-input {
+      @apply w-3/4 m-0;
+    }
+
+    &__upload-btn {
+      @apply w-1/4 m-0 ml-4;
+    }
+  }
+}

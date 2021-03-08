@@ -7,9 +7,9 @@ import (
 )
 
 func init() {
-	web.Router("/", &controllers.MainController{})
+	web.Router("/", &controllers.Keyword{})
+	web.Router("/keyword", &controllers.Keyword{})
 	web.Router("/register", &controllers.Registration{})
 	web.Router("/login", &controllers.Session{})
 	web.Router("/logout", &controllers.Session{}, "get:Delete")
-	web.Router("/keyword", &controllers.Keyword{})
 }
