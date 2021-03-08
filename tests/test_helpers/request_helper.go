@@ -55,10 +55,7 @@ func makeRequest(method string, url string, headers http.Header, body io.Reader,
 }
 
 func getAuthenticationCookie(userInfo *UserInfo) *http.Cookie {
-	_, err := fabricators.FabricateUser(userInfo.Email, userInfo.Password)
-	if err != nil {
-		ginkgo.Fail("Failed to fabricate user: " + err.Error())
-	}
+	_ = fabricators.FabricateUser(userInfo.Email, userInfo.Password)
 
 	form := neturl.Values{
 		"email":    {userInfo.Email},

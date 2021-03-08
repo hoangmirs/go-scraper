@@ -23,10 +23,7 @@ var _ = Describe("KeywordForm", func() {
 					Fail(err.Error())
 				}
 
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keywordFrom := forms.KeywordForm{
 					File:       file,
@@ -44,10 +41,7 @@ var _ = Describe("KeywordForm", func() {
 	Context("given invalid attributes", func() {
 		Context("given NO file", func() {
 			It("returns error", func() {
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keywordFrom := forms.KeywordForm{
 					File:       nil,
@@ -55,9 +49,9 @@ var _ = Describe("KeywordForm", func() {
 					User:       user,
 				}
 
-				err = keywordFrom.Save()
+				err := keywordFrom.Save()
 
-				Expect(err.Error()).To(Equal("File can not be empty"))
+				Expect(err.Error()).To(Equal("File cannot be empty"))
 			})
 		})
 
@@ -68,10 +62,7 @@ var _ = Describe("KeywordForm", func() {
 					Fail(err.Error())
 				}
 
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keywordFrom := forms.KeywordForm{
 					File:       file,
@@ -92,10 +83,7 @@ var _ = Describe("KeywordForm", func() {
 					Fail(err.Error())
 				}
 
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail("Failed to fabricate user: " + err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keywordFrom := forms.KeywordForm{
 					File:       file,
@@ -124,7 +112,7 @@ var _ = Describe("KeywordForm", func() {
 
 				err = keywordFrom.Save()
 
-				Expect(err.Error()).To(Equal("User can not be empty"))
+				Expect(err.Error()).To(Equal("User cannot be empty"))
 			})
 		})
 	})

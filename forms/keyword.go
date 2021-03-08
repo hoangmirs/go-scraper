@@ -23,7 +23,7 @@ type KeywordForm struct {
 
 func (keywordForm *KeywordForm) Valid(v *validation.Validation) {
 	if keywordForm.File == nil {
-		_ = v.SetError("File", "File can not be empty")
+		_ = v.SetError("File", "File cannot be empty")
 		return
 	}
 
