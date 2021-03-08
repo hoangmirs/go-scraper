@@ -21,33 +21,27 @@ var _ = Describe("KeywordService", func() {
 	Describe("#Run", func() {
 		Context("given valid attributes", func() {
 			It("does NOT return error", func() {
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail(err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				service := keyword.KeywordService{
 					Keywords: []string{"iphone 12"},
 					User:     user,
 				}
 
-				err = service.Run()
+				err := service.Run()
 
 				Expect(err).To(BeNil())
 			})
 
 			It("enqueues the job", func() {
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail(err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				service := keyword.KeywordService{
 					Keywords: []string{"iphone 12"},
 					User:     user,
 				}
 
-				err = service.Run()
+				err := service.Run()
 				if err != nil {
 					Fail(err.Error())
 				}
@@ -62,17 +56,14 @@ var _ = Describe("KeywordService", func() {
 		Context("given invalid attributes", func() {
 			Context("given empty keywords", func() {
 				It("returns error", func() {
-					user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-					if err != nil {
-						Fail(err.Error())
-					}
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 					service := keyword.KeywordService{
 						Keywords: []string{},
 						User:     user,
 					}
 
-					err = service.Run()
+					err := service.Run()
 
 					Expect(err.Error()).To(Equal("Keywords are empty"))
 				})
