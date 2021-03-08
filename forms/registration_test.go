@@ -39,7 +39,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.CreateUser()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email can not be empty"))
+					Expect(err.Error()).To(Equal("Email cannot be empty"))
 				})
 			})
 
@@ -90,7 +90,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.CreateUser()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password can not be empty"))
+					Expect(err.Error()).To(Equal("Password cannot be empty"))
 				})
 			})
 

@@ -60,7 +60,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email can not be empty"))
+					Expect(err.Error()).To(Equal("Email cannot be empty"))
 				})
 
 				It("returns the error", func() {
@@ -84,7 +84,7 @@ var _ = Describe("SessionForm", func() {
 
 					user, err := sessionForm.Authenticate()
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password can not be empty"))
+					Expect(err.Error()).To(Equal("Password cannot be empty"))
 				})
 
 				It("returns the error", func() {
