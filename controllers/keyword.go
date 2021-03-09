@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/hoangmirs/go-scraper/forms"
+	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -20,6 +21,13 @@ func (c *Keyword) NestPrepare() {
 
 func (c *Keyword) Get() {
 	web.ReadFromRequest(&c.Controller)
+
+	keywords, err := models.GetKeywords(c.CurrentUser)
+	if err != nil {
+		logs.Error("Error when fetching keywords: %v", err)
+	}
+
+	c.Data["Keywords"] = keywords
 
 	c.renderKeywordView()
 }

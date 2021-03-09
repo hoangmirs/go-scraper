@@ -84,3 +84,14 @@ func GetKeywordByID(keywordID int64) (*Keyword, error) {
 
 	return keyword, err
 }
+
+// GetKeywords returns uploaded keywords of current user and the error if any
+func GetKeywords(user *User) ([]*Keyword, error) {
+	keywords := []*Keyword{}
+
+	o := orm.NewOrm()
+	// TODO : Support pagination. Now, it's returning last 10 records of the current user
+	_, err := o.QueryTable("keyword").Filter("user_id", user.Id).OrderBy("-id").Limit(10).All(&keywords)
+
+	return keywords, err
+}
