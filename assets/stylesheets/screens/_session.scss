@@ -1,5 +1,5 @@
-.session.get,
-.session.post {
+body.session.get,
+body.session.post {
   .session-wrapper {
     @apply flex flex-col;
   }
