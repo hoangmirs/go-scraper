@@ -1,3 +1,4 @@
+{{ if .Keywords }}
 <table>
   <thead>
     <tr>
@@ -8,18 +9,16 @@
     </tr>
   </thead>
   <tbody>
-    {{ if .Keywords }} {{ range $keyword := .Keywords }}
+    {{ range $keyword := .Keywords }}
     <tr>
       <td>{{ $keyword.Id }}</td>
       <td>{{ $keyword.Keyword }}</td>
       <td>{{ $keyword.Status }}</td>
       <td>{{ $keyword.CreatedAt }}</td>
     </tr>
-    {{ end }} {{ else }}
-    <tr>
-      <td colspan="100">No Keywords</td>
-    </tr>
     {{ end }}
   </tbody>
 </table>
-{{ template "shared/_pagination.html" . }}
+{{ else }}
+<div>No keywords were found</div>
+{{ end }} {{ template "shared/_pagination.html" . }}
