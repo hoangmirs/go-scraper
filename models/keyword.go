@@ -86,12 +86,21 @@ func GetKeywordByID(keywordID int64) (*Keyword, error) {
 }
 
 // GetKeywords returns uploaded keywords of current user and the error if any
-func GetKeywords(user *User) ([]*Keyword, error) {
+func GetKeywords(user *User, offset int, limit int) ([]*Keyword, error) {
 	keywords := []*Keyword{}
 
-	o := orm.NewOrm()
-	// TODO : Support pagination. Now, it's returning last 10 records of the current user
-	_, err := o.QueryTable("keyword").Filter("user_id", user.Id).OrderBy("-id").Limit(10).All(&keywords)
+	_, err := userKeywords(user).OrderBy("-id").Limit(limit, offset).All(&keywords)
 
 	return keywords, err
+}
+
+// GetKeywordsCount returns the number of current user's uploaded keywords
+func GetKeywordsCount(user *User) (int64, error) {
+	return userKeywords(user).Count()
+}
+
+func userKeywords(user *User) orm.QuerySeter {
+	o := orm.NewOrm()
+
+	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
 }

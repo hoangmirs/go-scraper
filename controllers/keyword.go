@@ -4,11 +4,13 @@ import (
 	"html/template"
 	"net/http"
 
+	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/forms"
 	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/beego/beego/v2/server/web/pagination"
 )
 
 type Keyword struct {
@@ -21,13 +23,6 @@ func (c *Keyword) NestPrepare() {
 
 func (c *Keyword) Get() {
 	web.ReadFromRequest(&c.Controller)
-
-	keywords, err := models.GetKeywords(c.CurrentUser)
-	if err != nil {
-		logs.Error("Error when fetching keywords: %v", err)
-	}
-
-	c.Data["Keywords"] = keywords
 
 	c.renderKeywordView()
 }
@@ -63,6 +58,20 @@ func (c *Keyword) Post() {
 }
 
 func (c *Keyword) renderKeywordView() {
+	keywordsCount, err := models.GetKeywordsCount(c.CurrentUser)
+	if err != nil {
+		logs.Error("Error when getting keywords count: %v", err)
+	}
+
+	keywordsPerPage := conf.GetInt("perPage")
+	paginator := pagination.SetPaginator(c.Ctx, keywordsPerPage, keywordsCount)
+
+	keywords, err := models.GetKeywords(c.CurrentUser, paginator.Offset(), keywordsPerPage)
+	if err != nil {
+		logs.Error("Error when fetching keywords: %v", err)
+	}
+
+	c.Data["Keywords"] = keywords
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.Layout = "layouts/application.html"
 	c.TplName = "keyword/index.html"
