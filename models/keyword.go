@@ -87,19 +87,27 @@ func GetKeywordByID(keywordID int64) (*Keyword, error) {
 
 // GetKeywords returns uploaded keywords of current user and the error if any
 func GetKeywords(user *User, offset int, limit int) ([]*Keyword, error) {
+	if user == nil {
+		return nil, errors.New("User is blank")
+	}
+
 	keywords := []*Keyword{}
 
-	_, err := userKeywords(user).OrderBy("-id").Limit(limit, offset).All(&keywords)
+	_, err := userKeywordsQuerySeter(user).OrderBy("-id").Limit(limit, offset).All(&keywords)
 
 	return keywords, err
 }
 
 // GetKeywordsCount returns the number of current user's uploaded keywords
 func GetKeywordsCount(user *User) (int64, error) {
-	return userKeywords(user).Count()
+	if user == nil {
+		return 0, errors.New("User is blank")
+	}
+
+	return userKeywordsQuerySeter(user).Count()
 }
 
-func userKeywords(user *User) orm.QuerySeter {
+func userKeywordsQuerySeter(user *User) orm.QuerySeter {
 	o := orm.NewOrm()
 
 	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
