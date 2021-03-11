@@ -7,7 +7,7 @@ import (
 	"mime/multipart"
 
 	"github.com/hoangmirs/go-scraper/models"
-	service "github.com/hoangmirs/go-scraper/services/keyword"
+	"github.com/hoangmirs/go-scraper/services/keyword"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/core/validation"
@@ -58,7 +58,7 @@ func (keywordForm *KeywordForm) Save() error {
 		}
 	}
 
-	keywordService := service.KeywordService{
+	keywordService := keyword.KeywordService{
 		Keywords: keywordForm.Keywords,
 		User:     keywordForm.User,
 	}

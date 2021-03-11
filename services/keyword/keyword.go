@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/hoangmirs/go-scraper/models"
+	"github.com/hoangmirs/go-scraper/services/jobenqueuer"
 
 	"github.com/beego/beego/v2/core/logs"
 )
@@ -41,16 +42,16 @@ func (service *KeywordService) validate() error {
 
 func (service *KeywordService) saveAndEnqueue() error {
 	for _, value := range service.Keywords {
-		keyword := models.Keyword{Keyword: value, User: service.User}
+		keyword := &models.Keyword{Keyword: value, User: service.User}
 
-		_, err := models.CreateKeyword(&keyword)
+		_, err := models.CreateKeyword(keyword)
 
 		if err != nil {
 			logs.Error("Error when creating keyword: %v", err.Error())
 			return err
 		}
 
-		err = enqueueKeyword(keyword)
+		err = jobenqueuer.EnqueueKeyword(keyword)
 		if err != nil {
 			logs.Error("Error when enqueuing keyword: %v", err.Error())
 			return err
