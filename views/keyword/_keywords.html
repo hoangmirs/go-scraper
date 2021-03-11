@@ -1,20 +1,53 @@
 {{ if .Keywords }}
-<table>
+<table class="table table-keywords">
+  <colgroup>
+    <col span="1" class="table-keywords__id-width" />
+    <col span="1" class="table-keywords__keyword-width" />
+    <col span="1" class="table-keywords__status-width" />
+    <col span="1" class="table-keywords__created-date-width" />
+    <col span="1" class="table-keywords__actions-width" />
+  </colgroup>
+
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Keyword</th>
-      <th>Status</th>
-      <th>Created At</th>
+      <th class="table-keywords__item table-keywords__item--center">Id</th>
+      <th class="table-keywords__item table-keywords__item--left">Keyword</th>
+      <th class="table-keywords__item table-keywords__item--center">Status</th>
+      <th class="table-keywords__item table-keywords__item--center">
+        Created At
+      </th>
+      <th
+        class="table-keywords__item table-keywords__item--center table-keywords__actions"
+      >
+        Actions
+      </th>
     </tr>
   </thead>
   <tbody>
     {{ range $keyword := .Keywords }}
     <tr>
-      <td>{{ $keyword.Id }}</td>
-      <td>{{ $keyword.Keyword }}</td>
-      <td>{{ $keyword.Status }}</td>
-      <td>{{ $keyword.CreatedAt }}</td>
+      <td class="table-keywords__item table-keywords__item--center">
+        {{ $keyword.Id }}
+      </td>
+      <td class="table-keywords__item table-keywords__item--left">
+        {{ $keyword.Keyword }}
+      </td>
+      <td class="table-keywords__item table-keywords__item--center">
+        <span class="badge-status badge-status--{{ $keyword.Status }}"
+          >{{ $keyword.Status }}</span
+        >
+      </td>
+      <td class="table-keywords__item table-keywords__item--center">
+        {{ date $keyword.CreatedAt "Y-m-d H:i:s" }}
+      </td>
+      <td>
+        <div class="table-keywords__actions">
+          <a href="#" class="table-keywords__icon"> {{ render_icon "eye" }} </a>
+          <a href="#" class="table-keywords__icon">
+            {{ render_icon "trash" }}
+          </a>
+        </div>
+      </td>
     </tr>
     {{ end }}
   </tbody>
