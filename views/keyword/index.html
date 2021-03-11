@@ -1,27 +1,24 @@
-<div class="keyword-main">
-  <h1 class="keyword-main__title">{{ .Title }}</h1>
-  <div class="keyword-main__content">
-    <form
-      class="form form-keyword-upload"
-      action="/keyword"
-      method="POST"
-      enctype="multipart/form-data"
-    >
-      {{ .xsrfdata }}
-      <h3 class="form-keyword-upload__title">Upload CSV file</h3>
-      <div class="form-keyword-upload__content">
-        <input
-          type="file"
-          required
-          class="form__input form-keyword-upload__file-input"
-          name="file"
-          accept="text/csv"
-        />
+<div class="card-keyword">
+  <form
+    class="form form-keyword-upload"
+    action="/keyword"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {{ .xsrfdata }}
+    <h3 class="form-keyword-upload__title">Upload CSV file</h3>
+    <div class="form-keyword-upload__content">
+      <input
+        type="file"
+        required
+        class="form__input form-keyword-upload__input-file"
+        name="file"
+        accept="text/csv"
+      />
 
-        <button type="submit" class="btn form-keyword-upload__upload-btn">
-          Upload
-        </button>
-      </div>
-    </form>
-  </div>
+      <button type="submit" class="btn form-keyword-upload__btn-upload">
+        Upload
+      </button>
+    </div>
+  </form>
 </div>
