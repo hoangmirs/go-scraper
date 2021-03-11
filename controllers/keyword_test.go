@@ -66,6 +66,7 @@ var _ = Describe("KeywordController", func() {
 				response := MakeAuthenticatedRequest("POST", "/keyword", headers, body, userInfo)
 
 				flashMessage := GetFlash(response.Result().Cookies())
+
 				Expect(flashMessage.Data["success"]).To(Equal("Processing uploaded keywords"))
 			})
 		})
@@ -95,6 +96,7 @@ var _ = Describe("KeywordController", func() {
 				response := MakeAuthenticatedRequest("POST", "/keyword", headers, body, userInfo)
 
 				flashMessage := GetFlash(response.Result().Cookies())
+
 				Expect(flashMessage.Data["error"]).To(Equal("File type is not supported"))
 			})
 		})
