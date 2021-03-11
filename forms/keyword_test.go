@@ -1,11 +1,11 @@
 package forms_test
 
 import (
-	"github.com/bxcodec/faker/v3"
 	"github.com/hoangmirs/go-scraper/forms"
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
+	"github.com/bxcodec/faker/v3"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -40,7 +40,7 @@ var _ = Describe("KeywordForm", func() {
 
 	Context("given invalid attributes", func() {
 		Context("given NO file", func() {
-			It("returns error", func() {
+			It("returns an error", func() {
 				user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 				keywordFrom := forms.KeywordForm{
@@ -56,7 +56,7 @@ var _ = Describe("KeywordForm", func() {
 		})
 
 		Context("given invalid file type", func() {
-			It("returns error", func() {
+			It("returns an error", func() {
 				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/text.txt", "text/plain")
 				if err != nil {
 					Fail(err.Error())
@@ -77,7 +77,7 @@ var _ = Describe("KeywordForm", func() {
 		})
 
 		Context("given invalid keyword length", func() {
-			It("returns error", func() {
+			It("returns an error", func() {
 				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/invalid.csv", "text/csv")
 				if err != nil {
 					Fail(err.Error())
@@ -98,7 +98,7 @@ var _ = Describe("KeywordForm", func() {
 		})
 
 		Context("given NO user object", func() {
-			It("returns error", func() {
+			It("returns an error", func() {
 				file, fileHeader, err := GetMultipartAttributesFromFile("tests/fixtures/files/valid.csv", "text/csv")
 				if err != nil {
 					Fail(err.Error())

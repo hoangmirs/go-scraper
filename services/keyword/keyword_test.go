@@ -55,7 +55,7 @@ var _ = Describe("KeywordService", func() {
 
 		Context("given invalid attributes", func() {
 			Context("given empty keywords", func() {
-				It("returns error", func() {
+				It("returns an error", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
 
 					service := keyword.KeywordService{
@@ -69,8 +69,8 @@ var _ = Describe("KeywordService", func() {
 				})
 			})
 
-			Context("given empty keywords", func() {
-				It("returns error", func() {
+			Context("given NO user object", func() {
+				It("returns an error", func() {
 					service := keyword.KeywordService{
 						Keywords: []string{"iphone 12"},
 						User:     nil,
