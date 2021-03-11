@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/hoangmirs/go-scraper/forms"
 	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
+	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	. "github.com/onsi/ginkgo"
@@ -35,17 +35,13 @@ var _ = Describe("SessionController", func() {
 	Describe("POST", func() {
 		Context("given valid params", func() {
 			It("returns status FOUND", func() {
-				// TODO : Using fabricator
-				registrationForm := forms.RegistrationForm{
-					Email:                "hoang@nimblehq.co",
-					Password:             "123456",
-					PasswordConfirmation: "123456",
-				}
-				_, _ = registrationForm.CreateUser()
+				email := "hoang@nimblehq.co"
+				password := "123456"
+				_ = fabricators.FabricateUser(email, password)
 
 				form := url.Values{
-					"email":    {"hoang@nimblehq.co"},
-					"password": {"123456"},
+					"email":    {email},
+					"password": {password},
 				}
 				body := strings.NewReader(form.Encode())
 				response := MakeRequest("POST", "/login", body)

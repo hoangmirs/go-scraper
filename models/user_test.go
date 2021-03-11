@@ -46,10 +46,7 @@ var _ = Describe("User", func() {
 			Context("given email that already exist in database", func() {
 				It("returns an error", func() {
 					email := faker.Email()
-					_, err := fabricators.FabricateUser(email, faker.Password())
-					if err != nil {
-						Fail("Failed to fabricate user: " + err.Error())
-					}
+					_ = fabricators.FabricateUser(email, faker.Password())
 
 					user := models.User{
 						Email:             email,

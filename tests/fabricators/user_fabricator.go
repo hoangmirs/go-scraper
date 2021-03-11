@@ -5,25 +5,23 @@ import (
 	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/client/orm"
-	"github.com/beego/beego/v2/core/logs"
+	"github.com/onsi/ginkgo"
 )
 
-func FabricateUser(email string, password string) (*models.User, error) {
+func FabricateUser(email string, password string) *models.User {
 	o := orm.NewOrm()
 
 	hashedPassword, err := helpers.HashPassword(password)
 	if err != nil {
-		logs.Error("Hashing password error:", err)
-		return nil, err
+		ginkgo.Fail("Hashing password error:" + err.Error())
 	}
 	user := &models.User{Email: email}
 	user.EncryptedPassword = hashedPassword
 
 	_, err = o.Insert(user)
 	if err != nil {
-		logs.Error("Creating user error: ", err)
-		return nil, err
+		ginkgo.Fail("Fabricate user error:" + err.Error())
 	}
 
-	return user, nil
+	return user
 }
