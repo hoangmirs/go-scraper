@@ -36,15 +36,8 @@ var _ = Describe("ScraperService", func() {
 					}
 				}()
 
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail(err.Error())
-				}
-
-				keyword, err := fabricators.FabricateKeyword("iphone 12", user)
-				if err != nil {
-					Fail(err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := fabricators.FabricateKeyword("iphone 12", user)
 
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)
@@ -76,15 +69,8 @@ var _ = Describe("ScraperService", func() {
 				}()
 
 				searchKeyword := "iphone 12"
-				user, err := fabricators.FabricateUser(faker.Email(), faker.Password())
-				if err != nil {
-					Fail(err.Error())
-				}
-
-				keyword, err := fabricators.FabricateKeyword("iphone 12", user)
-				if err != nil {
-					Fail(err.Error())
-				}
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := fabricators.FabricateKeyword("iphone 12", user)
 
 				collector := colly.NewCollector()
 				collector.WithTransport(rec)

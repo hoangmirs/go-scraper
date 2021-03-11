@@ -2,6 +2,7 @@ package forms_test
 
 import (
 	"github.com/hoangmirs/go-scraper/forms"
+	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	. "github.com/onsi/ginkgo"
@@ -39,27 +40,23 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.CreateUser()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Email can not be empty"))
+					Expect(err.Error()).To(Equal("Email cannot be empty"))
 				})
 			})
 
 			Context("given an existing email", func() {
 				It("returns the correct error message and does NOT create new user", func() {
-					// TODO : Using fabricator
-					registrationForm1 := forms.RegistrationForm{
-						Email:                "hoang@nimblehq.co",
-						Password:             "123456",
-						PasswordConfirmation: "123456",
-					}
-					_, _ = registrationForm1.CreateUser()
+					email := "hoang@nimblehq.co"
+					password := "123456"
+					_ = fabricators.FabricateUser(email, password)
 
-					registrationForm2 := forms.RegistrationForm{
+					registrationForm := forms.RegistrationForm{
 						Email:                "hoang@nimblehq.co",
 						Password:             "123456",
 						PasswordConfirmation: "123456",
 					}
 
-					user, err := registrationForm2.CreateUser()
+					user, err := registrationForm.CreateUser()
 
 					Expect(user).To(BeNil())
 					Expect(err.Error()).To(Equal("Email already exists"))
@@ -90,7 +87,7 @@ var _ = Describe("RegistrationForm", func() {
 					user, err := registrationForm.CreateUser()
 
 					Expect(user).To(BeNil())
-					Expect(err.Error()).To(Equal("Password can not be empty"))
+					Expect(err.Error()).To(Equal("Password cannot be empty"))
 				})
 			})
 
