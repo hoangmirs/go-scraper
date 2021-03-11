@@ -1,8 +1,8 @@
 <div class="registration-wrapper">
-  <div class="registration-card">
-    <div class="registration-card__content">
-      <h1 class="registration-card__title">{{ .Title }}</h1>
-      <form class="registration-form form" action="/register" method="POST">
+  <div class="card-registration">
+    <div class="card-registration__content">
+      <h1 class="card-registration__title">{{ .Title }}</h1>
+      <form class="form-registration form" action="/register" method="POST">
         {{ .xsrfdata }}
 
         <input
@@ -31,16 +31,20 @@
 
         <button type="submit" class="btn btn--full">Create Account</button>
 
-        <div class="registration-form__terms-privacy">
+        <div class="form-registration__terms-privacy">
           By signing up, you agree to the
-          <a class="custom-link custom-link--secondary" href="#"> Terms of Service </a>
+          <a class="custom-link custom-link--secondary" href="#">
+            Terms of Service
+          </a>
           and
-          <a class="custom-link custom-link--secondary" href="#"> Privacy Policy </a>
+          <a class="custom-link custom-link--secondary" href="#">
+            Privacy Policy
+          </a>
         </div>
       </form>
     </div>
 
-    <div class="registration-card__footer">
+    <div class="card-registration__footer">
       Already have an account?
       <a class="custom-link" href="/login">Log in</a>.
     </div>
