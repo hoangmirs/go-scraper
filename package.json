@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Project repository template to set up all public projects at [Nimble](https://nimblehq.co/)",
   "scripts": {
-    "dev": "webpack --watch --config conf/webpack.dev.js",
-    "build": "NODE_ENV=production webpack --config conf/webpack.prod.js"
+    "dev": "npm run generate-svg-sprite && webpack --watch --config conf/webpack.dev.js",
+    "build": "npm run generate-svg-sprite && NODE_ENV=production webpack --config conf/webpack.prod.js",
+    "generate-svg-sprite": "svg-sprite -cD static -cscss assets/images/icons/*.svg"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
     "stimulus": "2.0.0",
     "stimulus-use": "0.22.1",
     "style-loader": "2.0.0",
+    "svg-sprite": "1.5.0",
     "tailwindcss": "2.0.2",
     "webpack": "5.10.0",
     "webpack-cli": "4.2.0",
