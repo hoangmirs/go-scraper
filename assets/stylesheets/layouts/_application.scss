@@ -11,5 +11,17 @@
     @screen lg {
       @apply px-8;
     }
+
+    &__title {
+      @apply text-3xl text-center;
+    }
+
+    &__message {
+      @apply mt-4;
+    }
+
+    &__content {
+      @apply w-full mt-4 px-6 py-8 rounded bg-white text-black shadow-md;
+    }
   }
 }
