@@ -24,4 +24,5 @@ func SetUp() {
 	db.SetUpDB()
 	db.SetupRedisPool()
 	jobenqueuer.SetUpEnqueuer()
+	SetUpTemplateFunction()
 }
