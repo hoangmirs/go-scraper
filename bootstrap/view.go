@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -32,10 +33,17 @@ func renderFile(path string) template.HTML {
 	return web.Str2html(string(content))
 }
 
-func renderIcon(iconName string) template.HTML {
-	iconTemplate := `<svg class="icon" viewBox="0 0 16 16">
-		<use xlink:href="#` + iconName + `" />
+func renderIcon(iconName string, options ...string) template.HTML {
+	iconTemplate := `<svg class="icon %s" viewBox="0 0 16 16">
+		<use xlink:href="#%s" />
 	</svg>`
 
-	return web.Str2html(iconTemplate)
+	var classList string
+	if len(options) > 0 {
+		classList = options[0]
+	}
+
+	htmlString := fmt.Sprintf(iconTemplate, classList, iconName)
+
+	return web.Str2html(htmlString)
 }
