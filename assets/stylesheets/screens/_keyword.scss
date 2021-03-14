@@ -1,0 +1,24 @@
+body.keyword.get,
+body.keyword.post {
+  .card-keyword {
+    @apply w-full;
+
+    .form-keyword-upload {
+      &__title {
+        @apply text-lg font-semibold;
+      }
+
+      &__content {
+        @apply w-full flex flex-row mt-4;
+      }
+
+      &__input-file {
+        @apply w-3/4 m-0;
+      }
+
+      &__btn-upload {
+        @apply w-1/4 m-0 ml-4;
+      }
+    }
+  }
+}
