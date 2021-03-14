@@ -6,16 +6,16 @@
           <a class="navigation-menu__logo" href="/">
             <span class="sr-only">Go Scraper</span>
           </a>
+          {{ if .CurrentUser }}
           <div class="navigation-menu__items">
             <div class="menu-items">
               <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
               <a href="#" class="menu-items__item menu-items__item--active"
                 >Dashboard</a
               >
-
-              <a href="#" class="menu-items__item">Keywords</a>
             </div>
           </div>
+          {{ end }}
         </div>
         <div class="navigation-menu__right">
           <!-- Profile dropdown -->

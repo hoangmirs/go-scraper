@@ -1,4 +1,4 @@
-package models_test
+package jobenqueuer_test
 
 import (
 	"testing"
@@ -9,9 +9,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestModels(t *testing.T) {
+func TestJobenqueuer(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Models Suite")
+	RunSpecs(t, "JobEnqueuer Suite")
 }
 
 var _ = BeforeSuite(func() {

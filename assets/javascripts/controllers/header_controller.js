@@ -3,7 +3,7 @@ import { useClickOutside } from "stimulus-use";
 
 export default class extends Controller {
   static targets = ["profileMenu"];
-  static classes = ["profileMenuShow"]
+  static classes = ["profileMenuShow"];
 
   connect() {
     useClickOutside(this);
@@ -14,8 +14,6 @@ export default class extends Controller {
   }
 
   clickOutside(e) {
-    e.preventDefault();
-
     this.profileMenuTarget.classList.remove(this.profileMenuShowClass);
   }
 }

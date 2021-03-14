@@ -18,6 +18,6 @@ func TestControllers(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
+	bootstrap.SetUp()
 	web.TestBeegoInit(helpers.RootDir())
-	bootstrap.SetUpDB()
 })

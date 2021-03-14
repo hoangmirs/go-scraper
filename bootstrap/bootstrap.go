@@ -3,8 +3,10 @@ package bootstrap
 import (
 	"fmt"
 
+	"github.com/hoangmirs/go-scraper/db"
 	"github.com/hoangmirs/go-scraper/helpers"
 	_ "github.com/hoangmirs/go-scraper/routers" // Routers
+	"github.com/hoangmirs/go-scraper/services/jobenqueuer"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -19,5 +21,7 @@ func init() {
 }
 
 func SetUp() {
-	SetUpDB()
+	db.SetUpDB()
+	db.SetupRedisPool()
+	jobenqueuer.SetUpEnqueuer()
 }
