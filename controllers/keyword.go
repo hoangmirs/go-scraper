@@ -23,8 +23,11 @@ func (c *Keyword) NestPrepare() {
 
 func (c *Keyword) Get() {
 	web.ReadFromRequest(&c.Controller)
+	flash := web.NewFlash()
 
-	c.renderKeywordView()
+	c.renderKeywordView(flash)
+
+	flash.Store(&c.Controller)
 }
 
 func (c *Keyword) Post() {
@@ -44,11 +47,12 @@ func (c *Keyword) Post() {
 	err = keywordForm.Save()
 	if err != nil {
 		flash.Error(err.Error())
-		flash.Store(&c.Controller)
 
 		c.Data["Form"] = keywordForm
 
-		c.renderKeywordView()
+		c.renderKeywordView(flash)
+
+		flash.Store(&c.Controller)
 	} else {
 		flash.Success("Processing uploaded keywords")
 		flash.Store(&c.Controller)
@@ -57,10 +61,11 @@ func (c *Keyword) Post() {
 	}
 }
 
-func (c *Keyword) renderKeywordView() {
+func (c *Keyword) renderKeywordView(flash *web.FlashData) {
 	keywordsCount, err := models.GetKeywordsCount(c.CurrentUser)
 	if err != nil {
 		logs.Error("Error when getting keywords count: %v", err)
+		flash.Error(err.Error())
 	}
 
 	keywordsPerPage := conf.GetInt("perPage")
@@ -69,6 +74,7 @@ func (c *Keyword) renderKeywordView() {
 	keywords, err := models.GetKeywords(c.CurrentUser, paginator.Offset(), keywordsPerPage)
 	if err != nil {
 		logs.Error("Error when fetching keywords: %v", err)
+		flash.Error(err.Error())
 	}
 
 	c.Data["Keywords"] = keywords
