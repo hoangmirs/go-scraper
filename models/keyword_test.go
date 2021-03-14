@@ -155,6 +155,39 @@ var _ = Describe("User", func() {
 		})
 	})
 
+	Describe("#GetKeywords", func() {
+		Context("given valid attributes", func() {
+			It("returns uploaded keywords of user with the correct ordering", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword1 := fabricators.FabricateKeyword("keyword 1", user)
+				keyword2 := fabricators.FabricateKeyword("keyword 2", user)
+
+				offset := 0
+				limit := 2
+				keywords, err := models.GetKeywords(user, offset, limit)
+				if err != nil {
+					Fail("Failed to get keywords: " + err.Error())
+				}
+
+				Expect(keywords[0].Id).To(Equal(keyword2.Id))
+				Expect(keywords[1].Id).To(Equal(keyword1.Id))
+			})
+		})
+
+		Context("given invalid attributes", func() {
+			Context("given NO user", func() {
+				It("returns an error", func() {
+					offset := 0
+					limit := 2
+
+					_, err := models.GetKeywords(nil, offset, limit)
+
+					Expect(err.Error()).To(Equal("User is blank"))
+				})
+			})
+		})
+	})
+
 	Describe("#GetKeywordsCount", func() {
 		Context("given a user", func() {
 			It("returns the number of keywords of the user", func() {
@@ -177,39 +210,6 @@ var _ = Describe("User", func() {
 				_, err := models.GetKeywordsCount(nil)
 
 				Expect(err.Error()).To(Equal("User is blank"))
-			})
-		})
-	})
-
-	Describe("#GetKeywords", func() {
-		Context("given valid attributes", func() {
-			It("returns uploaded keywords of user with the correct ordering", func() {
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				keyword1 := fabricators.FabricateKeyword("keyword 1", user)
-				keyword2 := fabricators.FabricateKeyword("keyword 2", user)
-
-				offset := 0
-				limit := 2
-				keywords, err := models.GetKeywords(user, offset, limit)
-				if err != nil {
-					Fail("Failed to get keywords: " + err.Error())
-				}
-
-				Expect(keywords[0].Id).To(Equal(keyword2.Id))
-				Expect(keywords[1].Id).To(Equal(keyword1.Id))
-			})
-		})
-
-		Context("given invalid attributes", func() {
-			Context("given an invalid user", func() {
-				It("returns an error", func() {
-					offset := 0
-					limit := 2
-
-					_, err := models.GetKeywords(nil, offset, limit)
-
-					Expect(err.Error()).To(Equal("User is blank"))
-				})
 			})
 		})
 	})
