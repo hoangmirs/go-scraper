@@ -1,23 +1,23 @@
 {{ if .Keywords }}
-<table class="table table-keywords">
+<table class="table table-keyword">
   <colgroup>
-    <col span="1" class="table-keywords__id-width" />
-    <col span="1" class="table-keywords__keyword-width" />
-    <col span="1" class="table-keywords__status-width" />
-    <col span="1" class="table-keywords__created-date-width" />
-    <col span="1" class="table-keywords__actions-width" />
+    <col span="1" class="table-keyword__id-width" />
+    <col span="1" class="table-keyword__keyword-width" />
+    <col span="1" class="table-keyword__status-width" />
+    <col span="1" class="table-keyword__created-date-width" />
+    <col span="1" class="table-keyword__action-width" />
   </colgroup>
 
   <thead>
     <tr>
-      <th class="table-keywords__item table-keywords__item--center">Id</th>
-      <th class="table-keywords__item table-keywords__item--left">Keyword</th>
-      <th class="table-keywords__item table-keywords__item--center">Status</th>
-      <th class="table-keywords__item table-keywords__item--center">
+      <th class="table-keyword__item table-keyword__item--center">Id</th>
+      <th class="table-keyword__item table-keyword__item--left">Keyword</th>
+      <th class="table-keyword__item table-keyword__item--center">Status</th>
+      <th class="table-keyword__item table-keyword__item--center">
         Created At
       </th>
       <th
-        class="table-keywords__item table-keywords__item--center table-keywords__actions"
+        class="table-keyword__item table-keyword__item--center table-keyword__action"
       >
         Actions
       </th>
@@ -26,24 +26,24 @@
   <tbody>
     {{ range $keyword := .Keywords }}
     <tr>
-      <td class="table-keywords__item table-keywords__item--center">
+      <td class="table-keyword__item table-keyword__item--center">
         {{ $keyword.Id }}
       </td>
-      <td class="table-keywords__item table-keywords__item--left">
+      <td class="table-keyword__item table-keyword__item--left">
         {{ $keyword.Keyword }}
       </td>
-      <td class="table-keywords__item table-keywords__item--center">
+      <td class="table-keyword__item table-keyword__item--center">
         <span class="badge-status badge-status--{{ $keyword.Status }}"
           >{{ $keyword.Status }}</span
         >
       </td>
-      <td class="table-keywords__item table-keywords__item--center">
+      <td class="table-keyword__item table-keyword__item--center">
         {{ date $keyword.CreatedAt "Y-m-d H:i:s" }}
       </td>
       <td>
-        <div class="table-keywords__actions">
-          <a href="#" class="table-keywords__icon"> {{ render_icon "eye" }} </a>
-          <a href="#" class="table-keywords__icon">
+        <div class="table-keyword__action">
+          <a href="#" class="table-keyword__icon"> {{ render_icon "eye" }} </a>
+          <a href="#" class="table-keyword__icon">
             {{ render_icon "trash" }}
           </a>
         </div>

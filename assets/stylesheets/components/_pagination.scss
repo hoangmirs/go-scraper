@@ -1,7 +1,7 @@
 .pagination {
   @apply bg-white py-3 flex items-center justify-between border-t border-gray-200;
 
-  &__main {
+  &__wrapper {
     @apply flex-1 flex items-center justify-between;
   }
 
