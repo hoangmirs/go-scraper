@@ -1,40 +1,74 @@
-<div class="card-keyword">
-  <div>Keyword: {{ .KeywordPresenter.Keyword.Keyword }}</div>
-  <div>Status: {{ .KeywordPresenter.Keyword.Status }}</div>
-  <div>Date: {{ date .KeywordPresenter.Keyword.CreatedAt "Y-m-d H:i:s" }}</div>
+<div class="keyword-wrapper">
   <div>
-    HTML:
-    <a href="{{ urlfor `Keyword.ShowHTML` `:id` .Keyword.Id }}">View page</a>
+    <h1 class="keyword-title">{{ .KeywordPresenter.Keyword.Keyword }}</h1>
+    <div>
+      <span class="badge-status badge-status--{{ .Keyword.Status }}"
+        >{{ .KeywordPresenter.Keyword.Status }}</span
+      >
+      at
+      <span class="keyword-date"
+        >{{ date .KeywordPresenter.Keyword.UpdatedAt "Y-m-d H:i:s" }}</span
+      >
+    </div>
+    <a href="{{ urlfor `Keyword.ShowHTML` `:id` .KeywordPresenter.Keyword.Id }}" target="_blank">
+      {{ render_icon "website" "button-html-page" }}
+    </a>
   </div>
-  <div>Total link: {{ .KeywordPresenter.Keyword.LinksCount }}</div>
-  <div>
-    Non-adwords links: {{ .KeywordPresenter.Keyword.NonAdwordLinksCount }}
-    <ul>
-      {{ range $link := .KeywordPresenter.Links.NonAdwordLinks }}
-      <li>
-        <a href="{{ $link }}">{{ $link }}</a>
+  <div
+    data-controller="tabs"
+    data-tabs-active-tab="tab-link__button-tab--active"
+  >
+    <div class="tab-link__title">Total links: {{ .KeywordPresenter.Keyword.LinksCount }}</div>
+    <ul class="tab-link__button-tab-list">
+      <li
+        class="-mb-px mr-1"
+        data-tabs-target="tab"
+        data-action="click->tabs#change"
+      >
+        <a class="tab-link__button-tab" href="#"
+          >Non-adwords({{ .KeywordPresenter.Keyword.NonAdwordLinksCount }})</a
+        >
       </li>
-      {{ end }}
-    </ul>
-  </div>
-  <div>
-    Adwords links: {{ .KeywordPresenter.Keyword.AdwordLinksCount }}
-    <ul>
-      {{ range $link := .KeywordPresenter.Links.AdwordLinks }}
-      <li>
-        <a href="{{ $link }}">{{ $link }}</a>
+      <li class="mr-1" data-tabs-target="tab" data-action="click->tabs#change">
+        <a class="tab-link__button-tab" href="#"
+          >Adwords({{ .KeywordPresenter.Keyword.AdwordLinksCount }})</a
+        >
       </li>
-      {{ end }}
-    </ul>
-  </div>
-  <div>
-    ShopAdwords links: {{ .KeywordPresenter.Keyword.ShopAdwordLinksCount }}
-    <ul>
-      {{ range $link := .KeywordPresenter.Links.ShopAdwordLinks }}
-      <li>
-        <a href="{{ $link }}">{{ $link }}</a>
+      <li class="mr-1" data-tabs-target="tab" data-action="click->tabs#change">
+        <a class="tab-link__button-tab" href="#"
+          >Shop Adwords({{ .KeywordPresenter.Keyword.ShopAdwordLinksCount }})</a
+        >
       </li>
-      {{ end }}
     </ul>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      <ul class="tab-link____list-link">
+        {{ range $link := .KeywordPresenter.Links.NonAdwordLinks }}
+        <li>
+          <a href="{{ $link }}">{{ $link }}</a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      <ul class="tab-link__list-link">
+        {{ range $index, $link := .KeywordPresenter.Links.AdwordLinks }}
+        <li>
+          <a href="{{ $link }}"> {{ $link }}</a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      <ul class="tab-link____list-link">
+        {{ range $link := .KeywordPresenter.Links.ShopAdwordLinks }}
+        <li>
+          <a href="{{ $link }}">{{ $link }}</a>
+        </li>
+        {{ end }}
+      </ul>
+    </div>
   </div>
 </div>
