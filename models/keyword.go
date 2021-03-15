@@ -107,8 +107,31 @@ func GetKeywordsCount(user *User) (int64, error) {
 	return userKeywordsQuerySeter(user).Count()
 }
 
+// GetKeyword gets a Keyword by query
+func GetKeywordByQuery(query map[string]interface{}) (*Keyword, error) {
+	keyword := &Keyword{}
+	err := keywordsQuerySeter(query).RelatedSel().One(keyword)
+	if err != nil {
+		return nil, err
+	}
+
+	return keyword, nil
+}
+
 func userKeywordsQuerySeter(user *User) orm.QuerySeter {
 	o := orm.NewOrm()
 
 	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
 }
+
+func keywordsQuerySeter(query map[string]interface{}) orm.QuerySeter {
+	o := orm.NewOrm()
+	querySetter := o.QueryTable(Keyword{})
+
+	for key, value := range query {
+		querySetter = querySetter.Filter(key, value)
+	}
+
+	return querySetter
+}
+
