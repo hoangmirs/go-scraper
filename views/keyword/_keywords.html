@@ -1,11 +1,11 @@
 {{ if .Keywords }}
 <table class="table table-keyword">
   <colgroup>
-    <col span="1" class="table-keyword__id-width" />
-    <col span="1" class="table-keyword__keyword-width" />
-    <col span="1" class="table-keyword__status-width" />
-    <col span="1" class="table-keyword__created-date-width" />
-    <col span="1" class="table-keyword__action-width" />
+    <col span="1" class="table-keyword__id" />
+    <col span="1" class="table-keyword__keyword" />
+    <col span="1" class="table-keyword__status" />
+    <col span="1" class="table-keyword__created-date" />
+    <col span="1" class="table-keyword__action" />
   </colgroup>
 
   <thead>
@@ -41,7 +41,7 @@
         {{ date $keyword.CreatedAt "Y-m-d H:i:s" }}
       </td>
       <td>
-        <div class="table-keyword__action">
+        <div class="table-keyword__action-group">
           <a href="#" class="table-keyword__icon"> {{ render_icon "eye" }} </a>
           <a href="#" class="table-keyword__icon">
             {{ render_icon "trash" }}
