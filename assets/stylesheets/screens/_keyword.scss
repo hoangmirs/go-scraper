@@ -22,3 +22,25 @@ body.keyword.post {
     }
   }
 }
+
+body.keyword.show {
+  .keyword-wrapper {
+    @apply relative;
+  }
+
+  .keyword-title {
+    @apply text-gray-800 text-xl font-bold;
+  }
+
+  .keyword-date {
+    @apply inline-block pt-2;
+  }
+
+  .button-html-page {
+    @apply w-8 absolute top-3 right-3;
+
+    &:hover {
+      @apply text-green-500;
+    }
+  }
+}
