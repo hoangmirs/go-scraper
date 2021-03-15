@@ -9,13 +9,13 @@ import (
 	"github.com/beego/beego/v2/server/web"
 )
 
+var templateFunctions = map[string]interface{}{
+	"render_file": renderFile,
+	"render_icon": renderIcon,
+}
+
 // SetUpTemplateFunction register additional template functions
 func SetUpTemplateFunction() {
-	templateFunctions := map[string]interface{}{
-		"render_file": renderFile,
-		"render_icon": renderIcon,
-	}
-
 	for name, fn := range templateFunctions {
 		err := web.AddFuncMap(name, fn)
 		if err != nil {
