@@ -111,7 +111,9 @@ func GetKeywordsCount(user *User) (int64, error) {
 func GetKeywordByQuery(query map[string]interface{}) (*Keyword, error) {
 	keyword := &Keyword{}
 	err := keywordsQuerySeter(query).RelatedSel().One(keyword)
-	if err != nil {
+	if err == orm.ErrNoRows {
+		return nil, errors.New("Keyword not found")
+	} else if err != nil {
 		return nil, err
 	}
 

@@ -213,4 +213,63 @@ var _ = Describe("User", func() {
 			})
 		})
 	})
+
+	Describe("#GetKeywordByQuery", func() {
+		Context("given a correct query", func() {
+			It("returns correct keyword", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				savedKeyword := fabricators.FabricateKeyword("keyword", user)
+
+				query := map[string]interface{}{
+					"keyword": savedKeyword.Keyword,
+					"user_id": user.Id,
+				}
+				keyword, err := models.GetKeywordByQuery(query)
+				if err != nil {
+					Fail("Failed to get keyword: " + err.Error())
+				}
+
+				Expect(keyword.Id).To(Equal(savedKeyword.Id))
+			})
+
+			It("does NOT return error", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				savedKeyword := fabricators.FabricateKeyword("keyword", user)
+
+				query := map[string]interface{}{
+					"keyword": savedKeyword.Keyword,
+					"user_id": user.Id,
+				}
+				_, err := models.GetKeywordByQuery(query)
+
+				Expect(err).To(BeNil())
+			})
+		})
+
+		Context("given an incorrect query", func() {
+			It("does NOT return keyword", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				_ = fabricators.FabricateKeyword("keyword", user)
+
+				query := map[string]interface{}{
+					"keyword": "wrong keyword",
+				}
+				keyword, _ := models.GetKeywordByQuery(query)
+
+				Expect(keyword).To(BeNil())
+			})
+
+			It("returns an error", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				_ = fabricators.FabricateKeyword("keyword", user)
+
+				query := map[string]interface{}{
+					"keyword": "wrong keyword",
+				}
+				_, err := models.GetKeywordByQuery(query)
+
+				Expect(err.Error()).To(Equal("Keyword not found"))
+			})
+		})
+	})
 })
