@@ -7,6 +7,7 @@ import (
 	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/forms"
 	"github.com/hoangmirs/go-scraper/models"
+	"github.com/hoangmirs/go-scraper/presenters"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -28,6 +29,35 @@ func (c *Keyword) Get() {
 	c.renderKeywordView(flash)
 
 	flash.Store(&c.Controller)
+}
+
+func (c *Keyword) Show() {
+	keyword, err := c.getKeyword()
+	if err != nil {
+		logs.Error("Error when getting keyword: %v", err)
+		c.Redirect("/", http.StatusNotFound)
+		return
+	}
+
+	keywordPresenter := presenters.KeywordPresenter{Keyword: keyword}
+
+	c.Data["Keyword"] = keyword
+	c.Data["KeywordLinks"] = keywordPresenter.KeywordLinks()
+	c.Layout = "layouts/application.html"
+	c.TplName = "keyword/show.html"
+}
+
+func (c *Keyword) ShowHTML() {
+	keyword, err := c.getKeyword()
+	if err != nil {
+		logs.Error("Error when getting keyword: %v", err)
+		c.Redirect("/", http.StatusNotFound)
+		return
+	}
+
+	c.Data["Keyword"] = keyword
+	c.TplName = "keyword/html_page.html"
+	c.Data["Title"] = keyword.Keyword
 }
 
 func (c *Keyword) Post() {
@@ -83,4 +113,14 @@ func (c *Keyword) renderKeywordView(flash *web.FlashData) {
 	c.TplName = "keyword/index.html"
 
 	c.Data["Title"] = "Keyword"
+}
+
+func (c *Keyword) getKeyword() (*models.Keyword, error) {
+	keywordId := c.Ctx.Input.Param(":id")
+	query := map[string]interface{}{
+		"id":      keywordId,
+		"user_id": c.CurrentUser.Id,
+	}
+
+	return models.GetKeywordByQuery(query)
 }

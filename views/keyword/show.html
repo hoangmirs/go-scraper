@@ -1,0 +1,40 @@
+<div class="card-keyword">
+  <div>Keyword: {{ .Keyword.Keyword }}</div>
+  <div>Status: {{ .Keyword.Status }}</div>
+  <div>Date: {{ date .Keyword.CreatedAt "Y-m-d H:i:s" }}</div>
+  <div>
+    HTML:
+    <a href="{{ urlfor `Keyword.ShowHTML` `:id` .Keyword.Id }}">View page</a>
+  </div>
+  <div>Total link: {{ .Keyword.LinksCount }}</div>
+  <div>
+    Non-adwords links: {{ .Keyword.NonAdwordLinksCount }}
+    <ul>
+      {{ range $link := .KeywordLinks.NonAdwordLinks }}
+      <li>
+        <a href="{{ $link }}">{{ $link }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+  <div>
+    Adwords links: {{ .Keyword.AdwordLinksCount }}
+    <ul>
+      {{ range $link := .KeywordLinks.AdwordLinks }}
+      <li>
+        <a href="{{ $link }}">{{ $link }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+  <div>
+    ShopAdwords links: {{ .Keyword.ShopAdwordLinksCount }}
+    <ul>
+      {{ range $link := .KeywordLinks.ShopAdwordLinks }}
+      <li>
+        <a href="{{ $link }}">{{ $link }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</div>
