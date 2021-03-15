@@ -1,23 +1,23 @@
 .table-keyword {
   @apply mt-6 w-full table-fixed;
 
-  &__id-width {
+  &__id {
     @apply w-1/12;
   }
 
-  &__keyword-width {
+  &__keyword {
     @apply w-5/12;
   }
 
-  &__status-width {
+  &__status {
     @apply w-2/12;
   }
 
-  &__created-date-width {
+  &__created-date {
     @apply w-2/12;
   }
 
-  &__action-width {
+  &__action {
     @apply w-2/12;
   }
 
@@ -41,7 +41,7 @@
     }
   }
 
-  &__action {
+  &__action-group {
     @apply flex items-center justify-center;
   }
 }
