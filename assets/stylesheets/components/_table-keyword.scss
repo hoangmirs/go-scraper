@@ -1,4 +1,4 @@
-.table-keywords {
+.table-keyword {
   @apply mt-6 w-full table-fixed;
 
   &__id-width {
@@ -17,7 +17,7 @@
     @apply w-2/12;
   }
 
-  &__actions-width {
+  &__action-width {
     @apply w-2/12;
   }
 
@@ -41,7 +41,7 @@
     }
   }
 
-  &__actions {
+  &__action {
     @apply flex items-center justify-center;
   }
 }
