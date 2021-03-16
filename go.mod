@@ -13,5 +13,6 @@ require (
 	github.com/onsi/ginkgo v1.14.2
 	github.com/onsi/gomega v1.10.4
 	github.com/robfig/cron v1.2.0 // indirect
+	github.com/soveran/redisurl v0.0.0-20180322091936-eb325bc7a4b8
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 )
