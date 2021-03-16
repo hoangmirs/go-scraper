@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -12,6 +13,7 @@ import (
 var templateFunctions = map[string]interface{}{
 	"render_file": renderFile,
 	"render_icon": renderIcon,
+	"dict":        dict,
 }
 
 // SetUpTemplateFunction register additional template functions
@@ -46,4 +48,21 @@ func renderIcon(iconName string, options ...string) template.HTML {
 	htmlString := fmt.Sprintf(iconTemplate, classList, iconName)
 
 	return web.Str2html(htmlString)
+}
+
+func dict(values ...interface{}) (map[string]interface{}, error) {
+	if len(values) % 2 != 0 {
+		return nil, errors.New("invalid dict call")
+	}
+
+	dict := make(map[string]interface{}, len(values) / 2)
+	for i := 0; i < len(values); i += 2 {
+		key, ok := values[i].(string)
+		if !ok {
+			return nil, errors.New("dict keys must be strings")
+		}
+		dict[key] = values[i + 1]
+	}
+
+	return dict, nil
 }
