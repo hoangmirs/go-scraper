@@ -111,4 +111,106 @@ var _ = Describe("User", func() {
 		})
 	})
 
+	Describe("#UpdateKeyword", func() {
+		Context("given valid attributes", func() {
+			It("updates the record successfully", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := fabricators.FabricateKeyword("iphone 12", user)
+				keyword.Keyword = "macbook pro"
+
+				err := models.UpdateKeyword(keyword)
+				if err != nil {
+					Fail("Failed to update keyword: " + err.Error())
+				}
+
+				updatedKeyword, err := models.GetKeywordByID(int64(keyword.Id))
+				if err != nil {
+					Fail("Failed to get keyword: " + err.Error())
+				}
+
+				Expect(updatedKeyword.Keyword).To(Equal("macbook pro"))
+			})
+
+			It("does NOT return error", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := fabricators.FabricateKeyword("iphone 12", user)
+				keyword.Keyword = "macbook pro"
+
+				err := models.UpdateKeyword(keyword)
+
+				Expect(err).To(BeNil())
+			})
+		})
+
+		Context("given invalid attributes", func() {
+			It("returns an error", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword := fabricators.FabricateKeyword("iphone 12", user)
+				keyword.NonAdwordLinks = "invalid links"
+
+				err := models.UpdateKeyword(keyword)
+
+				Expect(err.Error()).To(Equal("pq: invalid input syntax for type json"))
+			})
+		})
+	})
+
+	Describe("#GetKeywords", func() {
+		Context("given valid attributes", func() {
+			It("returns uploaded keywords of user with the correct ordering", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				keyword1 := fabricators.FabricateKeyword("keyword 1", user)
+				keyword2 := fabricators.FabricateKeyword("keyword 2", user)
+
+				offset := 0
+				limit := 2
+				keywords, err := models.GetKeywords(user, offset, limit)
+				if err != nil {
+					Fail("Failed to get keywords: " + err.Error())
+				}
+
+				Expect(keywords[0].Id).To(Equal(keyword2.Id))
+				Expect(keywords[1].Id).To(Equal(keyword1.Id))
+			})
+		})
+
+		Context("given invalid attributes", func() {
+			Context("given NO user", func() {
+				It("returns an error", func() {
+					offset := 0
+					limit := 2
+
+					_, err := models.GetKeywords(nil, offset, limit)
+
+					Expect(err.Error()).To(Equal("User is blank"))
+				})
+			})
+		})
+	})
+
+	Describe("#GetKeywordsCount", func() {
+		Context("given a user", func() {
+			It("returns the number of keywords of the user", func() {
+				user1 := fabricators.FabricateUser(faker.Email(), faker.Password())
+				user2 := fabricators.FabricateUser(faker.Email(), faker.Password())
+				_ = fabricators.FabricateKeyword("keyword 1", user1)
+				_ = fabricators.FabricateKeyword("keyword 2", user2)
+
+				keywordCount, err := models.GetKeywordsCount(user1)
+				if err != nil {
+					Fail("Failed to get keyword count: " + err.Error())
+				}
+
+				Expect(keywordCount).To(Equal(int64(1)))
+			})
+		})
+
+		Context("given NO user", func() {
+			It("returns an error", func() {
+				_, err := models.GetKeywordsCount(nil)
+
+				Expect(err.Error()).To(Equal("User is blank"))
+			})
+		})
+	})
 })
