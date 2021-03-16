@@ -55,9 +55,12 @@ func (c *Keyword) ShowHTML() {
 		return
 	}
 
-	c.Data["Keyword"] = keyword
-	c.TplName = "keyword/html_page.html"
-	c.Data["Title"] = keyword.Keyword
+	err = c.Ctx.Output.Body([]byte(keyword.HtmlCode))
+	if err != nil {
+		logs.Error("Error when setting body: %v", err)
+		c.Redirect("/", http.StatusInternalServerError)
+		return
+	}
 }
 
 func (c *Keyword) Post() {
