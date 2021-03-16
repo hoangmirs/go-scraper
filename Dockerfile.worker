@@ -1,11 +1,16 @@
-ARG DOCKER_REGISTRY
-ARG DOCKER_IMAGE
-ARG BRANCH_TAG
+FROM golang:1.15-alpine as go-builder
 
-FROM ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${BRANCH_TAG}
+ENV GO111MOD=on \
+  CGO_ENABLED=0 \
+  GOOS=linux \
+  GOARCH=amd64
 
 WORKDIR /app/workers
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+COPY . .
+
+RUN go mod download
+
+RUN go build
 
 ENTRYPOINT ["/app/workers/workers"]
