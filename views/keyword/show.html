@@ -42,33 +42,15 @@
     </ul>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      <ul class="tab-link____list-link">
-        {{ range $link := .KeywordPresenter.Links.NonAdwordLinks }}
-        <li>
-          <a href="{{ $link }}">{{ $link }}</a>
-        </li>
-        {{ end }}
-      </ul>
+      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.KeywordLinks.NonAdwordLinks }}
     </div>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      <ul class="tab-link__list-link">
-        {{ range $index, $link := .KeywordPresenter.Links.AdwordLinks }}
-        <li>
-          <a href="{{ $link }}"> {{ $link }}</a>
-        </li>
-        {{ end }}
-      </ul>
+      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.KeywordLinks.AdwordLinks }}
     </div>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      <ul class="tab-link____list-link">
-        {{ range $link := .KeywordPresenter.Links.ShopAdwordLinks }}
-        <li>
-          <a href="{{ $link }}">{{ $link }}</a>
-        </li>
-        {{ end }}
-      </ul>
+      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.KeywordLinks.ShopAdwordLinks }}
     </div>
   </div>
 </div>
