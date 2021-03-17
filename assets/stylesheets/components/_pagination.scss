@@ -1,0 +1,39 @@
+.pagination {
+  @apply bg-white py-3 flex items-center justify-between border-t border-gray-200;
+
+  &__wrapper {
+    @apply flex-1 flex items-center justify-between;
+  }
+
+  &__description {
+    @apply text-sm text-gray-700;
+  }
+
+  &__nav {
+    @apply relative z-0 inline-flex rounded-md shadow-sm -space-x-px;
+  }
+
+  &__item {
+    @apply relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50;
+
+    &--nav {
+      @apply px-2;
+    }
+
+    &--nav-left {
+      @apply rounded-l-md;
+    }
+
+    &--nav-right {
+      @apply rounded-r-md;
+    }
+
+    &--active {
+      @apply bg-gray-100;
+    }
+
+    &--disabled {
+      @apply pointer-events-none cursor-not-allowed text-gray-300;
+    }
+  }
+}

@@ -9,8 +9,9 @@ module.exports = {
     ),
   },
   plugins: [
-    // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ["**/application.*.hot-update*"],
+    }),
   ],
   output: {
     filename: "js/[name].js",

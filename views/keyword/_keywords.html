@@ -1,20 +1,53 @@
 {{ if .Keywords }}
-<table>
+<table class="table table-keyword">
+  <colgroup>
+    <col span="1" class="table-keyword__id" />
+    <col span="1" class="table-keyword__keyword" />
+    <col span="1" class="table-keyword__status" />
+    <col span="1" class="table-keyword__created-date" />
+    <col span="1" class="table-keyword__action" />
+  </colgroup>
+
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Keyword</th>
-      <th>Status</th>
-      <th>Created At</th>
+      <th class="table-keyword__item table-keyword__item--center">Id</th>
+      <th class="table-keyword__item table-keyword__item--left">Keyword</th>
+      <th class="table-keyword__item table-keyword__item--center">Status</th>
+      <th class="table-keyword__item table-keyword__item--center">
+        Created At
+      </th>
+      <th
+        class="table-keyword__item table-keyword__item--center table-keyword__action"
+      >
+        Actions
+      </th>
     </tr>
   </thead>
   <tbody>
     {{ range $keyword := .Keywords }}
     <tr>
-      <td>{{ $keyword.Id }}</td>
-      <td>{{ $keyword.Keyword }}</td>
-      <td>{{ $keyword.Status }}</td>
-      <td>{{ $keyword.CreatedAt }}</td>
+      <td class="table-keyword__item table-keyword__item--center">
+        {{ $keyword.Id }}
+      </td>
+      <td class="table-keyword__item table-keyword__item--left">
+        {{ $keyword.Keyword }}
+      </td>
+      <td class="table-keyword__item table-keyword__item--center">
+        <span class="badge-status badge-status--{{ $keyword.Status }}"
+          >{{ $keyword.Status }}</span
+        >
+      </td>
+      <td class="table-keyword__item table-keyword__item--center">
+        {{ date $keyword.CreatedAt "Y-m-d H:i:s" }}
+      </td>
+      <td>
+        <div class="table-keyword__action-group">
+          <a href="#" class="table-keyword__icon"> {{ render_icon "eye" }} </a>
+          <a href="#" class="table-keyword__icon">
+            {{ render_icon "trash" }}
+          </a>
+        </div>
+      </td>
     </tr>
     {{ end }}
   </tbody>
