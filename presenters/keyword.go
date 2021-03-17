@@ -10,6 +10,7 @@ import (
 
 type KeywordPresenter struct {
 	Keyword *models.Keyword
+	Links   *KeywordLinks
 }
 
 type KeywordLinks struct {
@@ -18,26 +19,32 @@ type KeywordLinks struct {
 	ShopAdwordLinks []string
 }
 
-func (kp *KeywordPresenter) KeywordLinks() KeywordLinks {
+func (kp *KeywordPresenter) ConvertKeywordLinks() {
 	var nonAdwordLinks []string
-	err := json.Unmarshal([]byte(kp.Keyword.NonAdwordLinks), &nonAdwordLinks)
-	if err != nil {
-		logs.Error("Cannot unmarshal NonAdwordLinks", err)
+	if kp.Keyword.NonAdwordLinks != "" {
+		err := json.Unmarshal([]byte(kp.Keyword.NonAdwordLinks), &nonAdwordLinks)
+		if err != nil {
+			logs.Error("Cannot unmarshal NonAdwordLinks", err)
+		}
 	}
 
 	var adwordLinks []string
-	err = json.Unmarshal([]byte(kp.Keyword.AdwordLinks), &adwordLinks)
-	if err != nil {
-		logs.Error("Cannot unmarshal AdwordLinks", err)
+	if kp.Keyword.AdwordLinks != "" {
+		err := json.Unmarshal([]byte(kp.Keyword.AdwordLinks), &adwordLinks)
+		if err != nil {
+			logs.Error("Cannot unmarshal AdwordLinks", err)
+		}
 	}
 
 	var shopAdwordLinks []string
-	err = json.Unmarshal([]byte(kp.Keyword.ShopAdwordLinks), &shopAdwordLinks)
-	if err != nil {
-		logs.Error("Cannot unmarshal ShopAdwordLinks", err)
+	if kp.Keyword.ShopAdwordLinks != "" {
+		err := json.Unmarshal([]byte(kp.Keyword.ShopAdwordLinks), &shopAdwordLinks)
+		if err != nil {
+			logs.Error("Cannot unmarshal ShopAdwordLinks", err)
+		}
 	}
 
-	return KeywordLinks{
+	kp.Links = &KeywordLinks{
 		NonAdwordLinks:  nonAdwordLinks,
 		AdwordLinks:     adwordLinks,
 		ShopAdwordLinks: shopAdwordLinks,

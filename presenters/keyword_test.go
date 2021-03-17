@@ -31,7 +31,8 @@ var _ = Describe("KeywordPresenter", func() {
 			}
 
 			keywordPresenter := presenters.KeywordPresenter{Keyword: keyword}
-			links := keywordPresenter.KeywordLinks()
+			keywordPresenter.ConvertKeywordLinks()
+			links := keywordPresenter.Links
 
 			Expect(links.NonAdwordLinks[0]).To(Equal("non-adword-link"))
 			Expect(links.AdwordLinks[0]).To(Equal("adword-link"))

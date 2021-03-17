@@ -1,16 +1,16 @@
 <div class="card-keyword">
-  <div>Keyword: {{ .Keyword.Keyword }}</div>
-  <div>Status: {{ .Keyword.Status }}</div>
-  <div>Date: {{ date .Keyword.CreatedAt "Y-m-d H:i:s" }}</div>
+  <div>Keyword: {{ .KeywordPresenter.Keyword.Keyword }}</div>
+  <div>Status: {{ .KeywordPresenter.Keyword.Status }}</div>
+  <div>Date: {{ date .KeywordPresenter.Keyword.CreatedAt "Y-m-d H:i:s" }}</div>
   <div>
     HTML:
     <a href="{{ urlfor `Keyword.ShowHTML` `:id` .Keyword.Id }}">View page</a>
   </div>
-  <div>Total link: {{ .Keyword.LinksCount }}</div>
+  <div>Total link: {{ .KeywordPresenter.Keyword.LinksCount }}</div>
   <div>
-    Non-adwords links: {{ .Keyword.NonAdwordLinksCount }}
+    Non-adwords links: {{ .KeywordPresenter.Keyword.NonAdwordLinksCount }}
     <ul>
-      {{ range $link := .KeywordLinks.NonAdwordLinks }}
+      {{ range $link := .KeywordPresenter.Links.NonAdwordLinks }}
       <li>
         <a href="{{ $link }}">{{ $link }}</a>
       </li>
@@ -18,9 +18,9 @@
     </ul>
   </div>
   <div>
-    Adwords links: {{ .Keyword.AdwordLinksCount }}
+    Adwords links: {{ .KeywordPresenter.Keyword.AdwordLinksCount }}
     <ul>
-      {{ range $link := .KeywordLinks.AdwordLinks }}
+      {{ range $link := .KeywordPresenter.Links.AdwordLinks }}
       <li>
         <a href="{{ $link }}">{{ $link }}</a>
       </li>
@@ -28,9 +28,9 @@
     </ul>
   </div>
   <div>
-    ShopAdwords links: {{ .Keyword.ShopAdwordLinksCount }}
+    ShopAdwords links: {{ .KeywordPresenter.Keyword.ShopAdwordLinksCount }}
     <ul>
-      {{ range $link := .KeywordLinks.ShopAdwordLinks }}
+      {{ range $link := .KeywordPresenter.Links.ShopAdwordLinks }}
       <li>
         <a href="{{ $link }}">{{ $link }}</a>
       </li>
