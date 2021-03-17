@@ -95,7 +95,12 @@ func (c *Keyword) Post() {
 }
 
 func (c *Keyword) renderKeywordView(flash *web.FlashData) {
-	keywordsCount, err := models.GetKeywordsCount(c.CurrentUser)
+	query := map[string]interface{}{
+		"user_id": c.CurrentUser.Id,
+		"order":   "-id",
+	}
+
+	keywordsCount, err := models.GetKeywordsCount(query)
 	if err != nil {
 		logs.Error("Error when getting keywords count: %v", err)
 		flash.Error(err.Error())
@@ -103,8 +108,10 @@ func (c *Keyword) renderKeywordView(flash *web.FlashData) {
 
 	keywordsPerPage := conf.GetInt("perPage")
 	paginator := pagination.SetPaginator(c.Ctx, keywordsPerPage, keywordsCount)
+	query["limit"] = keywordsPerPage
+	query["offset"] = paginator.Offset()
 
-	keywords, err := models.GetKeywords(c.CurrentUser, paginator.Offset(), keywordsPerPage)
+	keywords, err := models.GetKeywords(query)
 	if err != nil {
 		logs.Error("Error when fetching keywords: %v", err)
 		flash.Error(err.Error())
