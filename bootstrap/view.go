@@ -13,7 +13,7 @@ import (
 var templateFunctions = map[string]interface{}{
 	"render_file": renderFile,
 	"render_icon": renderIcon,
-	"dict":        dict,
+	"args":        args,
 }
 
 // SetUpTemplateFunction register additional template functions
@@ -50,19 +50,19 @@ func renderIcon(iconName string, options ...string) template.HTML {
 	return web.Str2html(htmlString)
 }
 
-func dict(values ...interface{}) (map[string]interface{}, error) {
+func args(values ...interface{}) (map[string]interface{}, error) {
 	if len(values) % 2 != 0 {
-		return nil, errors.New("invalid dict call")
+		return nil, errors.New("invalid args call")
 	}
 
-	dict := make(map[string]interface{}, len(values) / 2)
+	args := make(map[string]interface{}, len(values) / 2)
 	for i := 0; i < len(values); i += 2 {
 		key, ok := values[i].(string)
 		if !ok {
-			return nil, errors.New("dict keys must be strings")
+			return nil, errors.New("args keys must be strings")
 		}
-		dict[key] = values[i + 1]
+		args[key] = values[i + 1]
 	}
 
-	return dict, nil
+	return args, nil
 }

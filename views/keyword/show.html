@@ -48,15 +48,15 @@
     </ul>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.Links.NonAdwordLinks }}
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.NonAdwordLinks }}
     </div>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.Links.AdwordLinks }}
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.AdwordLinks }}
     </div>
 
     <div class="hidden tab-link__content" data-tabs-target="panel">
-      {{ template "keyword/_keywork_links.html" dict "Links" .KeywordPresenter.Links.ShopAdwordLinks }}
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.ShopAdwordLinks }}
     </div>
   </div>
 </div>
