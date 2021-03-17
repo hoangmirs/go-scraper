@@ -58,8 +58,6 @@ func (c *Keyword) ShowHTML() {
 	err = c.Ctx.Output.Body([]byte(keyword.HtmlCode))
 	if err != nil {
 		logs.Error("Error when setting body: %v", err)
-		c.Redirect("/", http.StatusInternalServerError)
-		return
 	}
 }
 
