@@ -40,9 +40,9 @@ func (c *Keyword) Show() {
 	}
 
 	keywordPresenter := presenters.KeywordPresenter{Keyword: keyword}
+	keywordPresenter.ConvertKeywordLinks()
 
-	c.Data["Keyword"] = keyword
-	c.Data["KeywordLinks"] = keywordPresenter.KeywordLinks()
+	c.Data["KeywordPresenter"] = keywordPresenter
 	c.Layout = "layouts/application.html"
 	c.TplName = "keyword/show.html"
 }
