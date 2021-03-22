@@ -18,7 +18,7 @@ var _ = Describe("KeywordController", func() {
 		TruncateTables("user", "keyword")
 	})
 
-	Describe("Get", func() {
+	Describe("GET", func() {
 		Context("given keyword ID", func() {
 			It("returns status OK", func() {
 				userInfo := &UserInfo{
@@ -44,7 +44,7 @@ var _ = Describe("KeywordController", func() {
 		})
 	})
 
-	Describe("Show", func() {
+	Describe("GET /:id", func() {
 		Context("given a valid keyword", func() {
 			It("returns status OK", func() {
 				email := faker.Email()
@@ -98,7 +98,7 @@ var _ = Describe("KeywordController", func() {
 		})
 	})
 
-	Describe("ShowHTML", func() {
+	Describe("GET /:id/html", func() {
 		Context("given a valid keyword", func() {
 			It("returns status OK", func() {
 				email := faker.Email()
@@ -135,7 +135,7 @@ var _ = Describe("KeywordController", func() {
 		})
 	})
 
-	Describe("Post", func() {
+	Describe("POST", func() {
 		Context("given valid params", func() {
 			It("returns status FOUND", func() {
 				userInfo := &UserInfo{
