@@ -1,0 +1,62 @@
+<div class="keyword-wrapper">
+  <div>
+    <h1 class="keyword-title">{{ .KeywordPresenter.Keyword.Keyword }}</h1>
+    <div>
+      <span
+        class="badge-status badge-status--{{ .KeywordPresenter.Keyword.Status }}"
+        >{{ .KeywordPresenter.Keyword.Status }}</span
+      >
+      at
+      <span class="keyword-date"
+        >{{ date .KeywordPresenter.Keyword.UpdatedAt "Y-m-d H:i:s" }}</span
+      >
+    </div>
+    <a
+      href="{{ urlfor `Keyword.ShowHTML` `:id` .KeywordPresenter.Keyword.Id }}"
+      target="_blank"
+    >
+      {{ render_icon "website" "button-html-page" }}
+    </a>
+  </div>
+  <div
+    data-controller="tabs"
+    data-tabs-active-tab="tab-link__button-tab--active"
+  >
+    <div class="tab-link__title">
+      Total links: {{ .KeywordPresenter.Keyword.LinksCount }}
+    </div>
+    <ul class="tab-link__button-tab-list">
+      <li
+        class="-mb-px mr-1"
+        data-tabs-target="tab"
+        data-action="click->tabs#change"
+      >
+        <a class="tab-link__button-tab" href="#"
+          >Non-adwords({{ .KeywordPresenter.Keyword.NonAdwordLinksCount }})</a
+        >
+      </li>
+      <li class="mr-1" data-tabs-target="tab" data-action="click->tabs#change">
+        <a class="tab-link__button-tab" href="#"
+          >Adwords({{ .KeywordPresenter.Keyword.AdwordLinksCount }})</a
+        >
+      </li>
+      <li class="mr-1" data-tabs-target="tab" data-action="click->tabs#change">
+        <a class="tab-link__button-tab" href="#"
+          >Shop Adwords({{ .KeywordPresenter.Keyword.ShopAdwordLinksCount }})</a
+        >
+      </li>
+    </ul>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.NonAdwordLinks }}
+    </div>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.AdwordLinks }}
+    </div>
+
+    <div class="hidden tab-link__content" data-tabs-target="panel">
+      {{ template "keyword/_keywork_links.html" args "Links" .KeywordPresenter.Links.ShopAdwordLinks }}
+    </div>
+  </div>
+</div>

@@ -26,8 +26,10 @@
   <tbody>
     {{ range $keyword := .Keywords }}
     <tr>
-      <td class="table-keyword__item table-keyword__item--center">
-        {{ $keyword.Id }}
+      <td class="table-keywords__item table-keyword__item--center">
+        <a href="{{ urlfor `Keyword.Show` `:id` $keyword.Id }}"
+          >{{ $keyword.Id }}</a
+        >
       </td>
       <td class="table-keyword__item table-keyword__item--left">
         {{ $keyword.Keyword }}
@@ -42,9 +44,11 @@
       </td>
       <td>
         <div class="table-keyword__action-group">
-          <a href="#" class="table-keyword__icon"> {{ render_icon "eye" }} </a>
-          <a href="#" class="table-keyword__icon">
-            {{ render_icon "trash" }}
+          <a
+            href="{{ urlfor `Keyword.Show` `:id` $keyword.Id }}"
+            class="table-keyword__icon"
+          >
+            {{ render_icon "eye" }}
           </a>
         </div>
       </td>

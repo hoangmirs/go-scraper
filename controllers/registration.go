@@ -16,6 +16,7 @@ type Registration struct {
 
 func (c *Registration) NestPrepare() {
 	c.requireGuestUser = true
+	c.Layout = "layouts/authentication.html"
 }
 
 func (c *Registration) Get() {
@@ -51,7 +52,6 @@ func (c *Registration) Post() {
 
 func (c *Registration) renderNewRegistrationView() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	c.Layout = "layouts/authentication.html"
 	c.TplName = "registration/new.html"
 
 	c.Data["Title"] = "Create a new account"

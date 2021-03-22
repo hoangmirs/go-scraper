@@ -14,6 +14,7 @@ import (
 )
 
 type UserInfo struct {
+	Id       uint
 	Email    string
 	Password string
 }
@@ -55,7 +56,9 @@ func makeRequest(method string, url string, headers http.Header, body io.Reader,
 }
 
 func getAuthenticationCookie(userInfo *UserInfo) *http.Cookie {
-	_ = fabricators.FabricateUser(userInfo.Email, userInfo.Password)
+	if userInfo.Id == 0 {
+		_ = fabricators.FabricateUser(userInfo.Email, userInfo.Password)
+	}
 
 	form := neturl.Values{
 		"email":    {userInfo.Email},

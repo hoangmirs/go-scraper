@@ -1,9 +1,11 @@
 package controllers_test
 
 import (
+	"fmt"
 	"net/http"
 
 	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
+	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	"github.com/bxcodec/faker/v3"
@@ -17,26 +19,119 @@ var _ = Describe("KeywordController", func() {
 	})
 
 	Describe("GET", func() {
-		It("returns status OK", func() {
-			userInfo := &UserInfo{
-				Email:    faker.Email(),
-				Password: faker.Password(),
-			}
+		Context("given keyword ID", func() {
+			It("returns status OK", func() {
+				userInfo := &UserInfo{
+					Email:    faker.Email(),
+					Password: faker.Password(),
+				}
 
-			response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
+				response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
 
-			Expect(response.Code).To(Equal(http.StatusOK))
+				Expect(response.Code).To(Equal(http.StatusOK))
+			})
+
+			It("has body data", func() {
+				userInfo := &UserInfo{
+					Email:    faker.Email(),
+					Password: faker.Password(),
+				}
+
+				response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
+
+				Expect(response).To(RenderTemplate("keyword#get"))
+			})
+		})
+	})
+
+	Describe("GET /:id", func() {
+		Context("given a valid keyword", func() {
+			It("returns status OK", func() {
+				email := faker.Email()
+				password := faker.Password()
+				user := fabricators.FabricateUser(email, password)
+				userInfo := &UserInfo{
+					Id:       user.Id,
+					Email:    email,
+					Password: password,
+				}
+				savedKeyword := fabricators.FabricateKeyword("keyword", user)
+				keywordDetailPath := fmt.Sprintf("/keyword/%d", savedKeyword.Id)
+
+				response := MakeAuthenticatedRequest("GET", keywordDetailPath, nil, nil, userInfo)
+
+				Expect(response.Code).To(Equal(http.StatusOK))
+			})
+
+			It("has body data", func() {
+				email := faker.Email()
+				password := faker.Password()
+				user := fabricators.FabricateUser(email, password)
+				userInfo := &UserInfo{
+					Id:       user.Id,
+					Email:    email,
+					Password: password,
+				}
+				savedKeyword := fabricators.FabricateKeyword("keyword", user)
+				keywordDetailPath := fmt.Sprintf("/keyword/%d", savedKeyword.Id)
+
+				response := MakeAuthenticatedRequest("GET", keywordDetailPath, nil, nil, userInfo)
+
+				Expect(response).To(RenderTemplate("keyword#show"))
+			})
 		})
 
-		It("has body data", func() {
-			userInfo := &UserInfo{
-				Email:    faker.Email(),
-				Password: faker.Password(),
-			}
+		Context("given an invalid keyword", func() {
+			It("returns status NotFound", func() {
+				email := faker.Email()
+				password := faker.Password()
+				userInfo := &UserInfo{
+					Email:    email,
+					Password: password,
+				}
+				keywordDetailPath := fmt.Sprintf("/keyword/%s", "invalid")
 
-			response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
+				response := MakeAuthenticatedRequest("GET", keywordDetailPath, nil, nil, userInfo)
 
-			Expect(response).To(RenderTemplate("keyword#get"))
+				Expect(response.Code).To(Equal(http.StatusNotFound))
+			})
+		})
+	})
+
+	Describe("GET /:id/html", func() {
+		Context("given a valid keyword", func() {
+			It("returns status OK", func() {
+				email := faker.Email()
+				password := faker.Password()
+				user := fabricators.FabricateUser(email, password)
+				userInfo := &UserInfo{
+					Id:       user.Id,
+					Email:    email,
+					Password: password,
+				}
+				savedKeyword := fabricators.FabricateKeyword("keyword", user)
+				keywordDetailPath := fmt.Sprintf("/keyword/%d/html", savedKeyword.Id)
+
+				response := MakeAuthenticatedRequest("GET", keywordDetailPath, nil, nil, userInfo)
+
+				Expect(response.Code).To(Equal(http.StatusOK))
+			})
+		})
+
+		Context("given an invalid keyword", func() {
+			It("returns status NotFound", func() {
+				email := faker.Email()
+				password := faker.Password()
+				userInfo := &UserInfo{
+					Email:    email,
+					Password: password,
+				}
+				keywordDetailPath := fmt.Sprintf("/keyword/%s/html", "invalid")
+
+				response := MakeAuthenticatedRequest("GET", keywordDetailPath, nil, nil, userInfo)
+
+				Expect(response.Code).To(Equal(http.StatusNotFound))
+			})
 		})
 	})
 

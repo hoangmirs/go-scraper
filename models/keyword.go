@@ -85,30 +85,49 @@ func GetKeywordByID(keywordID int64) (*Keyword, error) {
 	return keyword, err
 }
 
-// GetKeywords returns uploaded keywords of current user and the error if any
-func GetKeywords(user *User, offset int, limit int) ([]*Keyword, error) {
-	if user == nil {
-		return nil, errors.New("User is blank")
-	}
-
+// GetKeywords returns keywords by query
+func GetKeywords(query map[string]interface{}) ([]*Keyword, error) {
 	keywords := []*Keyword{}
 
-	_, err := userKeywordsQuerySeter(user).OrderBy("-id").Limit(limit, offset).All(&keywords)
+	_, err := keywordsQuerySeter(query).All(&keywords)
 
 	return keywords, err
 }
 
 // GetKeywordsCount returns the number of current user's uploaded keywords
-func GetKeywordsCount(user *User) (int64, error) {
-	if user == nil {
-		return 0, errors.New("User is blank")
-	}
-
-	return userKeywordsQuerySeter(user).Count()
+func GetKeywordsCount(query map[string]interface{}) (int64, error) {
+	return keywordsQuerySeter(query).Count()
 }
 
-func userKeywordsQuerySeter(user *User) orm.QuerySeter {
-	o := orm.NewOrm()
+// GetKeyword gets a Keyword by query
+func GetKeywordByQuery(query map[string]interface{}) (*Keyword, error) {
+	keyword := &Keyword{}
+	err := keywordsQuerySeter(query).RelatedSel().One(keyword)
+	if err == orm.ErrNoRows {
+		return nil, errors.New("Keyword not found")
+	} else if err != nil {
+		return nil, err
+	}
 
-	return o.QueryTable(Keyword{}).Filter("user_id", user.Id)
+	return keyword, nil
+}
+
+func keywordsQuerySeter(query map[string]interface{}) orm.QuerySeter {
+	o := orm.NewOrm()
+	querySetter := o.QueryTable(Keyword{})
+
+	for key, value := range query {
+		switch key {
+		case "order":
+			querySetter = querySetter.OrderBy(value.(string))
+		case "limit":
+			querySetter = querySetter.Limit(value)
+		case "offset":
+			querySetter = querySetter.Offset(value)
+		default:
+			querySetter = querySetter.Filter(key, value)
+		}
+	}
+
+	return querySetter
 }

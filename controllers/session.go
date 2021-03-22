@@ -17,6 +17,7 @@ type Session struct {
 
 func (c *Session) NestPrepare() {
 	c.requireGuestUser = true
+	c.Layout = "layouts/authentication.html"
 
 	// For logging out only
 	if c.Ctx.Input.GetData("ActionName") == "delete" {
@@ -68,7 +69,6 @@ func (c *Session) Delete() {
 
 func (c *Session) renderNewSessionView() {
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	c.Layout = "layouts/authentication.html"
 	c.TplName = "session/new.html"
 
 	c.Data["Title"] = "Log in to Go Scraper"
