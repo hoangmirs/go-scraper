@@ -36,6 +36,7 @@ func (c *baseController) Prepare() {
 	c.LayoutSections = make(map[string]string)
 	c.LayoutSections["Header"] = "shared/header.html"
 	c.LayoutSections["FlashMessage"] = "shared/flash_message.html"
+	c.Layout = "layouts/application.html"
 
 	app, ok := c.AppController.(NestPreparer)
 	if ok {

@@ -43,7 +43,6 @@ func (c *Keyword) Show() {
 	keywordPresenter.ConvertKeywordLinks()
 
 	c.Data["KeywordPresenter"] = keywordPresenter
-	c.Layout = "layouts/application.html"
 	c.TplName = "keyword/show.html"
 }
 
@@ -117,7 +116,6 @@ func (c *Keyword) renderKeywordView(flash *web.FlashData) {
 
 	c.Data["Keywords"] = keywords
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
-	c.Layout = "layouts/application.html"
 	c.TplName = "keyword/index.html"
 
 	c.Data["Title"] = "Keyword"
