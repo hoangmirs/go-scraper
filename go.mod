@@ -12,6 +12,7 @@ require (
 	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/go-cmp v0.5.1 // indirect
+	github.com/google/jsonapi v0.0.0-20210306203318-b10ff4bf785b
 	github.com/lib/pq v1.9.0
 	github.com/onsi/ginkgo v1.14.2
 	github.com/onsi/gomega v1.10.4
