@@ -10,7 +10,7 @@ import (
 func GetBody(response *httptest.ResponseRecorder) string {
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		Fail("Error when reading reponse bod: " + err.Error())
+		Fail("Error when reading reponse body: " + err.Error())
 	}
 
 	return string(body)

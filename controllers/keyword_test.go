@@ -150,7 +150,7 @@ var _ = Describe("KeywordController", func() {
 				})
 			})
 
-			Context("given an invalid keyword", func() {
+			Context("given a non-existing keyword", func() {
 				It("returns status OK", func() {
 					userInfo := &UserInfo{
 						Email:    faker.Email(),
