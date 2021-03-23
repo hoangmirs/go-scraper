@@ -92,11 +92,7 @@ func (c *Keyword) Post() {
 }
 
 func (c *Keyword) renderKeywordView(flash *web.FlashData) {
-	var searchedKeyword string
-	err := c.Ctx.Input.Bind(&searchedKeyword, "keyword")
-	if err != nil {
-		logs.Error("Error when getting keyword input: %v", err.Error())
-	}
+	searchedKeyword := c.GetString("keyword")
 
 	query := map[string]interface{}{
 		"user_id":            c.CurrentUser.Id,
