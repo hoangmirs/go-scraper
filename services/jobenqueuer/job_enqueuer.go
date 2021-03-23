@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/hoangmirs/go-scraper/conf"
-	"github.com/hoangmirs/go-scraper/db"
+	"github.com/hoangmirs/go-scraper/database"
 	"github.com/hoangmirs/go-scraper/models"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -16,7 +16,7 @@ var enqueuer *work.Enqueuer
 // SetUpEnqueuer sets up a new job enqueuer, will be run when initializing application
 func SetUpEnqueuer() {
 	if enqueuer == nil {
-		enqueuer = work.NewEnqueuer(conf.GetString("workerNamespace"), db.GetRedisPool())
+		enqueuer = work.NewEnqueuer(conf.GetString("workerNamespace"), database.GetRedisPool())
 	}
 }
 
