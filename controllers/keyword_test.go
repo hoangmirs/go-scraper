@@ -19,7 +19,7 @@ var _ = Describe("KeywordController", func() {
 	})
 
 	Describe("GET", func() {
-		Context("given keyword ID", func() {
+		Context("given NO parameters", func() {
 			It("returns status OK", func() {
 				userInfo := &UserInfo{
 					Email:    faker.Email(),
@@ -31,7 +31,7 @@ var _ = Describe("KeywordController", func() {
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
 
-			It("has body data", func() {
+			It("renders keyword#get template", func() {
 				userInfo := &UserInfo{
 					Email:    faker.Email(),
 					Password: faker.Password(),
@@ -40,6 +40,156 @@ var _ = Describe("KeywordController", func() {
 				response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
 
 				Expect(response).To(RenderTemplate("keyword#get"))
+			})
+
+			It("returns correct records", func() {
+				email := faker.Email()
+				password := faker.Password()
+				user := fabricators.FabricateUser(email, password)
+				userInfo := &UserInfo{
+					Id:       user.Id,
+					Email:    email,
+					Password: password,
+				}
+				savedKeyword := fabricators.FabricateKeyword("EXPECTED_KEYWORD", user)
+
+				response := MakeAuthenticatedRequest("GET", "/keyword", nil, nil, userInfo)
+
+				body := GetBody(response)
+
+				Expect(body).To(ContainSubstring(savedKeyword.Keyword))
+			})
+		})
+
+		Context("given keyword parameter", func() {
+			Context("given a blank keyword parameter", func() {
+				It("returns status OK", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=", nil, nil, userInfo)
+
+					Expect(response.Code).To(Equal(http.StatusOK))
+				})
+
+				It("renders keyword#get template", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=", nil, nil, userInfo)
+
+					Expect(response).To(RenderTemplate("keyword#get"))
+				})
+
+				It("returns all records", func() {
+					email := faker.Email()
+					password := faker.Password()
+					user := fabricators.FabricateUser(email, password)
+					userInfo := &UserInfo{
+						Id:       user.Id,
+						Email:    email,
+						Password: password,
+					}
+					savedKeyword1 := fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+					savedKeyword2 := fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=", nil, nil, userInfo)
+
+					body := GetBody(response)
+
+					Expect(body).To(ContainSubstring(savedKeyword1.Keyword))
+					Expect(body).To(ContainSubstring(savedKeyword2.Keyword))
+				})
+			})
+
+			Context("given a valid keyword", func() {
+				It("returns status OK", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=EXPECTED_KEYWORD", nil, nil, userInfo)
+
+					Expect(response.Code).To(Equal(http.StatusOK))
+				})
+
+				It("renders keyword#get template", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=EXPECTED_KEYWORD", nil, nil, userInfo)
+
+					Expect(response).To(RenderTemplate("keyword#get"))
+				})
+
+				It("returns only filtered records", func() {
+					email := faker.Email()
+					password := faker.Password()
+					user := fabricators.FabricateUser(email, password)
+					userInfo := &UserInfo{
+						Id:       user.Id,
+						Email:    email,
+						Password: password,
+					}
+					savedKeyword1 := fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+					savedKeyword2 := fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=EXPECTED_KEYWORD1", nil, nil, userInfo)
+
+					body := GetBody(response)
+
+					Expect(body).To(ContainSubstring(savedKeyword1.Keyword))
+					Expect(body).NotTo(ContainSubstring(savedKeyword2.Keyword))
+				})
+			})
+
+			Context("given an invalid keyword", func() {
+				It("returns status OK", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=INVALID", nil, nil, userInfo)
+
+					Expect(response.Code).To(Equal(http.StatusOK))
+				})
+
+				It("renders keyword#get template", func() {
+					userInfo := &UserInfo{
+						Email:    faker.Email(),
+						Password: faker.Password(),
+					}
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=EXPECTED_KEYWORD", nil, nil, userInfo)
+
+					Expect(response).To(RenderTemplate("keyword#get"))
+				})
+
+				It("returns NO records", func() {
+					email := faker.Email()
+					password := faker.Password()
+					user := fabricators.FabricateUser(email, password)
+					userInfo := &UserInfo{
+						Id:       user.Id,
+						Email:    email,
+						Password: password,
+					}
+					_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD", user)
+
+					response := MakeAuthenticatedRequest("GET", "/keyword?keyword=INVALID_KEYWORD", nil, nil, userInfo)
+
+					body := GetBody(response)
+
+					Expect(body).To(ContainSubstring("No keywords were found"))
+				})
 			})
 		})
 	})
@@ -63,7 +213,7 @@ var _ = Describe("KeywordController", func() {
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
 
-			It("has body data", func() {
+			It("renders keyword#show template", func() {
 				email := faker.Email()
 				password := faker.Password()
 				user := fabricators.FabricateUser(email, password)

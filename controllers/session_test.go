@@ -25,7 +25,7 @@ var _ = Describe("SessionController", func() {
 			Expect(response.Code).To(Equal(http.StatusOK))
 		})
 
-		It("has body data", func() {
+		It("renders session#get template", func() {
 			response := MakeRequest("GET", "/login", nil)
 
 			Expect(response).To(RenderTemplate("session#get"))

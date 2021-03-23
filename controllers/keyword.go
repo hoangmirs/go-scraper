@@ -92,9 +92,16 @@ func (c *Keyword) Post() {
 }
 
 func (c *Keyword) renderKeywordView(flash *web.FlashData) {
+	var keyword string
+	err := c.Ctx.Input.Bind(&keyword, "keyword")
+	if err != nil {
+		logs.Error("Error when getting keyword input: %v", err.Error())
+	}
+
 	query := map[string]interface{}{
-		"user_id": c.CurrentUser.Id,
-		"order":   "-id",
+		"user_id":            c.CurrentUser.Id,
+		"order":              "-id",
+		"keyword__icontains": keyword,
 	}
 
 	keywordsCount, err := models.GetKeywordsCount(query)
@@ -114,6 +121,7 @@ func (c *Keyword) renderKeywordView(flash *web.FlashData) {
 		flash.Error(err.Error())
 	}
 
+	c.Data["Keyword"] = keyword
 	c.Data["Keywords"] = keywords
 	c.Data["xsrfdata"] = template.HTML(c.XSRFFormHTML())
 	c.TplName = "keyword/index.html"
