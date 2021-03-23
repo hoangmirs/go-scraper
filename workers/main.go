@@ -7,7 +7,7 @@ import (
 
 	"github.com/hoangmirs/go-scraper/bootstrap"
 	"github.com/hoangmirs/go-scraper/conf"
-	"github.com/hoangmirs/go-scraper/db"
+	"github.com/hoangmirs/go-scraper/database"
 	"github.com/hoangmirs/go-scraper/workers/jobs"
 
 	"github.com/gocraft/work"
@@ -19,7 +19,7 @@ var redisPool = &redis.Pool{
 	MaxActive: 5,
 	MaxIdle:   5,
 	Wait:      true,
-	Dial:      db.GetRedisConnection,
+	Dial:      database.GetRedisConnection,
 }
 
 func init() {

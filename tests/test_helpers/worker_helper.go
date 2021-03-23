@@ -2,18 +2,18 @@ package test_helpers
 
 import (
 	"github.com/hoangmirs/go-scraper/conf"
-	"github.com/hoangmirs/go-scraper/db"
+	"github.com/hoangmirs/go-scraper/database"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/gocraft/work"
 )
 
 func GetWorkerClient() *work.Client {
-	return work.NewClient(conf.GetString("workerNamespace"), db.GetRedisPool())
+	return work.NewClient(conf.GetString("workerNamespace"), database.GetRedisPool())
 }
 
 func DeleteRedisJobs() {
-	_, err := db.GetRedisPool().Get().Do("DEL", redisKeyJobs(conf.GetString("workerNamespace"), conf.GetString("scraperJobName")))
+	_, err := database.GetRedisPool().Get().Do("DEL", redisKeyJobs(conf.GetString("workerNamespace"), conf.GetString("scraperJobName")))
 	if err != nil {
 		logs.Error("Error when deleting redis jobs: %v", err)
 	}
