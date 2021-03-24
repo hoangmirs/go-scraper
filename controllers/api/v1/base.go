@@ -1,4 +1,4 @@
-package v1
+package apiv1controllers
 
 import (
 	"net/http"

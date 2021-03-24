@@ -1,4 +1,4 @@
-package v1
+package apiv1controllers
 
 import (
 	v1serializers "github.com/hoangmirs/go-scraper/serializers/v1"
