@@ -1,0 +1,16 @@
+<form class="form form-keyword-search" action="/keyword" method="GET">
+  <h3 class="form-keyword-search__title">Keywords</h3>
+  <div class="form-keyword-search__content">
+    <input
+      type="text"
+      value="{{ .SearchedKeyword }}"
+      class="form__input form-keyword-search__input-keyword"
+      name="keyword"
+      placeholder="Enter keyword..."
+    />
+
+    <button type="submit" class="btn form-keyword-search__btn-search">
+      Search
+    </button>
+  </div>
+</form>
