@@ -1,4 +1,4 @@
-package v1
+package v1serializers
 
 type HealthCheck struct {
 	HealthCheck bool
