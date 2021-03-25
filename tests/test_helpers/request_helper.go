@@ -1,12 +1,15 @@
 package test_helpers
 
 import (
+	"encoding/base64"
+	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	neturl "net/url"
 	"strings"
 
+	"github.com/hoangmirs/go-scraper/conf"
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
 
 	"github.com/beego/beego/v2/server/web"
@@ -27,6 +30,18 @@ func MakeRequest(method string, url string, body io.Reader) *httptest.ResponseRe
 // MakeAuthenticatedRequest makes a HTTP request with authenticated user and returns response
 func MakeAuthenticatedRequest(method string, url string, headers http.Header, body io.Reader, userInfo *UserInfo) *httptest.ResponseRecorder {
 	return makeRequest(method, url, headers, body, userInfo)
+}
+
+// MakeRequest makes a HTTP request with basic authentication and returns response
+func MakeRequestWithBasicAuthentication(method string, url string, body io.Reader) *httptest.ResponseRecorder {
+	authString := fmt.Sprintf("%s:%s", conf.GetString("basicAuthenticationUsername"), conf.GetString("basicAuthenticationPassword"))
+	encodedAuthString := base64.StdEncoding.EncodeToString([]byte(authString))
+	authorization := fmt.Sprintf("Basic %s", encodedAuthString)
+
+	headers := http.Header{}
+	headers.Set("Authorization", authorization)
+
+	return makeRequest(method, url, headers, body, nil)
 }
 
 func makeRequest(method string, url string, headers http.Header, body io.Reader, userInfo *UserInfo) *httptest.ResponseRecorder {
