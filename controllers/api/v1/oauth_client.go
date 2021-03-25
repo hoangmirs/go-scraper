@@ -12,12 +12,20 @@ type OAuthClient struct {
 }
 
 func (c *OAuthClient) Post() {
-	oauthClient, _ := oauthservice.GenerateClient()
+	oauthClient, err := oauthservice.GenerateClient()
+	if err != nil {
+		err = c.renderGenericError(err)
+		if err != nil {
+			logs.Error("Error: %v", err.Error())
+		}
+		return
+	}
+
 	oauthClientSerializer := v1serializers.OAuthClient{
 		OAuthClient: oauthClient,
 	}
 
-	err := c.renderJSON(oauthClientSerializer.Data())
+	err = c.renderJSON(oauthClientSerializer.Data())
 	if err != nil {
 		err = c.renderGenericError(err)
 		if err != nil {
