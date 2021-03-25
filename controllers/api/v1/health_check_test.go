@@ -13,13 +13,13 @@ var _ = Describe("HealthCheckController", func() {
 	Describe("GET", func() {
 		Context("given a valid request", func() {
 			It("returns status OK", func() {
-				response := MakeAuthenticatedRequest("GET", "/api/v1/health_check", nil, nil, nil)
+				response := MakeRequest("GET", "/api/v1/health_check", nil)
 
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
 
 			It("returns correct response", func() {
-				response := MakeAuthenticatedRequest("GET", "/api/v1/health_check", nil, nil, nil)
+				response := MakeRequest("GET", "/api/v1/health_check", nil)
 
 				expectedResponse := `
 				{
