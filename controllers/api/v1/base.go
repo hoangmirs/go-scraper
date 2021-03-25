@@ -24,7 +24,7 @@ func (c *baseController) renderJSON(data interface{}) error {
 }
 
 func (c *baseController) renderGenericError(gErr error) error {
-	return c.renderError("Generic error", gErr.Error(), "generic_error", http.StatusBadRequest, nil)
+	return c.renderError("Generic error", gErr.Error(), "generic_error", http.StatusInternalServerError, nil)
 }
 
 func (c *baseController) renderError(title string, detail string, code string, status int, meta *map[string]interface{}) error {
