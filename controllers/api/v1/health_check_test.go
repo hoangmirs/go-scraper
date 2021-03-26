@@ -3,6 +3,7 @@ package apiv1controllers_test
 import (
 	"net/http"
 
+	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
 	. "github.com/onsi/ginkgo"
@@ -18,22 +19,10 @@ var _ = Describe("HealthCheckController", func() {
 				Expect(response.Code).To(Equal(http.StatusOK))
 			})
 
-			It("returns correct response", func() {
+			It("matches the correct API schema", func() {
 				response := MakeRequest("GET", "/api/v1/health_check", nil)
 
-				expectedResponse := `
-				{
-					"data": {
-						"type": "health_check",
-						"id": "0",
-						"attributes": {
-							"success": true
-						}
-					}
-				}
-				`
-
-				Expect(response.Body).To(MatchJSON(expectedResponse))
+				Expect(response).To(MatchJSONSchema("health_check/valid"))
 			})
 		})
 	})
