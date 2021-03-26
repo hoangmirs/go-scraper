@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
+	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -22,19 +23,7 @@ var _ = Describe("OAuthClientController", func() {
 			It("returns correct response", func() {
 				response := MakeRequestWithBasicAuthentication("POST", "/api/v1/oauth/client", nil)
 
-				expectedResponse := `
-				{
-					"data": {
-						"type": "health_check",
-						"id": "0",
-						"attributes": {
-							"success": true
-						}
-					}
-				}
-				`
-
-				Expect(response.Body).To(MatchJSON(expectedResponse))
+				Expect(response).To(MatchJSONSchema("oauth/client/valid"))
 			})
 		})
 
