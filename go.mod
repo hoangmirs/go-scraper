@@ -19,6 +19,7 @@ require (
 	github.com/robfig/cron v1.2.0 // indirect
 	github.com/soveran/redisurl v0.0.0-20180322091936-eb325bc7a4b8
 	github.com/stretchr/testify v1.6.1 // indirect
+	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
 	google.golang.org/appengine v1.6.7 // indirect
