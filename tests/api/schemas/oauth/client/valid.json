@@ -2,39 +2,15 @@
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "data": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string"
-        },
-        "id": {
-          "type": "string"
-        },
-        "attributes": {
-          "type": "object",
-          "properties": {
-            "client_id": {
-              "type": "string"
-            },
-            "client_secret": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "client_id",
-            "client_secret"
-          ]
-        }
-      },
-      "required": [
-        "type",
-        "id",
-        "attributes"
-      ]
+    "client_id": {
+      "type": "string"
+    },
+    "client_secret": {
+      "type": "string"
     }
   },
   "required": [
-    "data"
+    "client_id",
+    "client_secret"
   ]
 }

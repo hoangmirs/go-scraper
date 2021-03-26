@@ -11,6 +11,7 @@ type OAuthClient struct {
 	baseController
 }
 
+
 func (c *OAuthClient) Post() {
 	oauthClient, err := oauthservice.GenerateClient()
 	if err != nil {
@@ -25,11 +26,9 @@ func (c *OAuthClient) Post() {
 		OAuthClient: oauthClient,
 	}
 
-	err = c.renderJSON(oauthClientSerializer.Data())
+	c.Data["json"] = oauthClientSerializer.Data()
+	err = c.ServeJSON()
 	if err != nil {
-		err = c.renderGenericError(err)
-		if err != nil {
-			logs.Error("Error: %v", err.Error())
-		}
+		logs.Error("Error: %v", err.Error())
 	}
 }
