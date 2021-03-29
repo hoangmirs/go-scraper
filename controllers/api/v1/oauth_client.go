@@ -11,7 +11,6 @@ type OAuthClient struct {
 	baseController
 }
 
-
 func (c *OAuthClient) Post() {
 	oauthClient, err := oauthservice.GenerateClient()
 	if err != nil {
