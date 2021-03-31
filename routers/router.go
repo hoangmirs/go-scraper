@@ -25,6 +25,10 @@ func init() {
 			web.NSRouter("/client", &apiv1controllers.OAuthClient{}),
 			web.NSRouter("/token", &apiv1controllers.OAuthToken{}),
 		),
+
+		web.NSNamespace("/keywords",
+			web.NSRouter("/", &apiv1controllers.Keyword{}),
+		),
 	)
 
 	web.AddNamespace(ns)

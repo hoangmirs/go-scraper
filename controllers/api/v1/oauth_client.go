@@ -14,10 +14,7 @@ type OAuthClient struct {
 func (c *OAuthClient) Post() {
 	oauthClient, err := oauthservice.GenerateClient()
 	if err != nil {
-		err = c.renderGenericError(err)
-		if err != nil {
-			logs.Error("Error: %v", err.Error())
-		}
+		c.renderGenericError(err)
 		return
 	}
 
