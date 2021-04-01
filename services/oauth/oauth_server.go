@@ -2,9 +2,11 @@ package oauth
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/hoangmirs/go-scraper/conf"
+	"github.com/hoangmirs/go-scraper/forms"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/go-oauth2/oauth2/v4/errors"
@@ -55,6 +57,8 @@ func SetUpOAuthServer() error {
 		logs.Error("Response error: %v", re.Error.Error())
 	})
 
+	oServer.SetPasswordAuthorizationHandler(passwordAuthorizationHandler)
+
 	oauthServer = oServer
 	clientStore = cStore
 
@@ -67,4 +71,18 @@ func GetOAuthServer() *server.Server {
 
 func GetClientStore() *pg.ClientStore {
 	return clientStore
+}
+
+func passwordAuthorizationHandler(email string, password string) (string, error) {
+	sessionForm := forms.SessionForm{
+		Email:    email,
+		Password: password,
+	}
+
+	user, err := sessionForm.Authenticate()
+	if err != nil {
+		return "", errors.ErrInvalidClient
+	}
+
+	return fmt.Sprint(user.Id), nil
 }
