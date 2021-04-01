@@ -24,12 +24,12 @@ func (c *baseController) renderJSON(data interface{}) error {
 }
 
 func (c *baseController) renderGenericError(gErr error) error {
-	return c.renderError("Generic error", gErr.Error(), "generic_error", http.StatusInternalServerError, nil)
+	return c.renderError("Generic error", gErr.Error(), "generic_error", http.StatusBadRequest, nil)
 }
 
 func (c *baseController) renderError(title string, detail string, code string, status int, meta *map[string]interface{}) error {
 	c.Ctx.Output.Header("Content-Type", "application/json; charset=utf-8")
-	c.Ctx.Output.SetStatus(status)
+	c.Ctx.ResponseWriter.WriteHeader(status)
 
 	err := jsonapi.MarshalErrors(c.Ctx.ResponseWriter, []*jsonapi.ErrorObject{{
 		Title:  title,
