@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bxcodec/faker/v3"
 	"github.com/hoangmirs/go-scraper/models"
 	"github.com/hoangmirs/go-scraper/services/oauth"
 
+	"github.com/bxcodec/faker/v3"
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/generates"
 	oauthmodels "github.com/go-oauth2/oauth2/v4/models"
