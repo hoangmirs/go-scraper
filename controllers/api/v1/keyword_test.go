@@ -3,33 +3,62 @@ package apiv1controllers_test
 import (
 	"net/http"
 
-	"github.com/beego/beego/v2/core/logs"
-	"github.com/bxcodec/faker/v3"
 	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
+	"github.com/bxcodec/faker/v3"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("KeywordController", func() {
+	AfterEach(func() {
+		TruncateTables("user", "oauth2_clients", "oauth2_tokens")
+	})
+
 	Describe("POST", func() {
-		// TODO : Revisit this to send request with authentication. The current implementation does NOT work
-		XContext("given an authenticated request", func() {
+		Context("given an authenticated request", func() {
 			Context("given a valid file", func() {
-				It("returns status OK", func() {
+				It("returns status Created", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
 					token := fabricators.FabricateToken(user)
 					userInfo := &UserInfo{
 						Token: token,
 					}
-					logs.Info("User info: %v", userInfo)
 					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/valid.csv", "text/csv")
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
 
-					Expect(response.Code).To(Equal(http.StatusOK))
+					Expect(response.Code).To(Equal(http.StatusCreated))
+				})
+
+				It("returns the empty body", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/valid.csv", "text/csv")
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
+
+					Expect(response.Body.String()).To(BeEmpty())
+				})
+			})
+
+			Context("given an invalid file", func() {
+				It("returns status BadRequest", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/text.txt", "text/plain")
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
+
+					Expect(response.Code).To(Equal(http.StatusBadRequest))
 				})
 
 				It("returns correct response", func() {
@@ -38,18 +67,18 @@ var _ = Describe("KeywordController", func() {
 					userInfo := &UserInfo{
 						Token: token,
 					}
-					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/valid.csv", "text/csv")
+					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/text.txt", "text/plain")
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
 
-					Expect(response).To(MatchJSONSchema("oauth/client/valid"))
+					Expect(response).To(MatchJSONSchema("error/json_api"))
 				})
 			})
 		})
 
-		Context("given a request WITHOUT basic authentication", func() {
+		Context("given an unauthenticated request", func() {
 			It("returns status Unauthorized", func() {
-				response := MakeRequest("POST", "/api/v1/oauth/client", nil)
+				response := MakeRequest("POST", "/api/v1/keywords", nil)
 
 				Expect(response.Code).To(Equal(http.StatusUnauthorized))
 			})
