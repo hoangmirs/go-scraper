@@ -17,8 +17,11 @@ import (
 	"github.com/vgarvardt/go-pg-adapter/pgx4adapter"
 )
 
-var oauthServer *server.Server
-var clientStore *pg.ClientStore
+var (
+	oauthServer *server.Server
+	clientStore *pg.ClientStore
+	tokenStore  *pg.TokenStore
+)
 
 func SetUpOAuthServer() error {
 	manager := manage.NewDefaultManager()
@@ -29,18 +32,18 @@ func SetUpOAuthServer() error {
 	}
 
 	adapter := pgx4adapter.NewConn(pgxConn)
-	tokenStore, err := pg.NewTokenStore(adapter, pg.WithTokenStoreGCInterval(time.Minute))
+	tStore, err := pg.NewTokenStore(adapter, pg.WithTokenStoreGCInterval(time.Minute))
 	if err != nil {
 		return err
 	}
-	defer tokenStore.Close()
+	defer tStore.Close()
 
 	cStore, err := pg.NewClientStore(adapter)
 	if err != nil {
 		return err
 	}
 
-	manager.MapTokenStorage(tokenStore)
+	manager.MapTokenStorage(tStore)
 	manager.MapClientStorage(cStore)
 
 	oServer := server.NewDefaultServer(manager)
@@ -61,6 +64,7 @@ func SetUpOAuthServer() error {
 
 	oauthServer = oServer
 	clientStore = cStore
+	tokenStore = tStore
 
 	return nil
 }
@@ -71,6 +75,10 @@ func GetOAuthServer() *server.Server {
 
 func GetClientStore() *pg.ClientStore {
 	return clientStore
+}
+
+func GetTokenStore() *pg.TokenStore {
+	return tokenStore
 }
 
 func passwordAuthorizationHandler(email string, password string) (string, error) {

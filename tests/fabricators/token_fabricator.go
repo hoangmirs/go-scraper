@@ -7,6 +7,7 @@ import (
 
 	"github.com/bxcodec/faker/v3"
 	"github.com/hoangmirs/go-scraper/models"
+	"github.com/hoangmirs/go-scraper/services/oauth"
 
 	"github.com/go-oauth2/oauth2/v4"
 	"github.com/go-oauth2/oauth2/v4/generates"
@@ -35,6 +36,11 @@ func FabricateToken(user *models.User) *oauthmodels.Token {
 	token.SetAccess(access)
 	token.SetRefresh(refresh)
 	token.SetAccessCreateAt(time.Now())
+
+	err = oauth.GetTokenStore().Create(context.Background(), token)
+	if err != nil {
+		ginkgo.Fail("Save token failed: " + err.Error())
+	}
 
 	return token
 }
