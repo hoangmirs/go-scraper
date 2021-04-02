@@ -48,7 +48,7 @@ var _ = Describe("KeywordController", func() {
 			})
 
 			Context("given an invalid file", func() {
-				It("returns status BadRequest", func() {
+				It("returns status UnprocessableEntity", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
 					token := fabricators.FabricateToken(user)
 					userInfo := &UserInfo{
@@ -58,7 +58,7 @@ var _ = Describe("KeywordController", func() {
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
 
-					Expect(response.Code).To(Equal(http.StatusBadRequest))
+					Expect(response.Code).To(Equal(http.StatusUnprocessableEntity))
 				})
 
 				It("returns correct response", func() {
@@ -70,6 +70,32 @@ var _ = Describe("KeywordController", func() {
 					headers, body := CreateMultipartRequestInfo("tests/fixtures/files/text.txt", "text/plain")
 
 					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", headers, body, userInfo)
+
+					Expect(response).To(MatchJSONSchema("error/json_api"))
+				})
+			})
+
+			Context("given NO file", func() {
+				It("returns status UnprocessableEntity", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", nil, nil, userInfo)
+
+					Expect(response.Code).To(Equal(http.StatusUnprocessableEntity))
+				})
+
+				It("returns correct response", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+
+					response := MakeAuthenticatedRequest("POST", "/api/v1/keywords", nil, nil, userInfo)
 
 					Expect(response).To(MatchJSONSchema("error/json_api"))
 				})
