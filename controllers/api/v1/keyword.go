@@ -4,8 +4,6 @@ import (
 	"net/http"
 
 	"github.com/hoangmirs/go-scraper/forms"
-
-	"github.com/beego/beego/v2/core/logs"
 )
 
 type Keyword struct {
@@ -19,7 +17,8 @@ func (c *Keyword) NestPrepare() {
 func (c *Keyword) Post() {
 	file, fileHeader, err := c.GetFile("file")
 	if err != nil {
-		logs.Error("Error when getting file: %v", err)
+		c.renderError("File required", err.Error(), "validation_error", http.StatusUnprocessableEntity, nil)
+		return
 	}
 
 	keywordForm := forms.KeywordForm{
@@ -30,7 +29,7 @@ func (c *Keyword) Post() {
 
 	err = keywordForm.Save()
 	if err != nil {
-		c.renderGenericError(err)
+		c.renderError(err.Error(), err.Error(), "validation_error", http.StatusUnprocessableEntity, nil)
 	} else {
 		c.Ctx.Output.Status = http.StatusCreated
 	}
