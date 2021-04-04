@@ -41,10 +41,13 @@ func (c *Keyword) Get() {
 	}
 
 	keywordsSerializer := v1serializers.KeywordList{
-		Keywords: keywords,
+		Keywords:  keywords,
+		Pagination: v1serializers.Pagination{
+			Paginator: paginator,
+		},
 	}
 
-	err = c.renderJSON(keywordsSerializer.Data())
+	err = c.renderListJSON(keywordsSerializer.Data(), keywordsSerializer.Meta(), keywordsSerializer.Links())
 	if err != nil {
 		c.renderGenericError(err)
 	}

@@ -8,6 +8,8 @@ import (
 
 type KeywordList struct {
 	Keywords []*models.Keyword
+
+	Pagination
 }
 
 type KeywordResponse struct {
