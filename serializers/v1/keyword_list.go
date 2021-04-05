@@ -27,7 +27,7 @@ func createKeywordResponse(keyword *models.Keyword) *KeywordResponse {
 		Id:        keyword.Id,
 		Keyword:   keyword.Keyword,
 		Status:    string(keyword.Status),
-		CreatedAt: keyword.CreatedAt.Format(time.RFC3339),
-		UpdatedAt: keyword.UpdatedAt.Format(time.RFC3339),
+		CreatedAt: keyword.CreatedAt.UTC().Format(time.RFC3339),
+		UpdatedAt: keyword.UpdatedAt.UTC().Format(time.RFC3339),
 	}
 }
