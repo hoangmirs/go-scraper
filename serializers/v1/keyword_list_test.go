@@ -1,6 +1,8 @@
 package v1serializers_test
 
 import (
+	"time"
+
 	"github.com/hoangmirs/go-scraper/models"
 	v1serializers "github.com/hoangmirs/go-scraper/serializers/v1"
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
@@ -38,9 +40,13 @@ var _ = Describe("OAuthClientSerializer", func() {
 				Expect(data[0].Id).To(Equal(keyword1.Id))
 				Expect(data[0].Keyword).To(Equal(keyword1.Keyword))
 				Expect(data[0].Status).To(Equal(string(keyword1.Status)))
+				Expect(data[0].CreatedAt).To(Equal(keyword1.CreatedAt.UTC().Format(time.RFC3339)))
+				Expect(data[0].UpdatedAt).To(Equal(keyword1.UpdatedAt.UTC().Format(time.RFC3339)))
 				Expect(data[1].Id).To(Equal(keyword2.Id))
 				Expect(data[1].Keyword).To(Equal(keyword2.Keyword))
 				Expect(data[1].Status).To(Equal(string(keyword2.Status)))
+				Expect(data[1].CreatedAt).To(Equal(keyword2.CreatedAt.UTC().Format(time.RFC3339)))
+				Expect(data[1].UpdatedAt).To(Equal(keyword2.UpdatedAt.UTC().Format(time.RFC3339)))
 			})
 		})
 	})
