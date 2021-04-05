@@ -12,14 +12,6 @@ type KeywordList struct {
 	Pagination
 }
 
-type KeywordResponse struct {
-	Id        uint   `jsonapi:"primary,keyword"`
-	Keyword   string `jsonapi:"attr,keyword"`
-	Status    string `jsonapi:"attr,status"`
-	CreatedAt string `jsonapi:"attr,created_at"`
-	UpdatedAt string `jsonapi:"attr,updated_at"`
-}
-
 func (serializer *KeywordList) Data() []*KeywordResponse {
 	var data []*KeywordResponse
 
