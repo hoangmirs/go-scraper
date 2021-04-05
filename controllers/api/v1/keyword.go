@@ -24,6 +24,7 @@ func (c *Keyword) Get() {
 	query := map[string]interface{}{
 		"user_id": c.CurrentUser.Id,
 		"order":   "-id",
+		"keyword__icontains": c.GetString("keyword"),
 	}
 
 	keywordsCount, err := models.GetKeywordsCount(query)
