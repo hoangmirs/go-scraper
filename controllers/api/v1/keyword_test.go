@@ -20,38 +20,179 @@ var _ = Describe("KeywordController", func() {
 
 	Describe("GET", func() {
 		Context("given an authenticated request", func() {
-			It("returns status OK", func() {
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				token := fabricators.FabricateToken(user)
-				userInfo := &UserInfo{
-					Token: token,
-				}
-				_ = fabricators.FabricateKeyword(faker.Word(), user)
+			Context("given NO parameter", func() {
+				It("returns status OK", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+					_ = fabricators.FabricateKeyword(faker.Word(), user)
 
-				response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+					response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
 
-				Expect(response.Code).To(Equal(http.StatusOK))
+					Expect(response.Code).To(Equal(http.StatusOK))
+				})
+
+				It("returns correct response", func() {
+					user := fabricators.FabricateUser(faker.Email(), faker.Password())
+					token := fabricators.FabricateToken(user)
+					userInfo := &UserInfo{
+						Token: token,
+					}
+					_ = fabricators.FabricateKeyword(faker.Word(), user)
+
+					response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+
+					Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+				})
 			})
 
-			It("returns correct response", func() {
-				user := fabricators.FabricateUser(faker.Email(), faker.Password())
-				token := fabricators.FabricateToken(user)
-				userInfo := &UserInfo{
-					Token: token,
-				}
-				_ = fabricators.FabricateKeyword(faker.Word(), user)
+			Context("given keyword parameter", func() {
+				Context("given a blank keyword parameter", func() {
+					It("returns status OK", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword(faker.Word(), user)
 
-				response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
 
-				Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+						Expect(response.Code).To(Equal(http.StatusOK))
+					})
+
+					It("returns all records", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+
+						body := GetJSONBody(response)
+
+						Expect(len(body["data"].([]interface{}))).To(Equal(2))
+					})
+
+					It("returns correct response", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+
+						Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+					})
+				})
+
+				Context("given a valid keyword", func() {
+					It("returns status OK", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=EXPECTED_KEYWORD1", nil, nil, userInfo)
+
+						Expect(response.Code).To(Equal(http.StatusOK))
+					})
+
+					It("returns only the filtered records", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=EXPECTED_KEYWORD1", nil, nil, userInfo)
+
+						body := GetJSONBody(response)
+
+						Expect(len(body["data"].([]interface{}))).To(Equal(1))
+					})
+
+					It("returns correct response", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=EXPECTED_KEYWORD1", nil, nil, userInfo)
+
+						Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+					})
+				})
+
+				Context("given an incorrect keyword", func() {
+					It("returns status OK", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=INVALID", nil, nil, userInfo)
+
+						Expect(response.Code).To(Equal(http.StatusOK))
+					})
+
+					It("returns NO records", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=INVALID", nil, nil, userInfo)
+
+						body := GetJSONBody(response)
+
+						Expect(len(body["data"].([]interface{}))).To(Equal(0))
+					})
+
+					It("returns correct response", func() {
+						user := fabricators.FabricateUser(faker.Email(), faker.Password())
+						token := fabricators.FabricateToken(user)
+						userInfo := &UserInfo{
+							Token: token,
+						}
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD1", user)
+						_ = fabricators.FabricateKeyword("EXPECTED_KEYWORD2", user)
+
+						response := MakeAuthenticatedRequest("GET", "/api/v1/keywords?keyword=INVALID", nil, nil, userInfo)
+
+						Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+					})
+				})
 			})
-		})
 
-		Context("given an unauthenticated request", func() {
-			It("returns status Unauthorized", func() {
-				response := MakeRequest("GET", "/api/v1/keywords", nil)
+			Context("given an unauthenticated request", func() {
+				It("returns status Unauthorized", func() {
+					response := MakeRequest("GET", "/api/v1/keywords", nil)
 
-				Expect(response.Code).To(Equal(http.StatusUnauthorized))
+					Expect(response.Code).To(Equal(http.StatusUnauthorized))
+				})
 			})
 		})
 	})
