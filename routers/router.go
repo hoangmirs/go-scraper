@@ -23,6 +23,7 @@ func init() {
 
 		web.NSNamespace("/oauth",
 			web.NSRouter("/client", &apiv1controllers.OAuthClient{}),
+			web.NSRouter("/token", &apiv1controllers.OAuthToken{}),
 		),
 	)
 
