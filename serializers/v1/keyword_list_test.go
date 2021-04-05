@@ -13,9 +13,9 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("OAuthClientSerializer", func() {
+var _ = Describe("KeywordListSerializer", func() {
 	AfterEach(func() {
-		TruncateTables("oauth2_clients")
+		TruncateTables("user", "keyword")
 	})
 
 	Describe("Data", func() {
