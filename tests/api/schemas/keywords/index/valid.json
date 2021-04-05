@@ -43,9 +43,57 @@
           "attributes"
         ]
       }
+    },
+    "links": {
+      "type": "object",
+      "properties": {
+        "first": {
+          "type": "string"
+        },
+        "last": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        },
+        "prev": {
+          "type": "string"
+        },
+        "self": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "first",
+        "last",
+        "next",
+        "prev",
+        "self"
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer"
+        },
+        "pages": {
+          "type": "integer"
+        },
+        "records": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "page",
+        "pages",
+        "records"
+      ]
     }
   },
   "required": [
-    "data"
+    "data",
+    "links",
+    "meta"
   ]
 }
