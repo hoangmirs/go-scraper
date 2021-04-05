@@ -12,9 +12,9 @@ type Pagination struct {
 
 func (serializer *Pagination) Meta() (meta *jsonapi.Meta) {
 	return &jsonapi.Meta{
-		"page": serializer.Paginator.Page(),
-		"pages":        serializer.Paginator.PageNums(),
-		"records":      serializer.Paginator.Nums(),
+		"page":    serializer.Paginator.Page(),
+		"pages":   serializer.Paginator.PageNums(),
+		"records": serializer.Paginator.Nums(),
 	}
 }
 
