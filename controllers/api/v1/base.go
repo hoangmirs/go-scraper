@@ -1,7 +1,9 @@
 package apiv1controllers
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -10,6 +12,7 @@ import (
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
+	"github.com/go-oauth2/oauth2/v4"
 	"github.com/google/jsonapi"
 )
 
@@ -18,6 +21,7 @@ type baseController struct {
 
 	requireAuthenticatedUser bool
 	CurrentUser              *models.User
+	TokenInfo                *oauth2.TokenInfo
 }
 
 type NestPreparer interface {
@@ -40,12 +44,13 @@ func (c *baseController) Prepare() {
 func (c *baseController) ensureAuthenticatedUser() bool {
 	server := oauth.GetOAuthServer()
 
-	oauth, err := server.ValidationBearerToken(c.Ctx.Request)
+	tokenInfo, err := server.ValidationBearerToken(c.Ctx.Request)
 	if err != nil {
 		return false
 	}
+	c.TokenInfo = &tokenInfo
 
-	userID, err := strconv.ParseUint(oauth.GetUserID(), 10, 64)
+	userID, err := strconv.ParseUint(tokenInfo.GetUserID(), 10, 64)
 	if err != nil {
 		logs.Error("Error when getting UserID: %v", err.Error())
 		return false
@@ -60,6 +65,20 @@ func (c *baseController) ensureAuthenticatedUser() bool {
 	c.CurrentUser = user
 
 	return true
+}
+
+func (c *baseController) ensureAuthenticatedClient() error {
+	clientID, clientSecret, err := oauth.GetOAuthServer().ClientInfoHandler(c.Ctx.Request)
+	if err != nil {
+		return err
+	}
+
+	client, err := oauth.GetClientStore().GetByID(context.TODO(), clientID)
+	if err != nil || client.GetSecret() != clientSecret {
+		return errors.New("Client authentication failed")
+	}
+
+	return nil
 }
 
 func (c *baseController) renderJSON(data interface{}) error {
