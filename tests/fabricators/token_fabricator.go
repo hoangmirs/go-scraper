@@ -15,8 +15,11 @@ import (
 	"github.com/onsi/ginkgo"
 )
 
-func FabricateToken(user *models.User) *oauthmodels.Token {
-	client := FabricateOAuthClient(faker.UUIDDigit(), faker.UUIDDigit())
+func FabricateToken(user *models.User, client *oauthmodels.Client) *oauthmodels.Token {
+	if client == nil {
+		client = FabricateOAuthClient(faker.UUIDDigit(), faker.UUIDDigit())
+	}
+
 	userID := fmt.Sprint(user.Id)
 	data := &oauth2.GenerateBasic{
 		Client:   client,
