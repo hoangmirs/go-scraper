@@ -7,7 +7,6 @@ import (
 	"github.com/hoangmirs/go-scraper/models"
 	"github.com/hoangmirs/go-scraper/services/oauth"
 
-	"github.com/beego/beego/v2/client/orm"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
 	"github.com/google/jsonapi"
@@ -51,20 +50,13 @@ func (c *baseController) ensureAuthenticatedUser() bool {
 		return false
 	}
 
-	user := models.User{
-		Base: models.Base{
-			Id: uint(userID),
-		},
-	}
-
-	o := orm.NewOrm()
-	err = o.Read(&user)
+	user, err := models.GetUserByID(uint(userID))
 	if err != nil {
 		logs.Error("Error when querying user: %v", err.Error())
 		return false
 	}
 
-	c.CurrentUser = &user
+	c.CurrentUser = user
 
 	return true
 }
