@@ -24,7 +24,7 @@ func (c *OAuthToken) Post() {
 func (c *OAuthToken) Revoke() {
 	err := c.ensureAuthenticatedClient()
 	if err != nil {
-		http.Error(c.Ctx.ResponseWriter, err.Error(), http.StatusUnauthorized)
+		c.renderError("Unauthorized client", err.Error(), "unauthorized_client", http.StatusUnauthorized, nil)
 	}
 
 	token := c.GetString("token")
