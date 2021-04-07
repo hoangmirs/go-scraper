@@ -2,9 +2,10 @@ package v1serializers_test
 
 import (
 	v1serializers "github.com/hoangmirs/go-scraper/serializers/v1"
-	oauthservice "github.com/hoangmirs/go-scraper/services/oauth"
+	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
+	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -17,10 +18,7 @@ var _ = Describe("OAuthClientSerializer", func() {
 	Describe("Data", func() {
 		Context("given a valid OAuthClient", func() {
 			It("returns correct data", func() {
-				oauthClient, err := oauthservice.GenerateClient()
-				if err != nil {
-					Fail("Error when generating OAuth client: %v" + err.Error())
-				}
+				oauthClient := fabricators.FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 
 				serializer := v1serializers.OAuthClient{
 					OAuthClient: oauthClient,
@@ -28,6 +26,7 @@ var _ = Describe("OAuthClientSerializer", func() {
 
 				data := serializer.Data()
 
+				Expect(data.ID).To(Equal(oauthClient.ID))
 				Expect(data.ClientID).To(Equal(oauthClient.ID))
 				Expect(data.ClientSecret).To(Equal(oauthClient.Secret))
 			})
