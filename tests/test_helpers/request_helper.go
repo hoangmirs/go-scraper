@@ -13,6 +13,7 @@ import (
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
 
 	"github.com/beego/beego/v2/server/web"
+	"github.com/go-oauth2/oauth2/v4/models"
 	"github.com/onsi/ginkgo"
 )
 
@@ -20,6 +21,7 @@ type UserInfo struct {
 	Id       uint
 	Email    string
 	Password string
+	Token    *models.Token
 }
 
 // MakeRequest makes a HTTP request and returns response
@@ -61,8 +63,13 @@ func makeRequest(method string, url string, headers http.Header, body io.Reader,
 	response := httptest.NewRecorder()
 
 	if userInfo != nil {
-		authenticationCookie := getAuthenticationCookie(userInfo)
-		request.Header.Set("Cookie", authenticationCookie.String())
+		if userInfo.Token != nil {
+			authorization := fmt.Sprintf("Bearer %s", userInfo.Token.Access)
+			request.Header.Add("Authorization", authorization)
+		} else {
+			authenticationCookie := getAuthenticationCookie(userInfo)
+			request.Header.Set("Cookie", authenticationCookie.String())
+		}
 	}
 
 	web.BeeApp.Handlers.ServeHTTP(response, request)

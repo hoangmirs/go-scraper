@@ -21,3 +21,16 @@ func CreateUser(user *User) (int64, error) {
 
 	return o.Insert(user)
 }
+
+// GetUserByID returns the User by passing userID
+func GetUserByID(userID uint) (*User, error) {
+	user := &User{Base: Base{Id: userID}}
+
+	o := orm.NewOrm()
+	err := o.Read(user)
+	if err != nil {
+		user = nil
+	}
+
+	return user, err
+}

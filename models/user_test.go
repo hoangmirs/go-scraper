@@ -61,4 +61,37 @@ var _ = Describe("User", func() {
 		})
 	})
 
+	Describe("#GetUserByID", func() {
+		Context("given a valid userID", func() {
+			It("returns the correct user", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+
+				storedUser, err := models.GetUserByID(user.Id)
+				if err != nil {
+					Fail("Failed to get user: " + err.Error())
+				}
+
+				Expect(storedUser.Id).To(Equal(user.Id))
+			})
+
+			It("does NOT return error", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+
+				_, err := models.GetUserByID(user.Id)
+
+				Expect(err).To(BeNil())
+			})
+		})
+
+		Context("given invalid attributes", func() {
+			Context("given an invalid userID", func() {
+				It("returns an error", func() {
+					user, err := models.GetUserByID(999)
+
+					Expect(err.Error()).To(Equal(`<QuerySeter> no row found`))
+					Expect(user).To(BeNil())
+				})
+			})
+		})
+	})
 })
