@@ -17,6 +17,44 @@ var _ = Describe("KeywordController", func() {
 		TruncateTables("user", "oauth2_clients", "oauth2_tokens")
 	})
 
+	Describe("GET", func() {
+		Context("given an authenticated request", func() {
+			It("returns status OK", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				token := fabricators.FabricateToken(user)
+				userInfo := &UserInfo{
+					Token: token,
+				}
+				_ = fabricators.FabricateKeyword(faker.Word(), user)
+
+				response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+
+				Expect(response.Code).To(Equal(http.StatusOK))
+			})
+
+			It("returns correct response", func() {
+				user := fabricators.FabricateUser(faker.Email(), faker.Password())
+				token := fabricators.FabricateToken(user)
+				userInfo := &UserInfo{
+					Token: token,
+				}
+				_ = fabricators.FabricateKeyword(faker.Word(), user)
+
+				response := MakeAuthenticatedRequest("GET", "/api/v1/keywords", nil, nil, userInfo)
+
+				Expect(response).To(MatchJSONSchema("keywords/index/valid"))
+			})
+		})
+
+		Context("given an unauthenticated request", func() {
+			It("returns status Unauthorized", func() {
+				response := MakeRequest("GET", "/api/v1/keywords", nil)
+
+				Expect(response.Code).To(Equal(http.StatusUnauthorized))
+			})
+		})
+	})
+
 	Describe("POST", func() {
 		Context("given an authenticated request", func() {
 			Context("given a valid file", func() {
