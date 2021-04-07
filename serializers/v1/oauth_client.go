@@ -7,12 +7,14 @@ type OAuthClient struct {
 }
 
 type oAuthClientResponse struct {
-	ClientID     string `json:"client_id"`
-	ClientSecret string `json:"client_secret"`
+	ID           string `jsonapi:"primary,oauth_client"`
+	ClientID     string `jsonapi:"attr,client_id"`
+	ClientSecret string `jsonapi:"attr,client_secret"`
 }
 
 func (serializer *OAuthClient) Data() *oAuthClientResponse {
 	data := &oAuthClientResponse{
+		ID:           serializer.OAuthClient.ID,
 		ClientID:     serializer.OAuthClient.ID,
 		ClientSecret: serializer.OAuthClient.Secret,
 	}

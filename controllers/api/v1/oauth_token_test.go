@@ -98,12 +98,12 @@ var _ = Describe("OAuthTokenController", func() {
 
 					response := MakeRequest("POST", "/api/v1/oauth/token", body)
 
-					Expect(response).To(MatchJSONSchema("oauth/token/invalid"))
+					Expect(response).To(MatchJSONSchema("error/json_api"))
 				})
 			})
 
 			Context("given an INVALID client information", func() {
-				It("returns status InternalServerError", func() {
+				It("returns status Unauthorized", func() {
 					email := faker.Email()
 					password := faker.Password()
 					_ = fabricators.FabricateUser(email, password)
@@ -118,7 +118,7 @@ var _ = Describe("OAuthTokenController", func() {
 
 					response := MakeRequest("POST", "/api/v1/oauth/token", body)
 
-					Expect(response.Code).To(Equal(http.StatusInternalServerError))
+					Expect(response.Code).To(Equal(http.StatusUnauthorized))
 				})
 
 				It("returns correct response", func() {
@@ -136,7 +136,7 @@ var _ = Describe("OAuthTokenController", func() {
 
 					response := MakeRequest("POST", "/api/v1/oauth/token", body)
 
-					Expect(response).To(MatchJSONSchema("oauth/token/invalid"))
+					Expect(response).To(MatchJSONSchema("error/json_api"))
 				})
 			})
 
@@ -170,7 +170,7 @@ var _ = Describe("OAuthTokenController", func() {
 
 					response := MakeRequest("POST", "/api/v1/oauth/token", body)
 
-					Expect(response).To(MatchJSONSchema("oauth/token/invalid"))
+					Expect(response).To(MatchJSONSchema("error/json_api"))
 				})
 			})
 		})
