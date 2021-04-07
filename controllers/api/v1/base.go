@@ -108,4 +108,6 @@ func (c *baseController) renderError(title string, detail string, code string, s
 			logs.Error("Error when rendering error message: %v", err.Error())
 		}
 	}
+
+	c.StopRun()
 }

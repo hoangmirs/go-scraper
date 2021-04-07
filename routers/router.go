@@ -28,6 +28,7 @@ func init() {
 
 		web.NSNamespace("/keywords",
 			web.NSRouter("/", &apiv1controllers.Keyword{}),
+			web.NSRouter("/:id", &apiv1controllers.Keyword{}, "get:Show"),
 		),
 	)
 
