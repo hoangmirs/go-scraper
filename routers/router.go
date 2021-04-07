@@ -20,6 +20,7 @@ func init() {
 	// API V1
 	ns := web.NewNamespace("/api/v1",
 		web.NSRouter("/health_check", &apiv1controllers.HealthCheck{}),
+		web.NSRouter("/users", &apiv1controllers.User{}),
 
 		web.NSNamespace("/oauth",
 			web.NSRouter("/client", &apiv1controllers.OAuthClient{}),
