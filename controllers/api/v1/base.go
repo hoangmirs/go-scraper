@@ -3,7 +3,6 @@ package apiv1controllers
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"strconv"
 
@@ -67,18 +66,16 @@ func (c *baseController) ensureAuthenticatedUser() bool {
 	return true
 }
 
-func (c *baseController) ensureAuthenticatedClient() error {
+func (c *baseController) ensureAuthenticatedClient() {
 	clientID, clientSecret, err := oauth.GetOAuthServer().ClientInfoHandler(c.Ctx.Request)
 	if err != nil {
-		return err
+		c.renderError("Unauthorized client", err.Error(), "unauthorized_client", http.StatusUnauthorized, nil)
 	}
 
 	client, err := oauth.GetClientStore().GetByID(context.TODO(), clientID)
 	if err != nil || client.GetSecret() != clientSecret {
-		return errors.New("Client authentication failed")
+		c.renderError("Unauthorized client", "Client authentication failed", "unauthorized_client", http.StatusUnauthorized, nil)
 	}
-
-	return nil
 }
 
 func (c *baseController) renderJSON(data interface{}) error {
