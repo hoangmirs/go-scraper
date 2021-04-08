@@ -13,7 +13,7 @@ import (
 
 var _ = Describe("OAuthTokenSerializer", func() {
 	AfterEach(func() {
-		TruncateTables("oauth2_tokens")
+		TruncateTables("oauth2_tokens", "user")
 	})
 
 	Describe("Data", func() {
