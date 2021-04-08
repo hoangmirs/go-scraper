@@ -2,7 +2,6 @@ package apiv1controllers
 
 import (
 	"context"
-	"errors"
 	"net/http"
 
 	"github.com/hoangmirs/go-scraper/services/oauth"
@@ -27,13 +26,13 @@ func (c *OAuthToken) Revoke() {
 		c.renderError("Unauthorized client", err.Error(), "unauthorized_client", http.StatusUnauthorized, nil)
 	}
 
-	token := c.GetString("token")
-	if token == "" {
-		err = errors.New("Token is blank")
-		c.renderError(err.Error(), err.Error(), "token_required", http.StatusUnprocessableEntity, nil)
+	server := oauth.GetOAuthServer()
+	tokenInfo, err := server.ValidationBearerToken(c.Ctx.Request)
+	if err != nil {
+		c.renderError("Invalid token", err.Error(), "invalid_token", http.StatusUnprocessableEntity, nil)
 	}
 
-	err = oauth.GetTokenStore().RemoveByAccess(context.TODO(), token)
+	err = oauth.GetTokenStore().RemoveByAccess(context.TODO(), tokenInfo.GetAccess())
 	if err != nil {
 		c.renderGenericError(err)
 	}
