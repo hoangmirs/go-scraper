@@ -6,13 +6,13 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/bxcodec/faker/v3"
-	"github.com/google/uuid"
 	"github.com/hoangmirs/go-scraper/services/oauth"
 	. "github.com/hoangmirs/go-scraper/tests/custom_matchers"
 	"github.com/hoangmirs/go-scraper/tests/fabricators"
 	. "github.com/hoangmirs/go-scraper/tests/test_helpers"
 
+	"github.com/bxcodec/faker/v3"
+	"github.com/google/uuid"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -186,7 +186,7 @@ var _ = Describe("OAuthTokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":  {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -203,7 +203,7 @@ var _ = Describe("OAuthTokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":  {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -220,7 +220,7 @@ var _ = Describe("OAuthTokenController", func() {
 				form := url.Values{
 					"client_id":     {client.ID},
 					"client_secret": {client.Secret},
-					"token":         {token.GetAccess()},
+					"access_token":  {token.GetAccess()},
 				}
 				body := strings.NewReader(form.Encode())
 
@@ -234,14 +234,14 @@ var _ = Describe("OAuthTokenController", func() {
 		})
 
 		Context("given INVALID credentials", func() {
-			Context("given an empty token", func() {
+			Context("given an empty access token", func() {
 				It("returns status UnprocessableEntity", func() {
 					client := fabricators.FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"token":         {""},
+						"access_token":  {""},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -256,7 +256,7 @@ var _ = Describe("OAuthTokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {client.Secret},
-						"token":         {""},
+						"access_token":  {""},
 					}
 					body := strings.NewReader(form.Encode())
 
@@ -273,7 +273,7 @@ var _ = Describe("OAuthTokenController", func() {
 					form := url.Values{
 						"client_id":     {client.ID},
 						"client_secret": {"invalid"},
-						"token":         {"token"},
+						"access_token":  {"access_token"},
 					}
 					body := strings.NewReader(form.Encode())
 
