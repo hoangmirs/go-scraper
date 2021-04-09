@@ -23,7 +23,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given NO parameter", func() {
 				It("returns status OK", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -36,7 +36,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -52,7 +52,7 @@ var _ = Describe("KeywordController", func() {
 				Context("given a blank keyword parameter", func() {
 					It("returns status OK", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -65,7 +65,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns all records", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -81,7 +81,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns correct response", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -97,7 +97,7 @@ var _ = Describe("KeywordController", func() {
 				Context("given a valid keyword", func() {
 					It("returns status OK", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -111,7 +111,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns only the filtered records", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -127,7 +127,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns correct response", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -143,7 +143,7 @@ var _ = Describe("KeywordController", func() {
 				Context("given an incorrect keyword", func() {
 					It("returns status OK", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -157,7 +157,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns NO records", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -173,7 +173,7 @@ var _ = Describe("KeywordController", func() {
 
 					It("returns correct response", func() {
 						user := fabricators.FabricateUser(faker.Email(), faker.Password())
-						token := fabricators.FabricateToken(user)
+						token := fabricators.FabricateToken(user, nil)
 						userInfo := &UserInfo{
 							Token: token,
 						}
@@ -202,7 +202,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given an existing keyword ID", func() {
 				It("returns status OK", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -215,7 +215,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -230,7 +230,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given a non-existing keyword ID", func() {
 				It("returns status NotFound", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -242,7 +242,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -256,7 +256,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given an invalid keyword ID", func() {
 				It("returns status NotFound", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -268,7 +268,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -294,7 +294,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given a valid file", func() {
 				It("returns status Created", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -307,7 +307,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns the empty body", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -322,7 +322,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given an invalid file", func() {
 				It("returns status UnprocessableEntity", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -335,7 +335,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -350,7 +350,7 @@ var _ = Describe("KeywordController", func() {
 			Context("given NO file", func() {
 				It("returns status UnprocessableEntity", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}
@@ -362,7 +362,7 @@ var _ = Describe("KeywordController", func() {
 
 				It("returns correct response", func() {
 					user := fabricators.FabricateUser(faker.Email(), faker.Password())
-					token := fabricators.FabricateToken(user)
+					token := fabricators.FabricateToken(user, nil)
 					userInfo := &UserInfo{
 						Token: token,
 					}

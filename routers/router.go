@@ -24,6 +24,7 @@ func init() {
 		web.NSNamespace("/oauth",
 			web.NSRouter("/client", &apiv1controllers.OAuthClient{}),
 			web.NSRouter("/token", &apiv1controllers.OAuthToken{}),
+			web.NSRouter("/revoke", &apiv1controllers.OAuthToken{}, "post:Revoke"),
 		),
 
 		web.NSNamespace("/keywords",
