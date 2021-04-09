@@ -40,7 +40,9 @@ The application will be run on http://localhost:8080
 ```
 
 #### Deploy to Heroku with Terraform
+
 ##### Prerequisites
+
 - [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) latest version
 - [Terraform](https://www.terraform.io/downloads.html)
 
@@ -52,32 +54,42 @@ $ heroku authorizations:create --description <api key description>
 
 And then, move to the `deploy/heroku` folder and run the following steps:
 
-Step 1: Copy the variable file and update the variables
+_Step 1:_ Copy the variable file and update the variables
 
-```
-cp terraform.tfvars.sample terraform.tfvars
-```
-
-Step 2: Initialize Terraform
-
-```
-terraform init
+```sh
+$ cp terraform.tfvars.sample terraform.tfvars
 ```
 
-Step 3: Generate an execution plan
+_Step 2:_ Initialize Terraform
 
-```
-terraform plan
-```
-
-Step 5: Execute the generated plan
-
-```
-terraform apply
+```sh
+$ terraform init
 ```
 
-Step 6: Build the application and push to heroku
+_Step 3:_ Generate an execution plan
+
+```sh
+$ terraform plan
+```
+
+_Step 5:_ Execute the generated plan
+
+```sh
+$ terraform apply
+```
+
+_Step 6:_ Build the application and push to heroku
+
 You can check `.github/workflows/deploy.yml` workflow for more details
+
+_Make sure you set the following Github secrets before deploying the application:_
+
+```
+DOCKER_TOKEN       # Docker token
+HEROKU_API_KEY     # Heroku OAuth token
+HEROKU_APP_PROD    # Heroku app name for production
+HEROKU_APP_STAGING # Heroku app name for staging
+```
 
 ## About
 
