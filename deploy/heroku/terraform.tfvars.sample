@@ -1,0 +1,13 @@
+heroku_email = ""
+
+heroku_api_key = ""
+
+app_name = "go-scraper"
+
+app_region = "us"
+
+postgresql_plan = "hobby-dev"
+
+redis_plan = "hobby-dev"
+
+dyno_size = "Free"
