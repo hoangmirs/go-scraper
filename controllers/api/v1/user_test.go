@@ -129,7 +129,7 @@ var _ = Describe("UserController", func() {
 				})
 			})
 
-			Context("given an invalid user information", func() {
+			Context("given an INVALID user information", func() {
 				It("returns status UnprocessableEntity", func() {
 					client := fabricators.FabricateOAuthClient(uuid.New().String(), uuid.New().String())
 
