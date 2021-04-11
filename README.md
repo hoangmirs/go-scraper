@@ -1,6 +1,10 @@
-# Git Repository Template
+# Go Scraper
 
-Project repository template to set up all public projects at [Nimble](https://nimblehq.co/)
+## Prerequisite
+
+- [Go - 1.15](https://golang.org/doc/go1.15)
+- [Node - 14.15.4](https://nodejs.org/en/)
+- Docker: check for the [installation guide](https://www.docker.com/products/docker-desktop) for your platform
 
 ## Usage
 
@@ -8,21 +12,33 @@ Clone the repository
 
 `git clone git@github.com:nimblehq/git-template.git`
 
-## License
+#### Install development dependencies
 
-This project is Copyright (c) 2014-2020 Nimble. It is free software,
-and may be redistributed under the terms specified in the [LICENSE] file.
+This project uses the following dependencies:
 
-[LICENSE]: /LICENSE
+- [Bee - Bee CLI](https://github.com/beego/bee)
+- [Forego - Foreman in Go](https://github.com/ddollar/forego)
+
+Install them by running:
+
+```sh
+  make install-dependencies
+```
+
+#### Run the Go application for development
+
+```sh
+  make dev
+```
+
+The application will be run on http://localhost:8080
+
+#### Run tests
+
+```sh
+  make test
+```
 
 ## About
 
-![Nimble](https://assets.nimblehq.co/logo/dark/logo-dark-text-160.png)
-
-This project is maintained and funded by Nimble.
-
-We love open source and do our part in sharing our work with the community!
-See [our other projects][community] or [hire our team][hire] to help build your product.
-
-[community]: https://github.com/nimblehq
-[hire]: https://nimblehq.co/
+This project is created to complete **Web Certification Path** using **Go** at [Nimble](https://nimblehq.co)

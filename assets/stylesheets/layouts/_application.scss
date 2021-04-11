@@ -1,0 +1,27 @@
+.layout-default {
+  @apply bg-gray-100;
+
+  .app-main {
+    @apply max-w-7xl mx-auto py-6;
+
+    @screen sm {
+      @apply px-6;
+    }
+
+    @screen lg {
+      @apply px-8;
+    }
+
+    &__title {
+      @apply text-3xl text-center;
+    }
+
+    &__message {
+      @apply mt-4;
+    }
+
+    &__content {
+      @apply w-full mt-4 px-6 py-8 rounded bg-white text-black shadow-md;
+    }
+  }
+}

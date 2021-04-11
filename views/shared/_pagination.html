@@ -1,0 +1,39 @@
+{{ if .paginator.HasPages }}
+<div class="pagination">
+  <div class="pagination__wrapper">
+    <div>
+      <p class="pagination__description">
+        Total:
+        <span class="font-medium">{{ .paginator.Nums }}</span>
+        results
+      </p>
+    </div>
+    <div>
+      <nav class="pagination__nav" aria-label="Pagination">
+        <a
+          href="{{ .paginator.PageLinkPrev }}"
+          class="pagination__item pagination__item--nav pagination__item--nav-left {{ if not .paginator.HasPrev }} pagination__item--disabled {{ end }}"
+        >
+          <span class="sr-only">Previous</span>
+          {{ render_icon "chevron-left" "w-5 h-5" }}
+        </a>
+        {{ range $index, $page := .paginator.Pages }}
+        <a
+          href="{{ $.paginator.PageLink $page }}"
+          class="pagination__item {{if $.paginator.IsActive .}} pagination__item--active{{end}}"
+        >
+          {{ $page }}
+        </a>
+        {{ end }}
+        <a
+          href="{{ .paginator.PageLinkNext }}"
+          class="pagination__item pagination__item--nav pagination__item--nav-right {{ if not .paginator.HasNext }} pagination__item--disabled {{ end }}"
+        >
+          <span class="sr-only">Next</span>
+          {{ render_icon "chevron-right" "w-5 h-5" }}
+        </a>
+      </nav>
+    </div>
+  </div>
+</div>
+{{ end }}

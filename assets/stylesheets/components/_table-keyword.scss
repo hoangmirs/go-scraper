@@ -1,0 +1,47 @@
+.table-keyword {
+  @apply mt-6 w-full table-fixed;
+
+  &__id {
+    @apply w-1/12;
+  }
+
+  &__keyword {
+    @apply w-5/12;
+  }
+
+  &__status {
+    @apply w-2/12;
+  }
+
+  &__created-date {
+    @apply w-2/12;
+  }
+
+  &__action {
+    @apply w-2/12;
+  }
+
+  &__item {
+    @apply py-3 px-6 whitespace-nowrap;
+
+    &--center {
+      @apply text-center;
+    }
+
+    &--left {
+      @apply text-left;
+    }
+  }
+
+  &__icon {
+    @apply w-4 mr-2 transform;
+
+    &:hover {
+      @apply text-green-500 scale-110;
+    }
+  }
+
+  &__action-group {
+    @apply flex items-center justify-center;
+  }
+}

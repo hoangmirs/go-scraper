@@ -1,0 +1,52 @@
+<div class="registration-wrapper">
+  <div class="card-registration">
+    <div class="card-registration__content">
+      <h1 class="card-registration__title">{{ .Title }}</h1>
+      <form class="form-registration form" action="/register" method="POST">
+        {{ .xsrfdata }}
+
+        <input
+          type="email"
+          class="form__input"
+          name="email"
+          value="{{ .Form.Email }}"
+          placeholder="Email"
+          autocomplete="email"
+        />
+
+        <input
+          type="password"
+          class="form__input"
+          name="password"
+          placeholder="Password"
+          autocomplete="new-password"
+        />
+        <input
+          type="password"
+          class="form__input"
+          name="password_confirmation"
+          placeholder="Confirm Password"
+          autocomplete="new-password"
+        />
+
+        <button type="submit" class="btn btn--full">Create Account</button>
+
+        <div class="form-registration__terms-privacy">
+          By signing up, you agree to the
+          <a class="custom-link custom-link--secondary" href="#">
+            Terms of Service
+          </a>
+          and
+          <a class="custom-link custom-link--secondary" href="#">
+            Privacy Policy
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <div class="card-registration__footer">
+      Already have an account?
+      <a class="custom-link" href="/login">Log in</a>.
+    </div>
+  </div>
+</div>

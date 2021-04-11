@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html class="layout-default">
+  <head>
+    <title>Go Scraper</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.ico" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    {{ assets_css "/static/css/application.css" }}
+  </head>
+
+  <body class="{{.ControllerName}} {{.ActionName}}">
+    <div class="icon-sprite" hidden="true">
+      {{ render_file "static/symbol/svg/sprite.symbol.svg" }}
+    </div>
+    {{ .Header }}
+    <main class="app-main">
+      <h1 class="app-main__title">{{ .Title }}</h1>
+      <div class="app-main__message">{{ .FlashMessage }}</div>
+      <div class="app-main__content">{{ .LayoutContent }}</div>
+    </main>
+
+    {{ assets_js "/static/js/application.js" }}
+  </body>
+</html>

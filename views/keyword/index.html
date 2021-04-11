@@ -1,0 +1,28 @@
+<div class="card-keyword">
+  <form
+    class="form form-keyword-upload"
+    action="/keyword"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    {{ .xsrfdata }}
+    <h3 class="form-keyword-upload__title">Upload CSV file</h3>
+    <div class="form-keyword-upload__content">
+      <input
+        type="file"
+        required
+        class="form__input form-keyword-upload__input-file"
+        name="file"
+        accept="text/csv"
+      />
+
+      <button type="submit" class="btn form-keyword-upload__btn-upload">
+        Upload
+      </button>
+    </div>
+  </form>
+
+  {{ template "keyword/_search_form.html" . }}
+
+  <div>{{ template "keyword/_keywords.html" . }}</div>
+</div>

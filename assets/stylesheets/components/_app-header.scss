@@ -1,0 +1,91 @@
+.app-header {
+  .navigation-pane {
+    @apply bg-gray-800;
+
+    &__main {
+      @apply max-w-7xl mx-auto px-4;
+
+      @screen sm {
+        @apply px-6;
+      }
+
+      @screen lg {
+        @apply px-8;
+      }
+    }
+  }
+
+  .navigation-menu {
+    @apply flex items-center justify-between h-16;
+
+    &__left {
+      @apply flex items-center;
+    }
+
+    &__logo {
+      @apply flex-shrink-0 h-8 w-8;
+
+      background-image: url('/assets/images/logo.svg');
+    }
+
+    &__items {
+      @apply block;
+    }
+
+    &__right {
+      @apply ml-4 flex items-center;
+
+      @screen md {
+        @apply ml-6;
+      }
+    }
+  }
+
+  .menu-items {
+    @apply ml-10 flex items-baseline space-x-4;
+
+    &__item {
+      @apply text-gray-300 px-3 py-2 rounded-md text-sm font-medium;
+
+      &:hover {
+        @apply bg-gray-700 text-white;
+      }
+
+      &--active {
+        @apply bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium;
+      }
+    }
+  }
+
+  .profile-icon {
+    @apply ml-3 relative;
+
+    &__button {
+      @apply max-w-xs bg-gray-800 rounded-full flex items-center text-sm;
+
+      &:focus {
+        @apply outline-none ring-2 ring-offset-2 ring-offset-gray-800 ring-white;
+      }
+
+      img {
+        @apply h-8 w-8 rounded-full;
+      }
+    }
+  }
+
+  .profile-menu {
+    @apply hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5;
+
+    &--show {
+      @apply block;
+    }
+
+    &__item {
+      @apply block px-4 py-2 text-sm text-gray-700;
+
+      &:hover {
+        @apply bg-gray-100;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+body.registration.get,
+body.registration.post {
+  .registration-wrapper {
+    @apply flex flex-col;
+  }
+
+  .card-registration {
+    @apply max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2;
+
+    &__title {
+      @apply mb-8 text-3xl text-center;
+    }
+
+    &__content {
+      @apply bg-white px-6 py-8 rounded shadow-md text-black w-full;
+    }
+
+    &__footer {
+      @apply text-gray-700 mt-6;
+    }
+  }
+
+  .form-registration {
+    &__terms-privacy {
+      @apply text-center text-sm text-gray-700 mt-4;
+    }
+  }
+}

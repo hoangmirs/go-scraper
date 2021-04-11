@@ -1,0 +1,61 @@
+{{ if .Keywords }}
+<table class="table table-keyword">
+  <colgroup>
+    <col span="1" class="table-keyword__id" />
+    <col span="1" class="table-keyword__keyword" />
+    <col span="1" class="table-keyword__status" />
+    <col span="1" class="table-keyword__created-date" />
+    <col span="1" class="table-keyword__action" />
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th class="table-keyword__item table-keyword__item--center">Id</th>
+      <th class="table-keyword__item table-keyword__item--left">Keyword</th>
+      <th class="table-keyword__item table-keyword__item--center">Status</th>
+      <th class="table-keyword__item table-keyword__item--center">
+        Created At
+      </th>
+      <th
+        class="table-keyword__item table-keyword__item--center table-keyword__action"
+      >
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {{ range $keyword := .Keywords }}
+    <tr>
+      <td class="table-keywords__item table-keyword__item--center">
+        <a href="{{ urlfor `Keyword.Show` `:id` $keyword.Id }}"
+          >{{ $keyword.Id }}</a
+        >
+      </td>
+      <td class="table-keyword__item table-keyword__item--left">
+        {{ $keyword.Keyword }}
+      </td>
+      <td class="table-keyword__item table-keyword__item--center">
+        <span class="badge-status badge-status--{{ $keyword.Status }}"
+          >{{ $keyword.Status }}</span
+        >
+      </td>
+      <td class="table-keyword__item table-keyword__item--center">
+        {{ date $keyword.CreatedAt "Y-m-d H:i:s" }}
+      </td>
+      <td>
+        <div class="table-keyword__action-group">
+          <a
+            href="{{ urlfor `Keyword.Show` `:id` $keyword.Id }}"
+            class="table-keyword__icon"
+          >
+            {{ render_icon "eye" }}
+          </a>
+        </div>
+      </td>
+    </tr>
+    {{ end }}
+  </tbody>
+</table>
+{{ else }}
+<div class="blank-state">No keywords were found</div>
+{{ end }} {{ template "shared/_pagination.html" . }}

@@ -1,0 +1,70 @@
+body.keyword.get,
+body.keyword.post {
+  .card-keyword {
+    @apply w-full;
+
+    .form-keyword-upload {
+      &__title {
+        @apply text-lg font-semibold;
+      }
+
+      &__content {
+        @apply w-full flex flex-row mt-4;
+      }
+
+      &__input-file {
+        @apply w-3/4 m-0;
+      }
+
+      &__btn-upload {
+        @apply w-1/4 m-0 ml-4;
+      }
+    }
+
+    .form-keyword-search {
+      @apply mt-6 border-t border-gray-200;
+
+      &__title {
+        @apply text-lg font-semibold mt-4;
+      }
+
+      &__content {
+        @apply w-full flex flex-row mt-4;
+      }
+
+      &__input-keyword {
+        @apply w-3/4 m-0;
+      }
+
+      &__btn-search {
+        @apply w-1/4 m-0 ml-4;
+      }
+    }
+
+    .blank-state {
+      @apply mt-4;
+    }
+  }
+}
+
+body.keyword.show {
+  .keyword-wrapper {
+    @apply relative;
+  }
+
+  .keyword-title {
+    @apply text-gray-800 text-xl font-bold;
+  }
+
+  .keyword-date {
+    @apply inline-block pt-2;
+  }
+
+  .button-html-page {
+    @apply w-8 absolute top-3 right-3;
+
+    &:hover {
+      @apply text-green-500;
+    }
+  }
+}

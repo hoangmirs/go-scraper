@@ -1,0 +1,61 @@
+<header class="app-header">
+  <nav class="navigation-pane">
+    <div class="navigation-pane__main">
+      <div class="navigation-menu">
+        <div class="navigation-menu__left">
+          <a class="navigation-menu__logo" href="/">
+            <span class="sr-only">Go Scraper</span>
+          </a>
+          {{ if .CurrentUser }}
+          <div class="navigation-menu__items">
+            <div class="menu-items">
+              <a href="/" class="menu-items__item menu-items__item--active"
+                >Dashboard</a
+              >
+            </div>
+          </div>
+          {{ end }}
+        </div>
+        <div class="navigation-menu__right">
+          <!-- Profile dropdown -->
+          {{ if .CurrentUser }}
+          <div
+            class="profile-icon"
+            data-controller="header"
+            data-header-profile-menu-show-class="profile-menu--show"
+          >
+            <div>
+              <button
+                class="profile-icon__button"
+                id="user-menu"
+                aria-haspopup="true"
+                data-action="header#toggleProfileMenu"
+              >
+                <span class="sr-only">Open profile menu</span>
+                <img
+                  src="/assets/images/icons/profile.svg"
+                  alt="Profile menu"
+                />
+              </button>
+            </div>
+            <div
+              class="profile-menu"
+              role="menu"
+              aria-orientation="vertical"
+              aria-labelledby="user-menu"
+              data-header-target="profileMenu"
+            >
+              <a href="/#" class="profile-menu__item" role="menuitem"
+                >{{ .CurrentUser.Email }}</a
+              >
+              <a href="/logout" class="profile-menu__item" role="menuitem"
+                >Log out</a
+              >
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
