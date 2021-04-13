@@ -7,6 +7,7 @@ import (
 	"github.com/hoangmirs/go-scraper/helpers"
 	_ "github.com/hoangmirs/go-scraper/routers" // Routers
 	"github.com/hoangmirs/go-scraper/services/jobenqueuer"
+	"github.com/hoangmirs/go-scraper/services/oauth"
 
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/beego/beego/v2/server/web"
@@ -25,4 +26,8 @@ func SetUp() {
 	database.SetupRedisPool()
 	jobenqueuer.SetUpEnqueuer()
 	SetUpTemplateFunction()
+	err := oauth.SetUpOAuthServer()
+	if err != nil {
+		logs.Error("Error when setting up OAuth server: %v", err.Error())
+	}
 }

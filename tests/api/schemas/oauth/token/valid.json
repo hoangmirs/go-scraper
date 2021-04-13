@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "access_token": {
+              "type": "string"
+            },
+            "expires_in": {
+              "type": "integer"
+            },
+            "refresh_token": {
+              "type": "string"
+            },
+            "token_type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "access_token",
+            "expires_in",
+            "refresh_token",
+            "token_type"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "attributes"
+      ]
+    }
+  },
+  "required": [
+    "data"
+  ]
+}
