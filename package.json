@@ -36,7 +36,7 @@
     "stimulus": "2.0.0",
     "stimulus-use": "0.22.1",
     "style-loader": "2.0.0",
-    "svg-sprite": "1.5.0",
+    "svg-sprite": "1.5.4",
     "tailwindcss": "2.0.2",
     "tailwindcss-stimulus-components": "2.1.2",
     "webpack": "5.10.0",
