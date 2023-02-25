@@ -29,8 +29,7 @@ require (
 	github.com/vgarvardt/go-oauth2-pg/v4 v4.1.0
 	github.com/vgarvardt/go-pg-adapter v1.0.0
 	github.com/xeipuuv/gojsonschema v1.2.0
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
-	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
+	golang.org/x/crypto v0.1.0
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 )
